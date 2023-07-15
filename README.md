@@ -1,6 +1,8 @@
 
 # Yii2 Forum Extension
-This Yii2 extension offers a simple set of forum features that make it easy to integrate a full-featured forum into your web application. 
+This Yii2 extension offers a simple set of forum features that make it easy to integrate a full-featured forum into your web application.
+
+⚠️ This extension is currently **WIP**. Feel free to _Watch_ this repo for the first release or [contribute](https://github.com/2rats/yii2-forum#contributions). Thank you. ⚠️
 
 ## Requirements
 
