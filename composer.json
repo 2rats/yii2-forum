@@ -1,0 +1,32 @@
+{
+  "name": "2rats/yii2-forum",
+  "description": "",
+  "keywords": [
+    "yii2",
+    "extension",
+    "forum"
+  ],
+  "type": "yii2-extension",
+  "minimum-stability": "dev",
+  "license": "BSD-3-Clause",
+  "autoload": {
+    "psr-4": {
+      "rats\\forum\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Kazda Antonín",
+      "email": "antoninkazda@gmail.com"
+    },
+    {
+      "name": "Mifka Radim",
+      "email": "radimmifka@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4.0",
+    "yiisoft/yii2": "~2.0.45",
+    "yiisoft/yii2-bootstrap5": "2.0.3"
+  }
+}
