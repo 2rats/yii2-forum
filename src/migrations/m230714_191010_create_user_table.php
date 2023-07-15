@@ -9,7 +9,7 @@ use yii\db\Migration;
 class m230714_191010_create_user_table extends Migration
 {
 
-    private $table_name = 'forum-user';
+    private $table_name = 'forum_user';
 
     public function safeUp()
     {

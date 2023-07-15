@@ -9,7 +9,7 @@ use yii\db\Migration;
 class m230715_011013_create_vote_table extends Migration
 {
 
-    private $table_name = 'forum-vote';
+    private $table_name = 'forum_vote';
 
     public function safeUp()
     {
@@ -50,7 +50,7 @@ class m230715_011013_create_vote_table extends Migration
             "{{%fk-{$this->table_name}-fk_post}}",
             "{{%{$this->table_name}}}",
             'fk_post',
-            "{{%forum-post}}",
+            "{{%forum_post}}",
             'id',
             'CASCADE'
         );

@@ -9,7 +9,7 @@ use yii\db\Migration;
 class m230714_232515_create_post_table extends Migration
 {
 
-    private $table_name = 'forum-post';
+    private $table_name = 'forum_post';
 
     public function safeUp()
     {
@@ -74,7 +74,7 @@ class m230714_232515_create_post_table extends Migration
             "{{%fk-{$this->table_name}-fk_thread}}",
             "{{%{$this->table_name}}}",
             'fk_thread',
-            "{{%forum-thread}}",
+            "{{%forum_thread}}",
             'id',
             'CASCADE'
         );
