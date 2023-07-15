@@ -14,13 +14,11 @@ use yii\base\BootstrapInterface;
 
 /**
  * @brief This class represents forum module.
- * @param string $migrationTableOptions – migration table options
- * @param string $userTableName – user table name
+ * @param class $userClass – class that represents user identity in your app
  */
 class ForumModule extends Module implements BootstrapInterface
 {
-    public $migrationTableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
-    public $userTableName = 'user';
+    public $userClass = \app\models\User::class;
 
     /**
      * {@inheritdoc}
@@ -43,6 +41,13 @@ class ForumModule extends Module implements BootstrapInterface
      */
     public function init()
     {
+        if (!class_exists($this->userClass)) {
+            throw new \yii\base\InvalidConfigException("Class `{$this->userClass}` does not exist. You can choose different class in the module configuration (attribute 'userClass').");
+        }
+        if (!is_subclass_of($this->userClass, 'yii\db\ActiveRecord')) {
+            throw new \yii\base\InvalidConfigException("Class `{$this->userClass}` does not extend `yii\db\ActiveRecord`. You can choose different class in the module configuration (attribute 'userClass').");
+        }
+
         Yii::setAlias('@2ratsForum', __DIR__);
 
         parent::init();
