@@ -33,6 +33,25 @@ Then you have to to apply migrations of this extension:
 $ php yii migrate --migrationPath=@rats/forum/migrations
 ```
 
+## Configuration
+
+### Module configuration
+
+Configuration options of the module in `config/web.php`.
+
+| option    | default value       | description                                                                      |
+|-----------|---------------------|----------------------------------------------------------------------------------|
+| userClass | `'app\models\User'` | Class that represents app User. <br>The class must extend `\yii\db\ActiveRecord` |
+
+### Parameters configuration
+
+Module behavior can also be modified by adding parameters in your configuration file `config/params.php`.
+
+| option                | default value                                                                | description                                                                                                                                                                                                               |
+|-----------------------|------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| migrationTableOptions | `'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB'` \| `null` | `$options` for [createTable() function](https://www.yiiframework.com/doc/api/2.0/yii-db-migration#createTable()-detail). <br>By default, it sets charset and engine for the mysql database driver, `null` for the others. |
+| userTableName         | `'user'`                                                                     | Table name of the Class, that represents app User.                                                                                                                                                                        |
+
 ## Contributions
 Contributions are highly appreciated. If you would like to contribute, please fork the repository, make your changes, and submit a pull request or open an issue.
 
