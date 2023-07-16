@@ -166,4 +166,12 @@ class Forum extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
+
+    /**
+     * @return String slug
+     */
+    public function getSlug()
+    {
+        return \yii\helpers\Inflector::slug($this->name);
+    }
 }
