@@ -68,4 +68,13 @@ class ForumModule extends Module implements BootstrapInterface
     {
         return Yii::getAlias('@2ratsForum/migrations');
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function run()
+    {
+        ForumAsset::register($this->getView());
+        return parent::run();
+    }
 }
