@@ -32,6 +32,16 @@ class ForumModule extends Module implements BootstrapInterface
                     'pattern' => $this->id,
                     'route' => $this->id . '/forum'
                 ],
+                [
+                    'class' => 'yii\web\UrlRule',
+                    'pattern' => $this->id . '/<path:[0-9a-z\-]+>/<id:\d+>',
+                    'route' => $this->id . '/forum/view'
+                ],
+                [
+                    'class' => 'yii\web\UrlRule',
+                    'pattern' => $this->id . '/thread/<path:[0-9a-z\-]+>/<id:\d+>',
+                    'route' => $this->id . '/thread/view'
+                ],
             ], false);
         }
     }

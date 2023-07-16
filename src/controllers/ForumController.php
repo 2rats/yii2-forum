@@ -8,8 +8,11 @@
 
 namespace rats\forum\controllers;
 
+use Yii;
 use rats\forum\models\Forum;
+use rats\forum\models\Thread;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 class ForumController extends Controller
 {
@@ -29,6 +32,15 @@ class ForumController extends Controller
         ]);
     }
 
+    public function actionView($id)
+    {
+        $forum = Forum::find()->andWhere(['id' => $id, 'status' => [Forum::STATUS_ACTIVE_LOCKED, Forum::STATUS_ACTIVE_UNLOCKED]])->one();
+        if ($forum == null) {
+            throw new NotFoundHttpException(Yii::t('app', 'Forum not found'));
+        }
+        return $this->render('view', [
+            'forum' => $forum,
+            'threads' => $forum->getThreads()->andWhere(['status' => Thread::STATUS_ACTIVE])->all()
         ]);
     }
 }
