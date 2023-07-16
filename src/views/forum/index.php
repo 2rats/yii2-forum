@@ -5,7 +5,7 @@
 
 <div class="row justify-content-center">
     <div class="col-11 forum-container border rounded text-secondary">
-        <div class="forum-header row py-2 border-bottom bg-light fw-bold">
+        <div class="forum-header row py-2 border-bottom bg-light fw-bold rounded-top">
             <div class="col-6 border-end">
                 <span class="mx-2"><?= Yii::t('app', 'Forum') ?></span>
             </div>
@@ -16,8 +16,13 @@
                 <span class="mx-2"><?= Yii::t('app', 'Last post') ?></span>
             </div>
         </div>
+        <?php if (sizeof($forums) == 0) : ?>
+            <div class="no-results row py-2 bg-lighter rounded-bottom">
+                <div class="col-12 text-center"><?= Yii::t('app', 'No forums') ?></div>
+            </div>
+        <?php endif; ?>
         <?php foreach ($forums as $index => $forum) : ?>
-            <div class="forum row py-2 <?= $index % 2 == 0 ? 'bg-lighter' : 'bg-light' ?> <?= $index < sizeof($forums) - 1 ? 'border-bottom' : false ?>">
+            <div class="forum row py-2 <?= $index % 2 == 0 ? 'bg-lighter' : 'bg-light' ?> <?= $index < sizeof($forums) - 1 ? 'border-bottom' : 'rounded-bottom' ?>">
                 <div class="col-6">
                     <h3 class="h5 m-0"><?= $forum->name ?></h3>
                     <p class="small mb-0"><?= $forum->description ?></p>
