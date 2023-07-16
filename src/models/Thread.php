@@ -18,10 +18,10 @@ use Yii;
  * @property string|null $created_at
  * @property string|null $updated_at
  *
- * @property ForumModule::userClass $createdBy
+ * @property User $createdBy
  * @property Forum $forum
  * @property Post[] $posts
- * @property ForumModule::userClass $updatedBy
+ * @property User $updatedBy
  */
 class Thread extends \yii\db\ActiveRecord
 {
@@ -73,7 +73,7 @@ class Thread extends \yii\db\ActiveRecord
      */
     public function getCreatedBy()
     {
-        return $this->hasOne(ForumModule::getInstance()->userClass, ['id' => 'created_by']);
+        return $this->hasOne(User::class, ['id' => 'created_by']);
     }
 
     /**
@@ -103,6 +103,6 @@ class Thread extends \yii\db\ActiveRecord
      */
     public function getUpdatedBy()
     {
-        return $this->hasOne(ForumModule::getInstance()->userClass, ['id' => 'updated_by']);
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
 }

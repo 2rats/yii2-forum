@@ -15,7 +15,7 @@ use Yii;
  * @property string|null $updated_at
  *
  * @property Post $post
- * @property ForumModule::userClass $user
+ * @property User $user
  */
 class Vote extends \yii\db\ActiveRecord
 {
@@ -37,7 +37,7 @@ class Vote extends \yii\db\ActiveRecord
             [['fk_post', 'fk_user', 'value'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['fk_post'], 'exist', 'skipOnError' => true, 'targetClass' => Post::class, 'targetAttribute' => ['fk_post' => 'id']],
-            [['fk_user'], 'exist', 'skipOnError' => true, 'targetClass' => ForumModule::getInstance()->userClass, 'targetAttribute' => ['fk_user' => 'id']],
+            [['fk_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['fk_user' => 'id']],
         ];
     }
 
@@ -73,6 +73,6 @@ class Vote extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(ForumModule::getInstance()->userClass, ['id' => 'fk_user']);
+        return $this->hasOne(User::class, ['id' => 'fk_user']);
     }
 }
