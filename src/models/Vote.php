@@ -19,6 +19,9 @@ use Yii;
  */
 class Vote extends \yii\db\ActiveRecord
 {
+    const VALUE_DOWNVOTE = 0;
+    const VALUE_UPVOTE = 1;
+
     /**
      * {@inheritdoc}
      */
