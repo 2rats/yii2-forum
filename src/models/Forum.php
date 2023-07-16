@@ -91,9 +91,56 @@ class Forum extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getThreads()
+    public function getThreads($direct_only = true, $processed_forum_ids = [])
     {
-        return $this->hasMany(Thread::class, ['fk_forum' => 'id']);
+        $threads_query  = $this->hasMany(Thread::class, ['fk_forum' => 'id']);
+        if ($direct_only) {
+            return $threads_query;
+        }
+
+        if (!in_array($this->id, $processed_forum_ids, true)) {
+            $processed_forum_ids[] = $this->id;
+
+            foreach ($this->forums as $sub_forum) {
+                $threads_query->union($sub_forum->getThreads(false, $processed_forum_ids));
+            }
+        }
+
+        return $threads_query;
+    }
+
+    /**
+     * Gets query for [[Posts]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPosts($direct_only = true, $processed_forum_ids = [])
+    {
+        $posts_query = $this->hasMany(Post::class, ['fk_thread' => 'id'])
+            ->viaTable('forum_thread', ['fk_forum' => 'id']);
+        if ($direct_only) {
+            return $posts_query;
+        }
+
+        if (!in_array($this->id, $processed_forum_ids, true)) {
+            $processed_forum_ids[] = $this->id;
+
+            foreach ($this->forums as $sub_forum) {
+                $posts_query->union($sub_forum->getPosts(false, $processed_forum_ids));
+            }
+        }
+
+        return $posts_query;
+    }
+
+    /**
+     * Gets query for [[LastPost]].
+     *
+     * @return Post|null
+     */
+    public function getLastPost()
+    {
+        return $this->getPosts(false)->orderBy('created_at DESC')->one();
     }
 
     /**

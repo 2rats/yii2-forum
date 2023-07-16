@@ -97,6 +97,17 @@ class Thread extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[LastPost]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLastPost()
+    {
+        return $this->hasOne(Post::class, ['fk_thread' => 'id'])
+            ->orderBy('created_at DESC');
+    }
+
+    /**
      * Gets query for [[UpdatedBy]].
      *
      * @return \yii\db\ActiveQuery
