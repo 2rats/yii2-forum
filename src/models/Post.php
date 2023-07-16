@@ -129,4 +129,24 @@ class Post extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
+
+    /**
+     * Gets username of user who created Post or "removed" if Post was removed
+     *
+     * @return String
+     */
+    public function printCreatedBy()
+    {
+        return htmlentities($this->status == $this::STATUS_DELETED ? '<' . Yii::t('app', 'deleted') . '>' : $this->createdBy->username);
+    }
+
+    /**
+     * Gets content of Post or "removed" if Post was removed
+     *
+     * @return String
+     */
+    public function printContent()
+    {
+        return htmlentities($this->status == $this::STATUS_DELETED ? '<' . Yii::t('app', 'deleted') . '>' : $this->content);
+    }
 }

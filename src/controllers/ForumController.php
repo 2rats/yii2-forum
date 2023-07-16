@@ -18,7 +18,17 @@ class ForumController extends Controller
     public function actionIndex()
     {
         return $this->render('index', [
-            'forums' => Forum::find()->andWhere(['fk_parent' => null])->all(),
+            'forums' => Forum::find()->andWhere([
+                'fk_parent' => null,
+                'status' => [
+                    Forum::STATUS_ACTIVE_LOCKED,
+                    Forum::STATUS_ACTIVE_UNLOCKED
+                ]
+            ])->all(),
+            'subforum' => false
+        ]);
+    }
+
         ]);
     }
 }
