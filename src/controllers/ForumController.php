@@ -8,6 +8,7 @@
 
 namespace rats\forum\controllers;
 
+use rats\forum\models\Forum;
 use yii\web\Controller;
 
 class ForumController extends Controller
@@ -16,6 +17,8 @@ class ForumController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->render('index', [
+            'forums' => Forum::find()->andWhere(['fk_parent' => null])->all(),
+        ]);
     }
 }

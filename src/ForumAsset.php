@@ -10,6 +10,7 @@ class ForumAsset extends AssetBundle
 
     public $js = [];
     public $css = [
+        'forum.css'
     ];
 
     public $depends = [

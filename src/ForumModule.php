@@ -29,7 +29,7 @@ class ForumModule extends Module implements BootstrapInterface
             $app->getUrlManager()->addRules([
                 [
                     'class' => 'yii\web\UrlRule',
-                    'pattern' => $this->id . '/forum',
+                    'pattern' => $this->id,
                     'route' => $this->id . '/forum'
                 ],
             ], false);
