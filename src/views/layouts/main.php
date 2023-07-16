@@ -5,6 +5,7 @@
 
 use rats\forum\ForumAsset;
 use app\widgets\Alert;
+use rats\forum\ForumModule;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
@@ -20,8 +21,7 @@ $this->registerMetaTag(['name' => 'description', 'content' => $this->params['met
 $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
 $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/favicon.ico')]);
 
-$this->title = Yii::t('app', 'Forum');
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = $this->title ?? Yii::t('app', 'Forum');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -39,13 +39,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
         NavBar::begin([
             'brandLabel' => 'yii2-forum',
-            'brandUrl' => Url::to('/forum'),
+            'brandUrl' => Url::to('/' . ForumModule::getInstance()->id),
             'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
         ]);
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav'],
             'items' => [
-                ['label' => Yii::t('app', 'Home'), 'url' => ['/forum']],
                 Yii::$app->user->isGuest
                     ? ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']]
                     : '<li class="nav-item">'
@@ -65,7 +64,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <main id="main" class="flex-shrink-0 pt-5 mt-md-5 mt-3" role="main">
         <div class="container">
             <?php if (!empty($this->params['breadcrumbs'])) : ?>
-                <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
+                <?= Breadcrumbs::widget(['homeLink' => [
+                    'label' => Yii::t('app', 'Forum'),
+                    'url' => Url::to('/' . ForumModule::getInstance()->id)
+                ], 'links' => $this->params['breadcrumbs']]) ?>
             <?php endif ?>
             <?= Alert::widget() ?>
             <?= $content ?>
