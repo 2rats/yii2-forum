@@ -40,7 +40,7 @@ $this->title = $this->title ?? Yii::t('app', 'Forum');
         NavBar::begin([
             'brandLabel' => 'yii2-forum',
             'brandUrl' => Url::to('/' . ForumModule::getInstance()->id),
-            'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
+            'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark position-sticky']
         ]);
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav'],
@@ -61,14 +61,27 @@ $this->title = $this->title ?? Yii::t('app', 'Forum');
         ?>
     </header>
 
-    <main id="main" class="flex-shrink-0 pt-5 mt-md-5 mt-3" role="main">
-        <div class="container">
-            <?php if (!empty($this->params['breadcrumbs'])) : ?>
-                <?= Breadcrumbs::widget(['homeLink' => [
-                    'label' => Yii::t('app', 'Forum'),
-                    'url' => Url::to('/' . ForumModule::getInstance()->id)
-                ], 'links' => $this->params['breadcrumbs']]) ?>
-            <?php endif ?>
+    <main id="main" class="flex-shrink-0" role="main">
+        <?php if (!empty($this->params['breadcrumbs'])) : ?>
+            <div class="bg-white shadow-sm">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-11">
+                            <?= Breadcrumbs::widget([
+                                'homeLink' => [
+                                    'label' => Yii::t('app', 'Forum'),
+                                    'url' => Url::to('/' . ForumModule::getInstance()->id)
+                                ], 'links' => $this->params['breadcrumbs'],
+                                'options' => [
+                                    'class' => 'py-2 mb-0',
+                                ],
+                            ]) ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endif ?>
+        <div class="container mt-3">
             <?= Alert::widget() ?>
             <?= $content ?>
         </div>
