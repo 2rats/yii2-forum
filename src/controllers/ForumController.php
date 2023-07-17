@@ -8,6 +8,7 @@
 
 namespace rats\forum\controllers;
 
+use rats\forum\ForumModule;
 use Yii;
 use rats\forum\models\Forum;
 use rats\forum\models\Thread;
@@ -32,11 +33,14 @@ class ForumController extends Controller
         ]);
     }
 
-    public function actionView($id)
+    public function actionView($id, $path)
     {
         $forum = Forum::find()->andWhere(['id' => $id, 'status' => [Forum::STATUS_ACTIVE_LOCKED, Forum::STATUS_ACTIVE_UNLOCKED]])->one();
         if ($forum == null) {
             throw new NotFoundHttpException(Yii::t('app', 'Forum not found'));
+        }
+        if ($path != $forum->slug) {
+            return $this->redirect('/' . ForumModule::getInstance()->id . '/' . $forum->slug . '/' . $forum->id);
         }
         return $this->render('view', [
             'forum' => $forum,
