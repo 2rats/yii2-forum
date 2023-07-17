@@ -8,6 +8,7 @@ This Yii2 extension offers a simple set of forum features that make it easy to i
 
  - PHP 7.4 or higher
  - Yii2 Framework
+ - Yii2 RBAC
  - User table migration
 
 ## Instalation
@@ -21,16 +22,18 @@ $ composer require 2rats/yii2-forum "@dev"
 ### Apply database migrations
 
 
-#### 1. User table 
-First of all you have to setup and apply your **User table** migration using:
+#### 1. User table and RBAC
+First of all you have to setup and apply your **User table** and **RBACK** migration using:
 ```
 $ php yii migrate
+$ php migrate --migrationPath=@yii/rbac/migrations
 ```
 #### 2. Extension
 Then you have to to apply migrations of this extension:
 
 ```
 $ php yii migrate --migrationPath=@rats/forum/migrations
+$ php yii migrate --migrationPath=@rats/forum/migrations/rbac
 ```
 
 ## Configuration
