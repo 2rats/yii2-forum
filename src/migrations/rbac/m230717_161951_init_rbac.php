@@ -66,6 +66,7 @@ class m230717_161951_init_rbac extends Migration
 
         // MODERATOR
         $createForum = $auth->createPermission('forum-createForum');
+        $createForum->description = 'Create a forum';
         $auth->add($createForum);
 
         $editForum = $auth->createPermission('forum-editForum');
