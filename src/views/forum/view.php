@@ -30,11 +30,8 @@ while ($temp_forum->parent !== null) {
 <div class="row justify-content-center my-3">
     <div class="col-11 thread-container border rounded text-secondary">
         <div class="thread-header row py-2 border-bottom bg-light fw-bold rounded-top">
-            <div class="col-12 col-md-6 border-end">
+            <div class="col-12 col-md-9 border-end">
                 <span class="mx-2"><?= Yii::t('app', 'Thread') ?></span>
-            </div>
-            <div class="col-3 border-end d-md-block d-none">
-                <span class="mx-2"><?= Yii::t('app', 'Statistics') ?></span>
             </div>
             <div class="col-3 d-md-block d-none">
                 <span class="mx-2"><?= Yii::t('app', 'Last post') ?></span>
