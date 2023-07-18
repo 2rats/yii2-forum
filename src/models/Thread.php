@@ -99,7 +99,7 @@ class Thread extends \yii\db\ActiveRecord
      */
     public function getPosts()
     {
-        return $this->hasMany(Post::class, ['fk_thread' => 'id']);
+        return $this->hasMany(Post::class, ['fk_thread' => 'id'])->orderBy('id ASC');
     }
 
     /**

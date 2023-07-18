@@ -44,3 +44,68 @@ li.breadcrumb-item>a {
 li.breadcrumb-item>a:hover {
     --bs-link-underline-opacity: 1;
 }
+
+@media (min-width: 768px) {
+    .border-md-end {
+        border-right: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+    }
+
+    .border-md-bottom-0 {
+        border-bottom: 0 !important;
+    }
+}
+
+.reply:hover {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    transition: box-shadow 0.2s;
+}
+
+.reply {
+    transition: box-shadow 0.2s;
+}
+
+@keyframes shadowPulse {
+    0% {
+        box-shadow: none;
+    }
+
+    40% {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    60% {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    100% {
+        box-shadow: none;
+    }
+}
+
+.shadow-pulse {
+    animation-name: shadowPulse;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-timing-function: linear;
+}
+
+.page-item.active .page-link {
+    background-color: #00000009;
+    border-color: #0000003f;
+    color: #5e5e5e;
+}
+
+.page-item.active .page-link::before {
+    position: absolute;
+    bottom: -13%;
+    right: 5%;
+    content: '';
+    background-color: #5e5e5e;
+    width: 30px;
+    height: 1px;
+}
+
+.page-link,
+.page-link:hover {
+    color: #5e5e5e;
+}

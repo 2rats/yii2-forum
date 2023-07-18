@@ -147,6 +147,32 @@ class Post extends \yii\db\ActiveRecord
      */
     public function printContent()
     {
-        return htmlentities($this->status == $this::STATUS_DELETED ? '<' . Yii::t('app', 'deleted') . '>' : $this->content);
+        return $this->status == $this::STATUS_DELETED ? htmlentities('<' . Yii::t('app', 'deleted') . '>') : nl2br($this->content);
+    }
+
+    /**
+     * Gets User roles or "removed" if Post was removed
+     *
+     * @return String[]
+     */
+    public function getCreatedByRoles()
+    {
+        if ($this->status == $this::STATUS_DELETED || $this->createdBy->status == User::STATUS_DELETED) {
+            return [htmlentities('<' . Yii::t('app', 'deleted') . '>')];
+        }
+        return $this->createdBy->roles;
+    }
+
+    /**
+     * Gets content of Post or "removed" if Post was removed
+     *
+     * @return String
+     */
+    public function printCreatedBySignature()
+    {
+        if ($this->status == $this::STATUS_DELETED || $this->createdBy->status == User::STATUS_DELETED) {
+            return null;
+        }
+        return $this->createdBy->signature;
     }
 }

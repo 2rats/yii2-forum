@@ -98,4 +98,14 @@ class User extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Post::class, ['created_by' => 'id']);
     }
+
+    /**
+     * Gets user roles.
+     *
+     * @return String[]
+     */
+    public function getRoles()
+    {
+        return Yii::$app->authManager->getRolesByUser($this->id);
+    }
 }

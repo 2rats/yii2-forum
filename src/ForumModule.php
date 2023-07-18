@@ -39,6 +39,11 @@ class ForumModule extends Module implements BootstrapInterface
                 ],
                 [
                     'class' => 'yii\web\UrlRule',
+                    'pattern' => $this->id . '/thread/<path:[0-9a-z\-]+>/<id:\d+>/<post_id:\d+>',
+                    'route' => $this->id . '/thread/highlight'
+                ],
+                [
+                    'class' => 'yii\web\UrlRule',
                     'pattern' => $this->id . '/thread/<path:[0-9a-z\-]+>/<id:\d+>',
                     'route' => $this->id . '/thread/view'
                 ],
@@ -56,6 +61,9 @@ class ForumModule extends Module implements BootstrapInterface
         }
         if (!is_subclass_of($this->userClass, 'yii\db\ActiveRecord')) {
             throw new \yii\base\InvalidConfigException("Class `{$this->userClass}` does not extend `yii\db\ActiveRecord`. You can choose different class in the module configuration (attribute 'userClass').");
+        }
+        if (is_null(Yii::$app->authManager)) {
+            throw new \yii\base\InvalidConfigException("Module rats/yii2-forum depends on RBAC, set it up using the Yii2 docs.\n Link: https://www.yiiframework.com/doc/guide/2.0/en/security-authorization#configuring-rbac");
         }
 
         Yii::setAlias('@2ratsForum', __DIR__);

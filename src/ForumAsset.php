@@ -8,7 +8,9 @@ class ForumAsset extends AssetBundle
 {
     public $sourcePath = '@rats/forum/assets';
 
-    public $js = [];
+    public $js = [
+        'postScroll.js'
+    ];
     public $css = [
         'forum.css'
     ];
