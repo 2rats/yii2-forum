@@ -41,7 +41,7 @@ class ThreadController extends Controller
         return $this->render('view', [
             'thread' => $thread,
             'posts' => $models,
-            'pages' => $pages
+            'pages' => $pages,
         ]);
     }
 

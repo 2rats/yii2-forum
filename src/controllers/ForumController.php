@@ -13,6 +13,7 @@ use Yii;
 use rats\forum\models\Forum;
 use rats\forum\models\Thread;
 use yii\data\Pagination;
+use yii\data\Sort;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -45,7 +46,15 @@ class ForumController extends Controller
             return $this->redirect('/' . ForumModule::getInstance()->id . '/' . $forum->slug . '/' . $forum->id);
         }
 
-        $query = $forum->getThreads()->andWhere(['status' => Thread::STATUS_ACTIVE]);
+        $sort = new Sort([
+            'attributes' => [
+                'views',
+                'name',
+                'created_at'
+            ],
+        ]);
+
+        $query = $forum->getThreads()->andWhere(['status' => Thread::STATUS_ACTIVE])->orderBy($sort->orders);
         $countQuery = clone $query;
         $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->page_items]);
         $models = $query->offset($pages->offset)
@@ -55,7 +64,8 @@ class ForumController extends Controller
         return $this->render('view', [
             'forum' => $forum,
             'threads' => $models,
-            'pages' => $pages
+            'pages' => $pages,
+            'sort' => $sort,
         ]);
     }
 }

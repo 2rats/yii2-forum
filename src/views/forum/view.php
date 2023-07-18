@@ -14,6 +14,27 @@ while ($temp_forum->parent !== null) {
     array_unshift($this->params['breadcrumbs'], ['label' => $temp_forum->parent->name, 'url' => Url::to('/' . ForumModule::getInstance()->id . "/{$temp_forum->parent->slug}/{$temp_forum->parent->id}")]);
     $temp_forum = $temp_forum->parent;
 }
+
+function getSortLink($sort, $label, $name)
+{
+    $class = 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover ';
+    $sort_attr = str_replace('-', '', Yii::$app->request->get('sort', ''));
+    if ($sort_attr == $name) {
+        $carret_up = '<svg class="ms-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16"> <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/> </svg>';
+        $carret_down = '<svg class="ms-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16"> <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/> </svg>';
+        $class .= 'fw-medium';
+        if (mb_substr(Yii::$app->request->get('sort', ''), 0, 1) == '-') {
+            $label .= $carret_down;
+        } else {
+            $label .= $carret_up;
+        }
+    }
+    return $sort->link($name, [
+        'class' => $class,
+        'label' => $label
+    ]);
+}
+
 ?>
 
 <?php if ($forum->forums) : ?>
@@ -28,7 +49,13 @@ while ($temp_forum->parent !== null) {
     ]); ?>
 <?php endif; ?>
 
-<div class="row justify-content-center my-3">
+<div class="sort px-5">
+    <span><?= Yii::t('app', 'Sort by') ?></span>
+    <?= getSortLink($sort, Yii::t('app', 'Name'), 'name') ?> |
+    <?= getSortLink($sort, Yii::t('app', 'Date'), 'created_at') ?> |
+    <?= getSortLink($sort, Yii::t('app', 'Views'), 'views') ?>
+</div>
+<div class="row justify-content-center my-3 mt-1">
     <div class="col-11 thread-container border rounded text-secondary">
         <div class="thread-header row py-2 border-bottom bg-light fw-bold rounded-top">
             <div class="col-12 col-md-9 border-end">
