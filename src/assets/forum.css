@@ -90,7 +90,7 @@ li.breadcrumb-item>a:hover {
 }
 
 .page-item.active .page-link {
-    background-color: #00000009;
+    background-color: white;
     border-color: #0000003f;
     color: #5e5e5e;
 }
@@ -98,7 +98,7 @@ li.breadcrumb-item>a:hover {
 .page-item.active .page-link::before {
     position: absolute;
     bottom: -13%;
-    right: 5%;
+    right: 4%;
     content: '';
     background-color: #5e5e5e;
     width: 30px;

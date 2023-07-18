@@ -4,6 +4,7 @@
 
 use rats\forum\models\Forum;
 use rats\forum\ForumModule;
+use yii\bootstrap5\LinkPager;
 use yii\helpers\Url;
 
 $this->title = $forum->name;
@@ -82,4 +83,9 @@ while ($temp_forum->parent !== null) {
             </div>
         <?php endforeach; ?>
     </div>
+</div>
+<div class="pagination justify-content-center">
+    <?= LinkPager::widget([
+        'pagination' => $pages,
+    ]); ?>
 </div>

@@ -12,12 +12,14 @@ use rats\forum\ForumModule;
 use Yii;
 use rats\forum\models\Forum;
 use rats\forum\models\Thread;
+use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 class ForumController extends Controller
 {
     public $layout = 'main';
+    public $page_items = 20;
 
     public function actionIndex()
     {
@@ -42,9 +44,18 @@ class ForumController extends Controller
         if ($path != $forum->slug) {
             return $this->redirect('/' . ForumModule::getInstance()->id . '/' . $forum->slug . '/' . $forum->id);
         }
+
+        $query = $forum->getThreads()->andWhere(['status' => Thread::STATUS_ACTIVE]);
+        $countQuery = clone $query;
+        $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->page_items]);
+        $models = $query->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
+
         return $this->render('view', [
             'forum' => $forum,
-            'threads' => $forum->getThreads()->andWhere(['status' => Thread::STATUS_ACTIVE])->all()
+            'threads' => $models,
+            'pages' => $pages
         ]);
     }
 }
