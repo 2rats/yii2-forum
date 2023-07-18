@@ -57,7 +57,7 @@ class m230717_161951_init_rbac extends Migration
         $vote->description = 'Vote on a post';
         $auth->add($vote);
 
-        $user = $auth->createRole('user');
+        $user = $auth->createRole('forum-user');
         $auth->add($user);
         $auth->addChild($user, $createThread);
         $auth->addChild($user, $createPost);
@@ -85,7 +85,7 @@ class m230717_161951_init_rbac extends Migration
         $silenceUser->description = 'Silence a user';
         $auth->add($silenceUser);
 
-        $moderator = $auth->createRole('moderator');
+        $moderator = $auth->createRole('forum-moderator');
         $auth->add($moderator);
         $auth->addChild($moderator, $user);
         $auth->addChild($moderator, $createForum);
@@ -112,7 +112,7 @@ class m230717_161951_init_rbac extends Migration
         $assignModerator->description = 'Assign a moderator to a forum';
         $auth->add($assignModerator);
 
-        $admin = $auth->createRole('admin');
+        $admin = $auth->createRole('forum-admin');
         $auth->add($admin);
         $auth->addChild($admin, $moderator);
         $auth->addChild($admin, $deletePost);
