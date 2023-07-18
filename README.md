@@ -17,7 +17,7 @@ This extension is designed to be used out of the box. Once you have installed th
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
 ```
-$ composer require 2rats/yii2-forum "@dev"
+composer require 2rats/yii2-forum "@dev"
 ```
 ### Apply database migrations
 
@@ -25,15 +25,15 @@ $ composer require 2rats/yii2-forum "@dev"
 #### 1. User table and RBAC
 First of all you have to setup and apply your **User table** and **RBACK** migration using:
 ```
-$ php yii migrate
-$ php migrate --migrationPath=@yii/rbac/migrations
+php yii migrate
+php yii migrate --migrationPath=@yii/rbac/migrations
 ```
 #### 2. Extension
 Then you have to to apply migrations of this extension:
 
 ```
-$ php yii migrate --migrationPath=@rats/forum/migrations
-$ php yii migrate --migrationPath=@rats/forum/migrations/rbac
+php yii migrate --migrationPath=@rats/forum/migrations
+php yii migrate --migrationPath=@rats/forum/migrations/rbac
 ```
 
 ## Configuration
