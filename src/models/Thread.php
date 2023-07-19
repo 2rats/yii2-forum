@@ -106,12 +106,11 @@ class Thread extends \yii\db\ActiveRecord
     /**
      * Gets query for [[LastPost]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return Post|null
      */
     public function getLastPost()
     {
-        return $this->hasOne(Post::class, ['fk_thread' => 'id'])
-            ->orderBy('created_at DESC');
+        return $this->fk_last_post === null ? null : $this->hasOne(Post::class, ['id' => 'fk_last_post']);
     }
 
     /**

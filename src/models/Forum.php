@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property int $fk_category
  * @property int|null $fk_parent
+ * @property int|null $fk_last_post
  * @property string $name
  * @property string|null $description
  * @property int $status
@@ -147,7 +148,7 @@ class Forum extends \yii\db\ActiveRecord
      */
     public function getLastPost()
     {
-        return $this->getPosts(false)->orderBy('created_at DESC')->one();
+        return $this->fk_last_post === null ? null : $this->hasOne(Post::class, ['id' => 'fk_last_post']);
     }
 
     /**
