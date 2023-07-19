@@ -8,10 +8,13 @@ use Yii;
  * This is the model class for table "forum_forum".
  *
  * @property int $id
+ * @property int $fk_category
  * @property int|null $fk_parent
  * @property string $name
  * @property string|null $description
  * @property int $status
+ * @property int $threads
+ * @property int $posts
  * @property int $created_by
  * @property int $updated_by
  * @property string|null $created_at

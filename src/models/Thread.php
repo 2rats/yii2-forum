@@ -11,6 +11,7 @@ use Yii;
  * @property int $fk_forum
  * @property string $name
  * @property int $status
+ * @property int $threads
  * @property int $views
  * @property int $pinned
  * @property int $created_by

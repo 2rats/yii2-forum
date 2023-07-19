@@ -34,8 +34,8 @@ use yii\helpers\Url;
                     <!-- Phone size -->
                     <div class="d-md-none d-block small">
                         <p class="mb-0">
-                            <span class="fw-medium"><?= Yii::t('app', 'Threads') ?>: </span><span><?= $forum->getThreads(false)->count() ?></span> |
-                            <span class="fw-medium"><?= Yii::t('app', 'Posts') ?>: </span><span><?= $forum->getPosts(false)->count() ?></span>
+                            <span class="fw-medium"><?= Yii::t('app', 'Threads') ?>: </span><span><?= $forum->threads ?></span> |
+                            <span class="fw-medium"><?= Yii::t('app', 'Posts') ?>: </span><span><?= $forum->posts ?></span>
                         </p>
                         <?php if (!is_null($forum->lastPost)) : ?>
                             <p class="small mb-0 text-end"><span class="fw-bold"><?= $forum->lastPost->printCreatedBy() ?></span> - <?= Yii::$app->formatter->asDatetime($forum->lastPost->created_at) ?></p>
@@ -46,11 +46,11 @@ use yii\helpers\Url;
                     <div class="row gx-2 h-100 align-items-center">
                         <div class="col-6 text-center border-end">
                             <p class="small fw-bold mb-1"><?= Yii::t('app', 'Threads') ?></p>
-                            <span><?= $forum->getThreads(false)->count() ?></span>
+                            <span><?= $forum->threads ?></span>
                         </div>
                         <div class="col-6 text-center">
                             <p class="small fw-bold mb-1"><?= Yii::t('app', 'Posts') ?></p>
-                            <span><?= $forum->getPosts(false)->count() ?></span>
+                            <span><?= $forum->posts ?></span>
                         </div>
                     </div>
                 </div>

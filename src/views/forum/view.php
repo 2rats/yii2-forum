@@ -80,7 +80,7 @@ function getSortLink($sort, $label, $name)
                     <!-- Phone size -->
                     <div class="d-md-none d-block small">
                         <p class="mb-0">
-                            <span class="fw-medium"><?= Yii::t('app', 'Posts') ?>: </span><span><?= $thread->getPosts(false)->count() ?></span>
+                            <span class="fw-medium"><?= Yii::t('app', 'Posts') ?>: </span><span><?= $thread->posts ?></span>
                             <span class="fw-medium"><?= Yii::t('app', 'Views') ?>: </span><span><?= $thread->views ?></span>
                         </p>
                         <?php if (!is_null($thread->lastPost)) : ?>
@@ -92,7 +92,7 @@ function getSortLink($sort, $label, $name)
                     <div class="row gx-2 h-100 align-items-center">
                         <div class="col-6 text-center border-end">
                             <p class="small fw-bold mb-1"><?= Yii::t('app', 'Posts') ?></p>
-                            <span><?= $thread->getPosts(false)->count() ?></span>
+                            <span><?= $thread->posts ?></span>
                         </div>
                         <div class="col-6 text-center">
                             <p class="small fw-bold mb-1"><?= Yii::t('app', 'Views') ?></p>
