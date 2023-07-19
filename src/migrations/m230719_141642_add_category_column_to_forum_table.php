@@ -14,7 +14,7 @@ class m230719_141642_add_category_column_to_forum_table  extends Migration
     public function safeUp()
     {
         // adds column to forum
-        $this->addColumn($this->table_name, 'fk_category', $this->integer()->notNull());
+        $this->addColumn($this->table_name, 'fk_category', $this->integer()->notNull()->after('id'));
 
         // creates index for column `fk_category`
         $this->createIndex(
