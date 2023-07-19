@@ -52,8 +52,9 @@ function getSortLink($sort, $label, $name)
 <div class="sort px-5">
     <span><?= Yii::t('app', 'Sort by') ?></span>
     <?= getSortLink($sort, Yii::t('app', 'Name'), 'name') ?> |
-    <?= getSortLink($sort, Yii::t('app', 'Date'), 'created_at') ?> |
-    <?= getSortLink($sort, Yii::t('app', 'Views'), 'views') ?>
+    <?= getSortLink($sort, Yii::t('app', 'Posts'), 'posts') ?> |
+    <?= getSortLink($sort, Yii::t('app', 'Views'), 'views') ?> |
+    <?= getSortLink($sort, Yii::t('app', 'Date'), 'created_at') ?>
 </div>
 <div class="row justify-content-center my-3 mt-1">
     <div class="col-11 thread-container border rounded text-secondary">

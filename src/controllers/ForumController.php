@@ -48,6 +48,7 @@ class ForumController extends Controller
 
         $sort = new Sort([
             'attributes' => [
+                'posts',
                 'views',
                 'name',
                 'created_at'
