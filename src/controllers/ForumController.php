@@ -9,6 +9,7 @@
 namespace rats\forum\controllers;
 
 use rats\forum\ForumModule;
+use rats\forum\models\Category;
 use Yii;
 use rats\forum\models\Forum;
 use rats\forum\models\Thread;
@@ -24,15 +25,8 @@ class ForumController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index', [
-            'forums' => Forum::find()->andWhere([
-                'fk_parent' => null,
-                'status' => [
-                    Forum::STATUS_ACTIVE_LOCKED,
-                    Forum::STATUS_ACTIVE_UNLOCKED
-                ]
-            ])->all(),
-            'subforum' => false
+        return $this->render('category', [
+            'categories' => Category::find()->all(),
         ]);
     }
 
