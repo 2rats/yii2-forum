@@ -53,11 +53,11 @@ while ($temp_forum !== null) {
                         <div class="flex-grow-1">
                             <p class="h-100s" style="height: max-content"><?= $post->printContent() ?></p>
                         </div>
-                        <div class="py-1 border-top ">
-                            <?php if ($post->createdBy->signature) : ?>
+                        <?php if ($post->createdBy->signature) : ?>
+                            <div class="py-1 border-top ">
                                 <p class="mt-auto small mb-0"><?= $post->printCreatedBySignature() ?></p>
-                            <?php endif; ?>
-                        </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

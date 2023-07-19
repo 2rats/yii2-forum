@@ -56,7 +56,7 @@ class ThreadController extends Controller
             throw new NotFoundHttpException(Yii::t('app', 'Post not found'));
         }
         $page = 1;
-        foreach ($thread->posts as $index => $thread_post) {
+        foreach ($thread->getPosts()->all() as $index => $thread_post) {
             if ($thread_post->id == $post->id) break;
             if (($index + 1) % $this->page_items == 0) $page += 1;
         }
