@@ -18,9 +18,9 @@ use yii\helpers\Url;
     <?php foreach ($categories as $index => $category) : ?>
         <div class="row justify-content-center mb-0">
             <div class="col-11">
-            <h3 class="mb-0"><?= $category->name ?></h3>
-            <p class="small mb-2"><?= $category->description ?></p>
-        </div>
+                <h3 class="mb-0"><?= $category->name ?></h3>
+                <p class="small mb-2"><?= $category->description ?></p>
+            </div>
         </div>
         <?= $this->render('index', [
             'forums' => $category->getForums()->andWhere([
