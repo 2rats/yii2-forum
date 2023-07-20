@@ -27,7 +27,8 @@ use Yii;
 class Thread extends \yii\db\ActiveRecord
 {
     const STATUS_INACTIVE = 0;
-    const STATUS_ACTIVE = 1;
+    const STATUS_ACTIVE_UNLOCKED = 1;
+    const STATUS_ACTIVE_LOCKED = 2;
 
     const PINNED_FALSE = 0;
     const PINNED_TRUE = 1;
