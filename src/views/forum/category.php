@@ -11,7 +11,7 @@ use yii\helpers\Url;
 ?>
 <div class="category-container text-secondary">
     <?php if (sizeof($categories) == 0) : ?>
-        <div class="no-results row py-2 bg-lighter rounded">
+        <div class="no-results row py-2 bg-light rounded">
             <div class="col-12 text-center"><?= Yii::t('app', 'No forum categories') ?></div>
         </div>
     <?php endif; ?>

@@ -58,7 +58,7 @@ function getSortLink($sort, $label, $name)
 </div>
 <div class="row justify-content-center my-3 mt-1">
     <div class="col-11 thread-container border rounded-1 text-secondary">
-        <div class="thread-header row py-2 border-bottom bg-light fw-bold rounded-top-1">
+        <div class="thread-header row py-2 border-bottom bg-lighter fw-bold rounded-top-1">
             <div class="col-12 col-md-9 border-end">
                 <span class="mx-2"><?= Yii::t('app', 'Thread') ?></span>
             </div>
@@ -67,12 +67,12 @@ function getSortLink($sort, $label, $name)
             </div>
         </div>
         <?php if (sizeof($threads) == 0) : ?>
-            <div class="no-results row py-2 bg-lighter rounded-bottom-1">
+            <div class="no-results row py-2 bg-light rounded-bottom-1">
                 <div class="col-12 text-center"><?= Yii::t('app', 'No threads') ?></div>
             </div>
         <?php endif; ?>
         <?php foreach ($threads as $index => $thread) : ?>
-            <div class="thread row py-2 <?= $index % 2 == 0 ? 'bg-lighter' : 'bg-light' ?> <?= $index < sizeof($threads) - 1 ? 'border-bottom' : 'rounded-bottom-1' ?>">
+            <div class="thread row py-2 <?= $index % 2 == 0 ? 'bg-light' : 'bg-lighter' ?> <?= $index < sizeof($threads) - 1 ? 'border-bottom' : 'rounded-bottom-1' ?>">
                 <div class="col-12 col-md-6">
                     <h3 class="h5 m-0">
                         <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to('/' . ForumModule::getInstance()->id . "/thread/{$thread->slug}/{$thread->id}") ?>"><?= $thread->name ?></a>

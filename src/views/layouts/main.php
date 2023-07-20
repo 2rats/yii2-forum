@@ -96,7 +96,7 @@ $this->title = $this->title ?? Yii::t('app', 'Forum');
         </div>
     </main>
 
-    <footer id="footer" class="mt-auto py-3 bg-light">
+    <footer class="mt-auto py-3 bg-light">
         <div class="container">
             <div class="row text-muted">
                 <div class="col-md-6 text-center text-md-start">&copy; <a href="https://github.com/2rats/yii2-forum">2rats/yii2-forum</a> <?= date('Y') ?></div>

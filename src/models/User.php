@@ -46,7 +46,6 @@ class User extends \yii\db\ActiveRecord
             [['signature'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['username', 'email', 'real_name'], 'string', 'max' => 191],
-            [['id'], 'exist', 'skipOnError' => true, 'targetClass' => ForumModule::getInstance()->userClass, 'targetAttribute' => ['id' => 'id']],
         ];
     }
 
