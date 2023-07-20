@@ -42,20 +42,29 @@ $this->title = $this->title ?? Yii::t('app', 'Forum');
             'brandUrl' => Url::to('/' . ForumModule::getInstance()->id),
             'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark position-sticky']
         ]);
+
+        $navItems = [];
+
+        if (Yii::$app->user->can('forum-admin')) {
+            $navItems[] = ['label' => Yii::t('app', 'Admin'), 'url' => ['/forum/admin/']];
+        }
+
+        $navItems[] =
+            Yii::$app->user->isGuest
+            ? ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']]
+            : '<li class="nav-item">'
+            . Html::beginForm(['/site/logout'])
+            . Html::submitButton(
+                Yii::t('app', 'Logout') . ' (' . Yii::$app->user->identity->username . ')',
+                ['class' => 'nav-link btn btn-link logout']
+            )
+            . Html::endForm()
+            . '</li>';
+
+
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav'],
-            'items' => [
-                Yii::$app->user->isGuest
-                    ? ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']]
-                    : '<li class="nav-item">'
-                    . Html::beginForm(['/site/logout'])
-                    . Html::submitButton(
-                        Yii::t('app', 'Logout') . ' (' . Yii::$app->user->identity->username . ')',
-                        ['class' => 'nav-link btn btn-link logout']
-                    )
-                    . Html::endForm()
-                    . '</li>'
-            ]
+            'items' => $navItems,
         ]);
         NavBar::end();
         ?>

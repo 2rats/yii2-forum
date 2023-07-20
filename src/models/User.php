@@ -106,6 +106,63 @@ class User extends \yii\db\ActiveRecord
      */
     public function getRoles()
     {
-        return Yii::$app->authManager->getRolesByUser($this->id);
+        return  array_map(function ($role) {
+            $role->name = ucfirst(substr($role->name, mb_strlen('forum-')));
+            return $role;
+        }, array_filter(Yii::$app->authManager->getRolesByUser($this->id), function ($role) {
+            return strpos($role->name, 'forum-') === 0;
+        }));
+    }
+
+    /**
+     * Gets user assignable roles as data for Select2.
+     * Used in admin/user/
+     *
+     * @return String[]
+     */
+    public static function getAvailableRoles()
+    {
+        $roles = [
+            'forum-user' => Yii::t('app', 'User'),
+        ];
+
+        if (Yii::$app->authManager->checkAccess(Yii::$app->user->identity->id, 'forum-assignModerator')) {
+            $roles['forum-moderator'] = Yii::t('app', 'Moderator');
+        }
+
+        return $roles;
+    }
+
+    /**
+     * Gets user status in printable form.
+     *
+     * @return String
+     */
+    public function printStatus()
+    {
+        switch ($this->status) {
+            case $this::STATUS_DELETED:
+                return Yii::t('app', 'Deleted');
+                break;
+            case $this::STATUS_ACTIVE:
+                return Yii::t('app', 'Active');
+                break;
+        }
+        return Yii::t('app', 'Unknown status');
+    }
+
+    /**
+     * Gets user roles in printable form.
+     *
+     * @return String
+     */
+    public function printRoles()
+    {
+        return implode(', ', array_map(
+            function ($role) {
+                return Yii::t('app', ucfirst($role->name));
+            },
+            $this->roles
+        ));
     }
 }

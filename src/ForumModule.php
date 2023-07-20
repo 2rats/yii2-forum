@@ -34,6 +34,11 @@ class ForumModule extends Module implements BootstrapInterface
                 ],
                 [
                     'class' => 'yii\web\UrlRule',
+                    'pattern' => $this->id . '/admin',
+                    'route' => $this->id . '/admin/admin/index'
+                ],
+                [
+                    'class' => 'yii\web\UrlRule',
                     'pattern' => $this->id . '/<path:[0-9a-z\-]+>/<id:\d+>',
                     'route' => $this->id . '/forum/view'
                 ],
@@ -67,6 +72,7 @@ class ForumModule extends Module implements BootstrapInterface
         }
 
         Yii::setAlias('@2ratsForum', __DIR__);
+        Yii::$app->params['bsVersion'] = '5.x';
 
         parent::init();
     }
