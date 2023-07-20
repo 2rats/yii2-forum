@@ -17,6 +17,14 @@ while ($temp_forum !== null) {
 ?>
 
 <div class="row justify-content-center my-3 post-container">
+
+    <?php if (sizeof($posts) == 0) : ?>
+        <div class="col-11 post border rounded text-secondary my-1">
+            <div class="no-results row py-2 bg-light rounded-bottom-1">
+                <div class="col-12 text-center"><?= Yii::t('app', 'No posts') ?></div>
+            </div>
+        </div>
+    <?php endif; ?>
     <?php foreach ($posts as $index => $post) : ?>
         <div class="col-11 post border rounded text-secondary my-1" id="post-<?= $post->id ?>">
             <div style="min-height: 20vh;" class="row bg-lighter rounded">
