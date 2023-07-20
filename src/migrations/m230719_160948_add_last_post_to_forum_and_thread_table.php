@@ -20,7 +20,7 @@ class m230719_160948_add_last_post_to_forum_and_thread_table  extends Migration
             'fk_last_post',
             "{{%forum_post}}",
             'id',
-            'CASCADE'
+            'SET NULL'
         );
 
         // adds column to thread
@@ -33,7 +33,7 @@ class m230719_160948_add_last_post_to_forum_and_thread_table  extends Migration
             'fk_last_post',
             "{{%forum_post}}",
             'id',
-            'CASCADE'
+            'SET NULL'
         );
     }
 
