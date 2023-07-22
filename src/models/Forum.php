@@ -2,53 +2,44 @@
 
 namespace rats\forum\models;
 
-use Yii;
-
 /**
  * This is the model class for table "forum_forum".
  *
- * @property int $id
- * @property int $fk_category
- * @property int|null $fk_parent
- * @property int|null $fk_last_post
- * @property string $name
+ * @property int         $id
+ * @property int         $fk_category
+ * @property int|null    $fk_parent
+ * @property int|null    $fk_last_post
+ * @property string      $name
  * @property string|null $description
- * @property int $status
- * @property int $threads
- * @property int $posts
- * @property int $created_by
- * @property int $updated_by
+ * @property int         $status
+ * @property int         $threads
+ * @property int         $posts
+ * @property int         $created_by
+ * @property int         $updated_by
  * @property string|null $created_at
  * @property string|null $updated_at
- *
- * @property User $createdBy
- * @property Forum $parent
- * @property Thread[] $threads
- * @property Forum[] $forums
- * @property User $updatedBy
+ * @property User        $createdBy
+ * @property Forum       $parent
+ * @property Thread[]    $threads
+ * @property Forum[]     $forums
+ * @property User        $updatedBy
  */
-class Forum extends \yii\db\ActiveRecord
+class Forum extends ActiveRecord
 {
-    const STATUS_INACTIVE = 0;
-    const STATUS_ACTIVE_UNLOCKED = 1;
-    const STATUS_ACTIVE_LOCKED = 2;
+    public const STATUS_INACTIVE = 0;
+    public const STATUS_ACTIVE_UNLOCKED = 1;
+    public const STATUS_ACTIVE_LOCKED = 2;
 
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'forum_forum';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
             [['fk_parent', 'status', 'created_by', 'updated_by'], 'integer'],
-            [['name', 'created_by', 'updated_by'], 'required'],
+            [['name', 'fk_category'], 'required'],
             [['description'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 191],
@@ -56,21 +47,19 @@ class Forum extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'fk_parent' => Yii::t('app', 'Parent'),
-            'name' => Yii::t('app', 'Name'),
-            'description' => Yii::t('app', 'Description'),
-            'status' => Yii::t('app', 'Status'),
-            'created_by' => Yii::t('app', 'Created by'),
-            'updated_by' => Yii::t('app', 'Updated by'),
-            'created_at' => Yii::t('app', 'Created at'),
-            'updated_at' => Yii::t('app', 'Updated at'),
+            'id' => \Yii::t('app', 'ID'),
+            'fk_parent' => \Yii::t('app', 'Parent'),
+            'fk_category' => \Yii::t('app', 'Category'),
+            'name' => \Yii::t('app', 'Name'),
+            'description' => \Yii::t('app', 'Description'),
+            'status' => \Yii::t('app', 'Status'),
+            'created_by' => \Yii::t('app', 'Created by'),
+            'updated_by' => \Yii::t('app', 'Updated by'),
+            'created_at' => \Yii::t('app', 'Created at'),
+            'updated_at' => \Yii::t('app', 'Updated at'),
         ];
     }
 
@@ -101,7 +90,7 @@ class Forum extends \yii\db\ActiveRecord
      */
     public function getThreads($direct_only = true, $processed_forum_ids = [])
     {
-        $threads_query  = $this->hasMany(Thread::class, ['fk_forum' => 'id']);
+        $threads_query = $this->hasMany(Thread::class, ['fk_forum' => 'id']);
         if ($direct_only) {
             return $threads_query;
         }
@@ -148,7 +137,7 @@ class Forum extends \yii\db\ActiveRecord
      */
     public function getLastPost()
     {
-        return $this->fk_last_post === null ? null : $this->hasOne(Post::class, ['id' => 'fk_last_post']);
+        return null === $this->fk_last_post ? null : $this->hasOne(Post::class, ['id' => 'fk_last_post']);
     }
 
     /**
@@ -172,10 +161,32 @@ class Forum extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return String slug
+     * @return string slug
      */
     public function getSlug()
     {
         return \yii\helpers\Inflector::slug($this->name);
+    }
+
+    /**
+     * Gets forum status in printable form.
+     *
+     * @return string
+     */
+    public function printStatus()
+    {
+        switch ($this->status) {
+            case $this::STATUS_INACTIVE:
+                return \Yii::t('app', 'Inactive');
+                break;
+            case $this::STATUS_ACTIVE_LOCKED:
+                return \Yii::t('app', 'Locked');
+                break;
+            case $this::STATUS_ACTIVE_UNLOCKED:
+                return \Yii::t('app', 'Unlocked');
+                break;
+        }
+
+        return \Yii::t('app', 'Unknown status');
     }
 }
