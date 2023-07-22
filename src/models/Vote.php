@@ -2,37 +2,28 @@
 
 namespace rats\forum\models;
 
-use Yii;
-
 /**
  * This is the model class for table "forum_vote".
  *
- * @property int $id
- * @property int $fk_post
- * @property int|null $fk_user
- * @property int $value
+ * @property int         $id
+ * @property int         $fk_post
+ * @property int|null    $fk_user
+ * @property int         $value
  * @property string|null $created_at
  * @property string|null $updated_at
- *
- * @property Post $post
- * @property User $user
+ * @property Post        $post
+ * @property User        $user
  */
-class Vote extends \yii\db\ActiveRecord
+class Vote extends ActiveRecord
 {
-    const VALUE_DOWNVOTE = 0;
-    const VALUE_UPVOTE = 1;
+    public const VALUE_DOWNVOTE = 0;
+    public const VALUE_UPVOTE = 1;
 
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'forum_vote';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -44,18 +35,15 @@ class Vote extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'fk_post' => Yii::t('app', 'Post'),
-            'fk_user' => Yii::t('app', 'User'),
-            'value' => Yii::t('app', 'Value'),
-            'created_at' => Yii::t('app', 'Created at'),
-            'updated_at' => Yii::t('app', 'Updated at'),
+            'id' => \Yii::t('app', 'ID'),
+            'fk_post' => \Yii::t('app', 'Post'),
+            'fk_user' => \Yii::t('app', 'User'),
+            'value' => \Yii::t('app', 'Value'),
+            'created_at' => \Yii::t('app', 'Created at'),
+            'updated_at' => \Yii::t('app', 'Updated at'),
         ];
     }
 

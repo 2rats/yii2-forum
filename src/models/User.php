@@ -3,45 +3,37 @@
 namespace rats\forum\models;
 
 use rats\forum\ForumModule;
-use Yii;
 
 /**
  * This is the model class for table "forum_user".
  *
- * @property int $id
- * @property string $username
- * @property string|null $email
- * @property string|null $real_name
- * @property int $status
- * @property string|null $signature
- * @property int $created_by
- * @property int $updated_by
- * @property string|null $created_at
- * @property string|null $updated_at
- *
+ * @property int                    $id
+ * @property string                 $username
+ * @property string|null            $email
+ * @property string|null            $real_name
+ * @property int                    $status
+ * @property string|null            $signature
+ * @property int                    $created_by
+ * @property int                    $updated_by
+ * @property string|null            $created_at
+ * @property string|null            $updated_at
  * @property ForumModule::userClass $createdBy
  * @property ForumModule::userClass $updatedBy
  */
-class User extends \yii\db\ActiveRecord
+class User extends ActiveRecord
 {
-    const STATUS_DELETED = 0;
-    const STATUS_ACTIVE = 1;
+    public const STATUS_DELETED = 0;
+    public const STATUS_ACTIVE = 1;
 
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'forum_user';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
-            [['username', 'created_by', 'updated_by'], 'required'],
+            [['username'], 'required'],
             [['status', 'created_by', 'updated_by'], 'integer'],
             [['signature'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
@@ -49,22 +41,19 @@ class User extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'username' => Yii::t('app', 'Username'),
-            'email' => Yii::t('app', 'Email'),
-            'real_name' => Yii::t('app', 'Real name'),
-            'status' => Yii::t('app', 'Status'),
-            'signature' => Yii::t('app', 'Signature'),
-            'created_by' => Yii::t('app', 'Created by'),
-            'updated_by' => Yii::t('app', 'Updated by'),
-            'created_at' => Yii::t('app', 'Created at'),
-            'updated_at' => Yii::t('app', 'Updated at'),
+            'id' => \Yii::t('app', 'ID'),
+            'username' => \Yii::t('app', 'Username'),
+            'email' => \Yii::t('app', 'Email'),
+            'real_name' => \Yii::t('app', 'Real name'),
+            'status' => \Yii::t('app', 'Status'),
+            'signature' => \Yii::t('app', 'Signature'),
+            'created_by' => \Yii::t('app', 'Created by'),
+            'updated_by' => \Yii::t('app', 'Updated by'),
+            'created_at' => \Yii::t('app', 'Created at'),
+            'updated_at' => \Yii::t('app', 'Updated at'),
         ];
     }
 
@@ -101,32 +90,33 @@ class User extends \yii\db\ActiveRecord
     /**
      * Gets user roles.
      *
-     * @return String[]
+     * @return string[]
      */
     public function getRoles()
     {
-        return  array_map(function ($role) {
+        return array_map(function ($role) {
             $role->name = ucfirst(substr($role->name, mb_strlen('forum-')));
+
             return $role;
-        }, array_filter(Yii::$app->authManager->getRolesByUser($this->id), function ($role) {
-            return strpos($role->name, 'forum-') === 0;
+        }, array_filter(\Yii::$app->authManager->getRolesByUser($this->id), function ($role) {
+            return 0 === strpos($role->name, 'forum-');
         }));
     }
 
     /**
      * Gets user assignable roles as data for Select2.
-     * Used in admin/user/
+     * Used in admin/user/.
      *
-     * @return String[]
+     * @return string[]
      */
     public static function getAvailableRoles()
     {
         $roles = [
-            'forum-user' => Yii::t('app', 'User'),
+            'forum-user' => \Yii::t('app', 'User'),
         ];
 
-        if (Yii::$app->authManager->checkAccess(Yii::$app->user->identity->id, 'forum-assignModerator')) {
-            $roles['forum-moderator'] = Yii::t('app', 'Moderator');
+        if (\Yii::$app->authManager->checkAccess(\Yii::$app->user->identity->id, 'forum-assignModerator')) {
+            $roles['forum-moderator'] = \Yii::t('app', 'Moderator');
         }
 
         return $roles;
@@ -135,31 +125,32 @@ class User extends \yii\db\ActiveRecord
     /**
      * Gets user status in printable form.
      *
-     * @return String
+     * @return string
      */
     public function printStatus()
     {
         switch ($this->status) {
             case $this::STATUS_DELETED:
-                return Yii::t('app', 'Deleted');
+                return \Yii::t('app', 'Deleted');
                 break;
             case $this::STATUS_ACTIVE:
-                return Yii::t('app', 'Active');
+                return \Yii::t('app', 'Active');
                 break;
         }
-        return Yii::t('app', 'Unknown status');
+
+        return \Yii::t('app', 'Unknown status');
     }
 
     /**
      * Gets user roles in printable form.
      *
-     * @return String
+     * @return string
      */
     public function printRoles()
     {
         return implode(', ', array_map(
             function ($role) {
-                return Yii::t('app', ucfirst($role->name));
+                return \Yii::t('app', ucfirst($role->name));
             },
             $this->roles
         ));
