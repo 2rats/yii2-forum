@@ -26,7 +26,7 @@ class Category extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'created_by', 'updated_by'], 'required'],
+            [['name'], 'required'],
             [['description'], 'string'],
             [['created_by', 'updated_by'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
