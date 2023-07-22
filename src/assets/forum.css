@@ -109,3 +109,7 @@ li.breadcrumb-item>a:hover {
 .page-link:hover {
     color: #5e5e5e;
 }
+
+.form-group>button[type='submit'] {
+  margin: 1em 0;
+}
