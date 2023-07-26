@@ -30,6 +30,13 @@ class PostForm extends Model
         ];
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'content' => \Yii::t('app', 'Post text'),
+        ];
+    }
+
     public function addPost()
     {
         $post = new Post([
