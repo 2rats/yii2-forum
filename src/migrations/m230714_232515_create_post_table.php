@@ -8,7 +8,6 @@ use yii\db\Migration;
 
 class m230714_232515_create_post_table extends Migration
 {
-
     private $table_name = 'forum_post';
 
     public function safeUp()
@@ -16,7 +15,7 @@ class m230714_232515_create_post_table extends Migration
         $table_options = Yii::$app->params['migrationTableOptions'] ?? null;
         $user_table_name = Yii::$app->params['userTableName'] ?? 'user';
 
-        if ($this->db->driverName === 'mysql' && $table_options === null) {
+        if ('mysql' === $this->db->driverName && null === $table_options) {
             $table_options = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
         }
 
@@ -25,7 +24,7 @@ class m230714_232515_create_post_table extends Migration
             'fk_thread' => $this->integer()->notNull(),
             'fk_parent' => $this->integer()->defaultValue(null),
             'content' => $this->text()->notNull(),
-            'status' => $this->smallInteger()->notNull()->defaultValue(0),
+            'status' => $this->smallInteger()->notNull()->defaultValue(1),
             'created_by' => $this->integer()->notNull(),
             'updated_by' => $this->integer()->notNull(),
             'created_at' => $this->timestamp(),
@@ -74,7 +73,7 @@ class m230714_232515_create_post_table extends Migration
             "{{%fk-{$this->table_name}-fk_thread}}",
             "{{%{$this->table_name}}}",
             'fk_thread',
-            "{{%forum_thread}}",
+            '{{%forum_thread}}',
             'id',
             'CASCADE'
         );
@@ -102,7 +101,6 @@ class m230714_232515_create_post_table extends Migration
 
     public function safeDown()
     {
-
         // drops foreign key for parent table
         $this->dropForeignKey(
             "{{%fk-{$this->table_name}-fk_parent}}",

@@ -1,10 +1,10 @@
 <?php
 
 /** @var yii\web\View $this */
-/** @var string $content */
+/* @var string $content */
 
-use rats\forum\ForumAsset;
 use app\widgets\Alert;
+use rats\forum\ForumAsset;
 use rats\forum\ForumModule;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
@@ -45,7 +45,7 @@ $this->title = $this->title ?? Yii::t('app', 'Forum');
 
         $navItems = [];
 
-        if (Yii::$app->user->can('forum-admin')) {
+        if (Yii::$app->user->can('forum-admin') || Yii::$app->user->can('forum-moderator')) {
             $navItems[] = ['label' => Yii::t('app', 'Admin'), 'url' => ['/forum/admin/']];
         }
 
@@ -60,7 +60,6 @@ $this->title = $this->title ?? Yii::t('app', 'Forum');
             )
             . Html::endForm()
             . '</li>';
-
 
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav'],

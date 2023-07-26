@@ -8,7 +8,6 @@ use yii\db\Migration;
 
 class m230714_191010_create_user_table extends Migration
 {
-
     private $table_name = 'forum_user';
 
     public function safeUp()
@@ -16,17 +15,16 @@ class m230714_191010_create_user_table extends Migration
         $table_options = Yii::$app->params['migrationTableOptions'] ?? null;
         $user_table_name = Yii::$app->params['userTableName'] ?? 'user';
 
-        if ($this->db->driverName === 'mysql' && $table_options === null) {
+        if ('mysql' === $this->db->driverName && null === $table_options) {
             $table_options = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
         }
-
 
         $this->createTable("{{%{$this->table_name}}}", [
             'id' => $this->primaryKey(),
             'username' => $this->string(191)->notNull(),
             'email' => $this->string(191),
             'real_name' => $this->string(191),
-            'status' => $this->smallInteger()->notNull()->defaultValue(0),
+            'status' => $this->smallInteger()->notNull()->defaultValue(1),
             'signature' => $this->text(),
             'created_by' => $this->integer()->notNull(),
             'updated_by' => $this->integer()->notNull(),
@@ -88,7 +86,6 @@ class m230714_191010_create_user_table extends Migration
 
     public function safeDown()
     {
-
         // drops foreign key for id
         $this->dropForeignKey(
             "{{%fk-{$this->table_name}-id}}",
