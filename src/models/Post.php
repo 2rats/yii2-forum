@@ -77,6 +77,15 @@ class Post extends ActiveRecord
             'updated_at' => \Yii::t('app', 'Updated at'),
         ];
     }
+    public function afterSave($insert, $changedAttributes) {
+        if($insert){
+            $this->thread->fk_last_post = $this->id;
+            $this->thread->save();
+            $this->thread->forum->fk_last_post = $this->id;
+            $this->thread->forum->save();
+        }
+        parent::afterSave($insert, $changedAttributes);
+    }
 
     /**
      * Gets query for [[CreatedBy]].
