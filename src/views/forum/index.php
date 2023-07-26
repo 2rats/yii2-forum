@@ -5,6 +5,7 @@
 /** @var bool $subforum */
 
 use rats\forum\ForumModule;
+use rats\forum\models\Forum;
 use yii\helpers\Url;
 
 ?>
@@ -26,7 +27,7 @@ use yii\helpers\Url;
         <?php endif; ?>
         <?php foreach ($forums as $index => $forum) : ?>
             <div class="forum row py-2 <?= $index % 2 == 0 ? 'bg-light' : 'bg-lighter' ?> <?= $index < sizeof($forums) - 1 ? 'border-bottom' : 'rounded-bottom-1' ?>">
-                <div class="col-12 col-md-6">
+                <div class="col">
                     <h3 class="h5 m-0">
                         <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to('/' . ForumModule::getInstance()->id . "/{$forum->slug}/{$forum->id}") ?>"><?= $forum->name ?></a>
                     </h3>
@@ -39,6 +40,16 @@ use yii\helpers\Url;
                         </p>
                         <?php if (!is_null($forum->lastPost)) : ?>
                             <p class="small mb-0 text-end"><span class="fw-bold"><?= $forum->lastPost->printCreatedBy() ?></span> - <?= Yii::$app->formatter->asDatetime($forum->lastPost->created_at) ?></p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="d-flex flex-column h-100 justify-content-center ">
+                        <?php if ($forum->status == Forum::STATUS_ACTIVE_LOCKED) : ?>
+                            <svg class="m-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
                         <?php endif; ?>
                     </div>
                 </div>
