@@ -49,7 +49,8 @@ class ForumController extends Controller
             ],
         ]);
 
-        $query = $forum->getThreads()->andWhere(['status' => [Thread::STATUS_ACTIVE_LOCKED, Thread::STATUS_ACTIVE_UNLOCKED]])->orderBy($sort->orders);
+        $query = $forum->getThreads()->andWhere(['status' => [Thread::STATUS_ACTIVE_LOCKED, Thread::STATUS_ACTIVE_UNLOCKED]])
+            ->orderBy(empty($sort->orders) ? 'pinned DESC' : $sort->orders);
         $countQuery = clone $query;
         $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->page_items]);
         $models = $query->offset($pages->offset)
