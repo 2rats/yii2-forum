@@ -69,7 +69,7 @@ class Post extends ActiveRecord
             'id' => \Yii::t('app', 'ID'),
             'fk_thread' => \Yii::t('app', 'Thread'),
             'fk_parent' => \Yii::t('app', 'Parent'),
-            'content' => \Yii::t('app', 'Content'),
+            'content' => \Yii::t('app', 'Post text'),
             'status' => \Yii::t('app', 'Status'),
             'created_by' => \Yii::t('app', 'Created by'),
             'updated_by' => \Yii::t('app', 'Updated by'),
