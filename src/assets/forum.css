@@ -1,3 +1,12 @@
+.reply .reply-remove {
+    transition: transform .25s ease-in-out;
+    cursor: pointer;
+}
+
+.reply .reply-remove:hover {
+    transform: rotate(90deg);
+}
+
 .bg-light {
     background-color: #f4f4f4 !important;
 }
@@ -111,5 +120,5 @@ li.breadcrumb-item>a:hover {
 }
 
 .form-group>button[type='submit'] {
-  margin: 1em 0;
+    margin: 1em 0;
 }

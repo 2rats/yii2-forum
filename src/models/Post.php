@@ -2,6 +2,8 @@
 
 namespace rats\forum\models;
 
+use Yii;
+
 /**
  * This is the model class for table "forum_post".
  *
@@ -40,7 +42,25 @@ class Post extends ActiveRecord
             [['created_at', 'updated_at'], 'safe'],
             [['fk_parent'], 'exist', 'skipOnError' => true, 'targetClass' => Post::class, 'targetAttribute' => ['fk_parent' => 'id']],
             [['fk_thread'], 'exist', 'skipOnError' => true, 'targetClass' => Thread::class, 'targetAttribute' => ['fk_thread' => 'id']],
+            [['fk_parent', 'fk_thread'], 'validateSameThread'],
+            [['fk_thread'], 'validateLockedThread'],
         ];
+    }
+
+    public function validateLockedThread($attribute, $params)
+    {
+        if ($this->thread->status == Thread::STATUS_ACTIVE_LOCKED) {
+            $this->addError($attribute, Yii::t('app', 'You can not post in a locked thread.'));
+        }
+    }
+
+    public function validateSameThread($attribute, $params)
+    {
+        if ($this->fk_parent !== null && $this->fk_parent !== '') {
+            if ((int) $this->fk_thread !== (int) $this->parent->fk_thread) {
+                $this->addError($attribute, Yii::t('app', 'You can not reply to Posts from different thread.'));
+            }
+        }
     }
 
     public function attributeLabels()

@@ -3,6 +3,8 @@
 /** @var yii\web\View $this */
 
 use rats\forum\ForumModule;
+use rats\forum\models\form\PostForm;
+use rats\forum\models\Thread;
 use yii\bootstrap5\LinkPager;
 use yii\helpers\Url;
 
@@ -26,10 +28,10 @@ while ($temp_forum !== null) {
         </div>
     <?php endif; ?>
     <?php foreach ($posts as $index => $post) : ?>
-        <div class="col-11 post border rounded text-secondary my-1" id="post-<?= $post->id ?>">
-            <div style="min-height: 20vh;" class="row bg-lighter rounded">
+        <div class="col-11 post border rounded-1 text-secondary my-1" id="post-<?= $post->id ?>">
+            <div style="min-height: 20vh;" class="row bg-lighter rounded-1">
                 <div class="py-2 col-12 col-md-2 border-md-end border-bottom border-md-bottom-0">
-                    <p class="fw-bold m-0 text-center">
+                    <p class="fw-bold m-0 text-center author">
                         <?= $post->printCreatedBy() ?>
                     </p>
                     <div class="d-flex justify-content-center">
@@ -46,20 +48,32 @@ while ($temp_forum !== null) {
                                     <span class=""><a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="/<?= ForumModule::getInstance()->id . '/thread/' . $thread->slug . '/' . $thread->id . '/' . $post->id ?>">#<?= $index + 1 + (($pages->page) * 10) ?></a></span>
                                     <span class="small">- <?= Yii::$app->formatter->asDatetime($post->created_at) ?></span>
                                 </div>
+                                <div>
+                                    <a data-post="<?= $post->id ?>" href="" class="reply-button link-secondary link-underline-opacity-0 link-underline-opacity-100-hover">
+                                        <svg class="mb-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply-fill" viewBox="0 0 16 16">
+                                            <path d="M5.921 11.9 1.353 8.62a.719.719 0 0 1 0-1.238L5.921 4.1A.716.716 0 0 1 7 4.719V6c1.5 0 6 0 7 8-2.5-4.5-7-4-7-4v1.281c0 .56-.606.898-1.079.62z" />
+                                        </svg>
+                                        <?= Yii::t('app', 'Reply') ?>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <?php if ($post->parent) : ?>
-                            <div class="reply ms-5 small col-11 border-start border-3 p-2 mb-3 bg-lighter position-relative">
+                            <div class="reply mx-5 small border-start border-3 p-2 mb-3 bg-lighter position-relative">
                                 <a class="stretched-link" href="/<?= ForumModule::getInstance()->id . '/thread/' . $thread->slug . '/' . $thread->id . '/' . $post->parent->id ?>"></a>
-                                <p class="mb-1"><span class=""><svg class="mb-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply-fill" viewBox="0 0 16 16">
+                                <div class="mb-1 d-flex">
+                                    <span>
+                                        <svg class="mb-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply-fill" viewBox="0 0 16 16">
                                             <path d="M5.921 11.9 1.353 8.62a.719.719 0 0 1 0-1.238L5.921 4.1A.716.716 0 0 1 7 4.719V6c1.5 0 6 0 7 8-2.5-4.5-7-4-7-4v1.281c0 .56-.606.898-1.079.62z" />
                                         </svg>
-                                    </span> <span class="fw-medium"><?= $post->parent->printCreatedBy() ?></span></p>
+                                    </span>
+                                    <span class="fw-medium ms-1"><?= $post->parent->printCreatedBy() ?></span>
+                                </div>
                                 <p class="small mb-0"><?= $post->parent->printContent() ?></p>
                             </div>
                         <?php endif; ?>
                         <div class="flex-grow-1">
-                            <p class="h-100s" style="height: max-content"><?= $post->printContent() ?></p>
+                            <p class="content" style="height: max-content"><?= $post->printContent() ?></p>
                         </div>
                         <?php if ($post->createdBy->signature) : ?>
                             <div class="py-1 border-top ">
@@ -76,4 +90,18 @@ while ($temp_forum !== null) {
     <?= LinkPager::widget([
         'pagination' => $pages,
     ]); ?>
+</div>
+<div class="post-add mb-5">
+    <?php if (Yii::$app->user->can('forum-createPost') && $thread->status == Thread::STATUS_ACTIVE_UNLOCKED) : ?>
+        <?= $this->render('/post/_form', [
+            'post_form' => new PostForm(),
+            'fk_thread' => $thread->id,
+        ]); ?>
+    <?php endif; ?>
+    <?php if ($thread->status == Thread::STATUS_ACTIVE_LOCKED) : ?>
+        <p class="small text-center text-secondary mb-0"><?= Yii::t('app', 'You can not post in a locked thread.') ?></p>
+    <?php endif; ?>
+    <?php if (Yii::$app->user->isGuest) : ?>
+        <p class="small text-center text-secondary mb-0"><?= Yii::t('app', 'You need to login to post.') ?></p>
+    <?php endif; ?>
 </div>
