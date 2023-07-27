@@ -63,7 +63,7 @@ $this->registerCss('
                     <?= $form->field($post_form, 'content')->widget(\yii2mod\markdown\MarkdownEditor::class, [
                         'editorOptions' => [
                             'showIcons' => ['code', 'table', 'horizontal-rule', 'heading-1', 'heading-2', 'heading-3'],
-                            'hideIcons' => ['fullscreen', 'guide', 'side-by-side', 'heading'],
+                            'hideIcons' => ['fullscreen', 'guide', 'side-by-side', 'heading', 'quote'],
                             'status' => false,
                             'insertTexts' => [
                                 'image' => ["![" . Yii::t('app', 'Image description') . "](https://", ")"],
