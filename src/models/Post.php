@@ -160,28 +160,59 @@ class Post extends ActiveRecord
     }
 
     /**
+     * Replaces text parts with emojis
+     * 
+     * @param string text
+     * @return string
+     */
+    public static function parseEmojis($text){
+        return strtr($text, [
+            ':)' => '🙂',
+            ';)' => '😉',
+            ':D' => '😃',
+            '8)' => '😎',
+            'B)' => '😎',
+            ':P' => '😋',
+            ':o' => '😮',
+            ':?' => '😕',
+            ':(' => '😞',
+            ':x' => '😠',
+            ':|' => '😐',
+            ":'(" => '😥',
+            'xd' => '😆',
+            ':lol:' => '😆',
+            ':mrgreen:' => '😁',
+            ':oops:' => '😳',
+            ':shock:' => '😲',
+            ':roll:' => '🙄',
+            ':evil:' => '👿',
+            ':twisted:' => '😈',
+        ]);
+    }
+
+    /**
      * Gets content of Post or "removed" if Post was removed.
      *
      * @return string
      */
     public function printContent($trim = false)
     {
+        $parsed_content = self::parseEmojis($this->content);
         if ($this->status == $this::STATUS_DELETED)
             return htmlentities('<' . \Yii::t('app', 'deleted') . '>');
         if (!$trim)
-            return Markdown::process(($this->content), 'gfm-comment');
+            return Markdown::process(($parsed_content), 'gfm');
 
         $limit = 5;
-        $trimmed = $this->content;
         // take first rows
-        $trimmed = preg_split('#\n#', $trimmed, $limit + 1);
+        $parsed_content = preg_split('#\n#', $parsed_content, $limit + 1);
         // if longer than limit, append "..."
-        if (sizeof($trimmed) > $limit) {
-            $trimmed[$limit] = "\n...";
+        if (sizeof($parsed_content) > $limit) {
+            $parsed_content[$limit] = "\n...";
         }
         // join first rows
-        $trimmed = implode("\n", array_slice($trimmed, 0, $limit + 1));
-        return Markdown::process($trimmed, 'gfm-comment');
+        $parsed_content = implode("\n", array_slice($parsed_content, 0, $limit + 1));
+        return Markdown::process($parsed_content, 'gfm');
     }
 
     /**
