@@ -3,6 +3,8 @@
 namespace rats\forum\models\form;
 
 use rats\forum\models\Post;
+use rats\forum\models\Thread;
+use Yii;
 use yii\base\Model;
 
 /**
@@ -24,10 +26,29 @@ class PostForm extends Model
     {
         return [
             [['content'], 'required'],
-            [['content'], 'string', 'max' => 10],
+            [['content'], 'string'],
+            [['content'], 'validateMaxlength', 'params' => ['max' => 1000]],
+            ['content', 'filter', 'filter' => function ($value) {
+                return \yii\helpers\HtmlPurifier::process($value);
+            }],
             [['fk_parent'], 'exist', 'skipOnError' => false, 'targetClass' => Post::class, 'targetAttribute' => ['fk_parent' => 'id']],
             [['fk_thread'], 'exist', 'skipOnError' => false, 'targetClass' => Thread::class, 'targetAttribute' => ['fk_thread' => 'id']],
         ];
+    }
+
+    public function validateMaxlength($attribute, $params)
+    {
+        if (mb_strlen($this->$attribute) > $params['max']) {
+            $this->addError($attribute, Yii::t(
+                'app',
+                '{attribute} should contain at most {max, number} characters. (currently {current})',
+                [
+                    'attribute' => $this->attributeLabels()[$attribute],
+                    'max' => $params['max'],
+                    'current' => mb_strlen($this->$attribute),
+                ]
+            ));
+        }
     }
 
     public function attributeLabels()

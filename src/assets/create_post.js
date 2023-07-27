@@ -7,7 +7,14 @@ $('.reply-button').on('click', function (e) {
     let post = $(this).closest('.post');
     $('#postform-fk_parent').val(post_id);
     $('.post-add .reply .author').text(post.find('.author').text());
-    $('.post-add .reply .content').text(post.find('.content').text());
+    $('.post-add .reply .content').html(null);
+    post.find('.content').children().each(function(i){
+        if(i == 4){
+            $('.post-add .reply .content').append('...');
+            return false;
+        }
+        $(this).clone().appendTo('.post-add .reply .content');
+    })
 
     $([document.documentElement, document.body]).animate({
         scrollTop: $(".post-add").offset().top - 10

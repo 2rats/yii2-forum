@@ -16,7 +16,31 @@ while ($temp_forum !== null) {
     array_unshift($this->params['breadcrumbs'], ['label' => $temp_forum->name, 'url' => Url::to('/' . ForumModule::getInstance()->id . "/{$temp_forum->slug}/{$temp_forum->id}")]);
     $temp_forum = $temp_forum->parent;
 }
+
+$this->registerCss('
+.markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+
+    background-color: transparent !important;
+    color: #5e5e5e !important;
+}
+
+.markdown-body.small {
+    font-size: 0.8rem;
+}
+
+@media (max-width: 767px) {
+    .markdown-body {
+        padding: 15px;
+    }
+}
+');
 ?>
+<!-- Github markdown styles -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css" integrity="sha512-bm684OXnsiNuQSyrxuuwo4PHqr3OzxPpXyhT66DA/fhl73e1JmBxRKGnO/nRwWvOZxJLRCmNH7FII+Yn1JNPmg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <div class="row justify-content-center my-3 post-container">
 
@@ -69,11 +93,11 @@ while ($temp_forum !== null) {
                                     </span>
                                     <span class="fw-medium ms-1"><?= $post->parent->printCreatedBy() ?></span>
                                 </div>
-                                <p class="small mb-0"><?= $post->parent->printContent() ?></p>
+                                <div class="small markdown-body"><?= $post->parent->printContent(true) ?></div>
                             </div>
                         <?php endif; ?>
                         <div class="flex-grow-1">
-                            <p class="content" style="height: max-content"><?= $post->printContent() ?></p>
+                            <div class="content markdown-body" style="height: max-content"><?= $post->printContent() ?></div>
                         </div>
                         <?php if ($post->createdBy->signature) : ?>
                             <div class="py-1 border-top ">

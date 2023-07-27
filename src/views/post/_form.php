@@ -10,6 +10,13 @@ use yii\helpers\Url;
 
 $user = User::findOne(Yii::$app->user->identity->id);
 
+$this->registerCss('
+.CodeMirror, .CodeMirror-scroll {
+	min-height: 100px;
+    color: #5e5e5e;
+}
+');
+
 ?>
 
 <div class="row justify-content-center mt-2 mb-5 post-container text-secondary">
@@ -32,6 +39,7 @@ $user = User::findOne(Yii::$app->user->identity->id);
                     <?php $form = ActiveForm::begin([
                         'action' => Url::to(['/' . ForumModule::getInstance()->id . '/post/create']),
                         'method' => 'post',
+                        'enableAjaxValidation' => true,
                     ]); ?>
 
                     <div class="reply mx-3 small border-start border-3 p-2 my-2 bg-lighter position-relative" style="display: none;">
@@ -49,10 +57,24 @@ $user = User::findOne(Yii::$app->user->identity->id);
                                 </svg>
                             </span>
                         </div>
-                        <p class="small mb-0 content" style="white-space: pre-wrap">.reply .content</p>
+                        <div class="small content markdown-body">.reply .content</div>
                     </div>
 
-                    <?= $form->field($post_form, 'content')->textarea(['rows' => 4, 'placeholder' => Yii::t('app', 'Your post text..')])->label(false) ?>
+                    <?= $form->field($post_form, 'content')->widget(\yii2mod\markdown\MarkdownEditor::class, [
+                        'editorOptions' => [
+                            'showIcons' => ['code', 'table', 'horizontal-rule', 'heading-1', 'heading-2', 'heading-3'],
+                            'hideIcons' => ['fullscreen', 'guide', 'side-by-side', 'heading'],
+                            'status' => false,
+                            'insertTexts' => [
+                                'image' => ["![" . Yii::t('app', 'Image description') . "](https://", ")"],
+                                'link' => ["[" . Yii::t('app', 'Link text'), "](https://)"],
+                                'table' => ["", "\n\n| Text | Text | Text |\n|------|------|------|\n| Text | Text | Text |\n"],
+                            ],
+                            'spellChecker' => false,
+                            'toolbarTips' => false,
+                            'placeholder' => Yii::t('app', 'Post text') . '..'
+                        ],
+                    ])->label(false); ?>
 
                     <?= $form->field($post_form, 'fk_thread')->hiddenInput(['value' => $fk_thread])->label(false) ?>
                     <?= $form->field($post_form, 'fk_parent')->hiddenInput(['value' => null])->label(false) ?>

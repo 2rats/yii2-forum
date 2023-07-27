@@ -3,6 +3,7 @@
 namespace rats\forum\models;
 
 use Yii;
+use yii\helpers\Markdown;
 
 /**
  * This is the model class for table "forum_post".
@@ -77,8 +78,9 @@ class Post extends ActiveRecord
             'updated_at' => \Yii::t('app', 'Updated at'),
         ];
     }
-    public function afterSave($insert, $changedAttributes) {
-        if($insert){
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
             $this->thread->fk_last_post = $this->id;
             $this->thread->save();
             $this->thread->forum->fk_last_post = $this->id;
@@ -162,9 +164,24 @@ class Post extends ActiveRecord
      *
      * @return string
      */
-    public function printContent()
+    public function printContent($trim = false)
     {
-        return $this->status == $this::STATUS_DELETED ? htmlentities('<' . \Yii::t('app', 'deleted') . '>') : nl2br($this->content);
+        if ($this->status == $this::STATUS_DELETED)
+            return htmlentities('<' . \Yii::t('app', 'deleted') . '>');
+        if (!$trim)
+            return Markdown::process(($this->content), 'gfm-comment');
+
+        $limit = 5;
+        $trimmed = $this->content;
+        // take first rows
+        $trimmed = preg_split('#\n#', $trimmed, $limit + 1);
+        // if longer than limit, append "..."
+        if (sizeof($trimmed) > $limit) {
+            $trimmed[$limit] = "\n...";
+        }
+        // join first rows
+        $trimmed = implode("\n", array_slice($trimmed, 0, $limit + 1));
+        return Markdown::process($trimmed, 'gfm-comment');
     }
 
     /**
