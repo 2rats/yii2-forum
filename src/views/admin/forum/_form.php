@@ -5,7 +5,7 @@ use rats\forum\models\Category;
 use rats\forum\models\Forum;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /* @var yii\web\View $this */
 /* @var rats\forum\models\Forum $model */
