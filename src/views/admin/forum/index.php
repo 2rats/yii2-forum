@@ -77,7 +77,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Forum $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                }
+                },
+                'headerOptions' => ['style' => 'min-width:75px'],
             ],
         ],
     ]); ?>
