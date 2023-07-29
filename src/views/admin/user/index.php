@@ -21,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
         'columns' => [
             'id',
             'username',
@@ -29,7 +30,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'status',
                 'value' => function ($model) {
                     return $model->printStatus();
-                }
+                },
+                'filterType' => \kartik\grid\GridView::FILTER_SELECT2,
+                'filterWidgetOptions' => [
+                    'hideSearch' => true,
+                    'options' => ['prompt' => ''],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                    'data' => [
+                        User::STATUS_ACTIVE => Yii::t('app', 'Active'),
+                        User::STATUS_DELETED => Yii::t('app', 'Deleted'),
+                    ],
+                ],
+                'headerOptions' => ['style' => 'min-width:150px'],
             ],
             [
                 'label' => 'Role',
