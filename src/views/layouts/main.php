@@ -40,7 +40,10 @@ $this->title = $this->title ?? Yii::t('app', 'Forum');
         NavBar::begin([
             'brandLabel' => 'yii2-forum',
             'brandUrl' => Url::to('/' . ForumModule::getInstance()->id),
-            'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark position-sticky']
+            'options' => [
+                'class' => 'navbar-expand-md navbar-dark position-sticky',
+                'style' => 'background-color: var(--forum-primary-color)',
+            ]
         ]);
 
         $navItems = [];

@@ -1,3 +1,16 @@
+:root {
+    --forum-primary-color: #212529;
+}
+
+/* Override links */
+a {
+    color: var(--forum-primary-color);
+}
+
+a:hover {
+    color: var(--forum-primary-color);
+}
+
 .reply .reply-remove {
     transition: transform .25s ease-in-out;
     cursor: pointer;
@@ -121,4 +134,35 @@ li.breadcrumb-item>a:hover {
 
 .form-group>button[type='submit'] {
     margin: 1em 0;
+}
+
+/* Kartik override */
+span.input-group-text {
+    background-color: #05060f0a;
+    border: none;
+    border-right: 1px solid #ced4da;
+    ;
+}
+
+.kv-table-header {
+    background: none;
+}
+
+.table-bordered>thead.kv-table-header>tr:nth-child(1),
+.table-bordered>thead.kv-table-header>tr:nth-child(1)>th,
+.table-bordered>thead.kv-table-header>tr:nth-child(1)>td {
+    border-bottom: none;
+    border-top: 1px solid lightgray;
+}
+
+.table-bordered>thead.kv-table-header {
+    color: var(--primary-color);
+}
+
+table> :not(:first-child) {
+    border-top: none !important;
+}
+
+.select2.select2-container {
+    overflow: hidden;
 }
