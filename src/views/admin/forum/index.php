@@ -2,7 +2,7 @@
 
 use rats\forum\models\Forum;
 use yii\grid\ActionColumn;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 

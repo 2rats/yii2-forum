@@ -75,6 +75,13 @@ class ForumModule extends Module implements BootstrapInterface
         Yii::$app->params['bsVersion'] = '5.x';
 
         parent::init();
+
+        $this->modules = [
+            'gridview' => [
+                // you should consider using a shorter namespace here!
+                'class' => '\kartik\grid\Module',
+            ],
+        ];
     }
 
     /**
