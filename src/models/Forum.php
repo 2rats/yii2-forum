@@ -84,6 +84,16 @@ class Forum extends ActiveRecord
     }
 
     /**
+     * Gets query for [[Category]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategory()
+    {
+        return $this->hasOne(Category::class, ['id' => 'fk_category']);
+    }
+
+    /**
      * Gets query for [[Threads]].
      *
      * @return \yii\db\ActiveQuery

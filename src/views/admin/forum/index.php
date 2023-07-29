@@ -3,6 +3,8 @@
 use rats\forum\models\Forum;
 use yii\grid\ActionColumn;
 use kartik\grid\GridView;
+use rats\forum\models\Category;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Pjax;
@@ -33,8 +35,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => Yii::t('app', 'Category'),
                 'attribute' => 'fk_category',
                 'value' => function ($model) {
-                    return $model->name;
-                }
+                    return $model->category->name;
+                },
+                'filterType' => \kartik\grid\GridView::FILTER_SELECT2,
+                'filterWidgetOptions' => [
+                    'hideSearch' => true,
+                    'options' => ['prompt' => ''],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                    'data' => ArrayHelper::map(Category::find()->all(), 'id', 'name')
+                ],
+                'headerOptions' => ['style' => 'min-width:200px'],
             ],
             'name',
             // 'description:ntext',
@@ -42,7 +54,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'status',
                 'value' => function ($model) {
                     return $model->printStatus();
-                }
+                },
+                'filterType' => \kartik\grid\GridView::FILTER_SELECT2,
+                'filterWidgetOptions' => [
+                    'hideSearch' => true,
+                    'options' => ['prompt' => ''],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                    'data' => [
+                        Forum::STATUS_INACTIVE => Yii::t('app', 'Inactive'),
+                        Forum::STATUS_ACTIVE_UNLOCKED => Yii::t('app', 'Unlocked'),
+                        Forum::STATUS_ACTIVE_LOCKED => Yii::t('app', 'Locked'),
+                    ],
+                ],
+                'headerOptions' => ['style' => 'min-width:150px'],
             ],
 
             'threads',
