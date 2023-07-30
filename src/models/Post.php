@@ -242,4 +242,23 @@ class Post extends ActiveRecord
 
         return $this->createdBy->signature;
     }
+
+    /**
+     * Gets forum status in printable form.
+     *
+     * @return string
+     */
+    public function printStatus()
+    {
+        switch ($this->status) {
+            case $this::STATUS_ACTIVE:
+                return \Yii::t('app', 'Active');
+                break;
+            case $this::STATUS_DELETED:
+                return \Yii::t('app', 'Deleted');
+                break;
+        }
+
+        return \Yii::t('app', 'Unknown status');
+    }
 }
