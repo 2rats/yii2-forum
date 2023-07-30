@@ -28,8 +28,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'responsiveWrap' => false,
         'columns' => [
-            'id',
+            [
+                'attribute' => 'id',
+                'headerOptions' => ['style' => 'min-width:100px'],
+            ],
             [
                 'attribute' => 'fk_forum',
                 'value' => 'forum.name',
@@ -44,7 +48,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'headerOptions' => ['style' => 'min-width:250px'],
             ],
-            'name',
+            [
+                'attribute' => 'name',
+                'headerOptions' => ['style' => 'min-width:200px'],
+            ],
             [
                 'attribute' => 'status',
                 'value' => function ($model) {
@@ -77,6 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'trueLabel' => Yii::t('app', 'Yes'),
                 'falseLabel' => Yii::t('app', 'No'),
+                'headerOptions' => ['style' => 'min-width:150px'],
             ],
             [
                 'class' => ActionColumn::className(),
