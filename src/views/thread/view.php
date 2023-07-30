@@ -46,7 +46,7 @@ $this->registerCss('
 
     <?php if (sizeof($posts) == 0) : ?>
         <div class="col-11 post border rounded text-secondary my-1">
-            <div class="no-results row py-2 bg-light rounded-bottom-1">
+            <div class="no-results row py-2 bg-light rounded-1">
                 <div class="col-12 text-center"><?= Yii::t('app', 'No posts') ?></div>
             </div>
         </div>
