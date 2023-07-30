@@ -49,7 +49,7 @@ $this->title = $this->title ?? Yii::t('app', 'Forum');
         $navItems = [];
 
         if (Yii::$app->user->can('forum-admin') || Yii::$app->user->can('forum-moderator')) {
-            $navItems[] = ['label' => Yii::t('app', 'Admin'), 'url' => ['/forum/admin/']];
+            $navItems[] = ['label' => Yii::t('app', 'Admin'), 'url' => ['/' . ForumModule::getInstance()->id . '/admin/']];
         }
 
         $navItems[] =
