@@ -48,8 +48,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->printRoles();
                 },
             ],
-            'created_at',
-            'updated_at',
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 

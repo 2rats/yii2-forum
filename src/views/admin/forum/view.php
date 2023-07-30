@@ -57,8 +57,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->updatedBy->username;
                 }
             ],
-            'created_at',
-            'updated_at',
+            'created_at:datetime',
+            'updated_at:datetime',
         ],
     ]) ?>
 
