@@ -4,6 +4,9 @@ namespace rats\forum\controllers\admin;
 
 use rats\forum\models\Post;
 use rats\forum\models\search\PostSearch;
+use rats\forum\models\Thread;
+use Yii;
+use yii\db\Query;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -113,6 +116,26 @@ class PostController extends AdminController
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionThreadList($q = null, $id = null)
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if ($id > 0) {
+            $out['results'] = ['id' => $id, 'text' => Thread::find($id)->name];
+        }
+        if (!is_null($q)) {
+            $query = new Query();
+            $query->select('id, name AS text')
+                ->from('forum_thread')
+                ->where(['like', 'name', $q])
+                ->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        return $out;
     }
 
     /**
