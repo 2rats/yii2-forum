@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var yii\web\View $this */
 /* @var rats\forum\models\Forum $model */
 
-$this->title = 'Create Forum';
+$this->title = Yii::t('app', 'Create Forum');
 $this->params['breadcrumbs'][] = ['label' => 'Forums', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

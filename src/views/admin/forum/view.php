@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var rats\forum\models\Forum $model */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Forums', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Forums'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>

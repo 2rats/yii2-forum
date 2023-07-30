@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var rats\forum\models\Forum $model */
 
 $this->title = Yii::t('app', 'Update Forum: ') . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Forums', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Forums'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
