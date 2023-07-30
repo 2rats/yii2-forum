@@ -119,4 +119,26 @@ class Thread extends ActiveRecord
     {
         return \yii\helpers\Inflector::slug($this->name);
     }
+
+    /**
+     * Gets forum status in printable form.
+     *
+     * @return string
+     */
+    public function printStatus()
+    {
+        switch ($this->status) {
+            case $this::STATUS_INACTIVE:
+                return \Yii::t('app', 'Inactive');
+                break;
+            case $this::STATUS_ACTIVE_LOCKED:
+                return \Yii::t('app', 'Locked');
+                break;
+            case $this::STATUS_ACTIVE_UNLOCKED:
+                return \Yii::t('app', 'Unlocked');
+                break;
+        }
+
+        return \Yii::t('app', 'Unknown status');
+    }
 }
