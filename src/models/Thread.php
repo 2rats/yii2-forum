@@ -51,8 +51,10 @@ class Thread extends ActiveRecord
         return [
             'id' => \Yii::t('app', 'ID'),
             'fk_forum' => \Yii::t('app', 'Forum'),
+            'fk_last_post' => \Yii::t('app', 'Last post'),
             'name' => \Yii::t('app', 'Name'),
             'status' => \Yii::t('app', 'Status'),
+            'posts' => \Yii::t('app', 'Posts'),
             'views' => \Yii::t('app', 'Views'),
             'pinned' => \Yii::t('app', 'Pinned'),
             'created_by' => \Yii::t('app', 'Created by'),
