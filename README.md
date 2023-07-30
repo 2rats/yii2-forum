@@ -19,9 +19,8 @@ The preferred way to install this extension is through [composer](http://getcomp
 ```
 composer require 2rats/yii2-forum "@dev"
 ```
+
 ### Apply database migrations
-
-
 #### 1. User table and RBAC
 First of all you have to setup and apply your **User table** and **RBACK** migration using:
 ```
@@ -34,6 +33,23 @@ Then you have to to apply migrations of this extension:
 ```
 php yii migrate --migrationPath=@rats/forum/migrations
 php yii migrate --migrationPath=@rats/forum/migrations/rbac
+```
+
+### Modify database connection
+This extension parses text emoji to unicode symbols (for example ':D' => '😃'). For proper saving to the database, it is necessary to have the correct charset both in the database settings and in the connection to the database in the `config/db.php` configuration file.
+
+For example, you can use **utf8mb4** charset.
+
+```php
+<?php
+
+return [
+    'class' => 'yii\db\Connection',
+    'dsn' => 'mysql:host=localhost;dbname=test_db_name',
+    'username' => 'root',
+    'password' => '',
+    'charset' => 'utf8mb4',
+];
 ```
 
 ## Configuration
