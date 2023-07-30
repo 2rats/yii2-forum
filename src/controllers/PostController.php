@@ -20,6 +20,12 @@ use yii\widgets\ActiveForm;
 
 class PostController extends Controller
 {
+    public function init()
+    {
+        $this->layout = $this->module->forumLayout;
+        parent::init();
+    }
+
     /**
      * {@inheritdoc}
      */

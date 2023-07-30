@@ -19,7 +19,12 @@ use yii\web\NotFoundHttpException;
 class ThreadController extends Controller
 {
     public $page_items = 10;
-    public $layout = 'main';
+
+    public function init()
+    {
+        $this->layout = $this->module->forumLayout;
+        parent::init();
+    }
 
     public function actionView($id, $path)
     {

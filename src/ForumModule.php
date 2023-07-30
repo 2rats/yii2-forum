@@ -15,10 +15,14 @@ use yii\base\BootstrapInterface;
 /**
  * @brief This class represents forum module.
  * @param class $userClass – class that represents user identity in your app
+ * @param String $forumLayout – layout that is used in forum sites
+ * @param String $adminLayout – layout that is used in administration of the forum
  */
 class ForumModule extends Module implements BootstrapInterface
 {
     public $userClass = \app\models\User::class;
+    public $forumLayout = 'forum';
+    public $adminLayout = 'admin';
 
     /**
      * {@inheritdoc}

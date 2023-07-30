@@ -20,8 +20,13 @@ use yii\web\NotFoundHttpException;
 
 class ForumController extends Controller
 {
-    public $layout = 'main';
     public $page_items = 20;
+
+    public function init()
+    {
+        $this->layout = $this->module->forumLayout;
+        parent::init();
+    }
 
     public function actionIndex()
     {

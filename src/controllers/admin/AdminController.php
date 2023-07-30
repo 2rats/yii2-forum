@@ -2,6 +2,7 @@
 
 namespace rats\forum\controllers\admin;
 
+use rats\forum\ForumModule;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 
@@ -10,7 +11,11 @@ use yii\filters\AccessControl;
  */
 class AdminController extends \yii\web\Controller
 {
-    public $layout = 'main';
+    public function init()
+    {
+        $this->layout = $this->module->adminLayout;
+        parent::init();
+    }
 
     /**
      * @inheritDoc

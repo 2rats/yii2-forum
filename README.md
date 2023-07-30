@@ -58,9 +58,11 @@ return [
 
 Configuration options of the module in `config/web.php`.
 
-| option    | default value       | description                                                                      |
-|-----------|---------------------|----------------------------------------------------------------------------------|
-| userClass | `'app\models\User'` | Class that represents app User. <br>The class must extend `\yii\db\ActiveRecord` |
+| option      | default value       | description                                                                      |
+|-------------|---------------------|----------------------------------------------------------------------------------|
+| userClass   | `'app\models\User'` | Class that represents app User. <br>The class must extend `\yii\db\ActiveRecord` |
+| forumLayout | `'forum'`           | Layout that is used in forum sites                                               |
+| adminLayout | `'admin'`           | Layout that is used in administration of the forum                               |
 
 ### Parameters configuration
 
