@@ -110,10 +110,10 @@ function getSortLink($sort, $label, $name)
                         </div>
                     </div>
                 </div>
-                <div class="col-3 d-md-block d-none my-auto" style="font-size: .9rem;">
+                <div class="col-3 d-md-block d-none my-auto last-post" style="font-size: .9rem;">
                     <?php if (!is_null($thread->lastPost)) : ?>
                         <p class="small mb-0 fw-bold"><?= $thread->lastPost->printCreatedBy() ?></p>
-                        <span class="lines-1 small children-m-0"><?= $thread->lastPost->printContent() ?></span>
+                        <span class="lines-1 small children-m-0 content"><?= $thread->lastPost->printContent() ?></span>
                         <p class="small mb-0 text-end">- <?= Yii::$app->formatter->asDatetime($thread->lastPost->created_at) ?></p>
                     <?php endif; ?>
                 </div>

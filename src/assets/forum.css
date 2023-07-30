@@ -2,6 +2,22 @@
     --forum-primary-color: #212529;
 }
 
+.last-post .content>h1,
+.last-post .content>h2,
+.last-post .content>h3,
+.last-post .content>h4,
+.last-post .content>h5,
+.last-post .content>h6 {
+    font-size: 0.875rem;
+}
+
+.last-post .content img,
+.last-post .content hr,
+.last-post .content table tbody {
+    display: none;
+
+}
+
 .children-m-0>* {
     margin: 0 !important;
 }
