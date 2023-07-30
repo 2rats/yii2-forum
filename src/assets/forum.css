@@ -2,6 +2,10 @@
     --forum-primary-color: #212529;
 }
 
+.children-m-0>* {
+    margin: 0 !important;
+}
+
 /* Override links */
 a {
     color: var(--forum-primary-color);

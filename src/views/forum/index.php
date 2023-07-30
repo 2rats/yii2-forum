@@ -68,7 +68,7 @@ use yii\helpers\Url;
                 <div class="col-3 d-md-block d-none my-auto" style="font-size: .9rem;">
                     <?php if (!is_null($forum->lastPost)) : ?>
                         <p class="small mb-0 fw-bold"><?= $forum->lastPost->printCreatedBy() ?></p>
-                        <span class="lines-1 small"><?= $forum->lastPost->printContent() ?></span>
+                        <span class="lines-1 small children-m-0"><?= $forum->lastPost->printContent() ?></span>
                         <p class="small mb-0 text-end">- <?= Yii::$app->formatter->asDatetime($forum->lastPost->created_at) ?></p>
                     <?php endif; ?>
                 </div>
