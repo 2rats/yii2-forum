@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'responsiveWrap' => false,
         'columns' => [
             'id',
             [
@@ -48,7 +49,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'headerOptions' => ['style' => 'min-width:200px'],
             ],
-            'name',
+            [
+                'attribute' => 'name',
+                'headerOptions' => ['style' => 'min-width:200px'],
+            ],
             // 'description:ntext',
             [
                 'attribute' => 'status',

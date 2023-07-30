@@ -22,10 +22,18 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'responsiveWrap' => false,
         'columns' => [
             'id',
             'username',
-            'email:email',
+            [
+                'attribute' => 'email',
+                'format' => 'html',
+                'value' => function ($model) {
+                    return Yii::$app->formatter->asEmail($model->email);
+                },
+                'headerOptions' => ['style' => 'min-width:200px'],
+            ],
             [
                 'attribute' => 'status',
                 'value' => function ($model) {
@@ -51,6 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     return $model->printRoles();
                 },
+                'headerOptions' => ['style' => 'min-width:150px'],
             ],
             [
                 'class' => ActionColumn::class,
