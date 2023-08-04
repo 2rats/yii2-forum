@@ -13,7 +13,7 @@ $this->title = $thread->name;
 $this->params['breadcrumbs'][] = $thread->name;
 $temp_forum = $thread->forum;
 while ($temp_forum !== null) {
-    array_unshift($this->params['breadcrumbs'], ['label' => $temp_forum->name, 'url' => Url::to('/' . ForumModule::getInstance()->id . "/{$temp_forum->slug}/{$temp_forum->id}")]);
+    array_unshift($this->params['breadcrumbs'], ['label' => $temp_forum->name, 'url' => Url::to(['/' . ForumModule::getInstance()->id . "/forum/view", 'id' => $temp_forum->id, 'path' => $temp_forum->slug])]);
     $temp_forum = $temp_forum->parent;
 }
 

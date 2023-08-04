@@ -12,7 +12,7 @@ $this->title = $forum->name;
 $this->params['breadcrumbs'][] = $forum->name;
 $temp_forum = $forum;
 while ($temp_forum->parent !== null) {
-    array_unshift($this->params['breadcrumbs'], ['label' => $temp_forum->parent->name, 'url' => Url::to('/' . ForumModule::getInstance()->id . "/{$temp_forum->parent->slug}/{$temp_forum->parent->id}")]);
+    array_unshift($this->params['breadcrumbs'], ['label' => $temp_forum->parent->name, 'url' => Url::to(['/' . ForumModule::getInstance()->id . "/forum/view", 'id' => $temp_forum->parent->id, 'path' => $temp_forum->parent->slug])]);
     $temp_forum = $temp_forum->parent;
 }
 
@@ -69,7 +69,7 @@ function getSortLink($sort, $label, $name)
             <div class="thread row py-2 <?= $index % 2 == 0 ? 'bg-light' : 'bg-lighter' ?> <?= $index < sizeof($threads) - 1 ? 'border-bottom' : 'rounded-bottom-1' ?>">
                 <div class="col">
                     <h3 class="h5 m-0">
-                        <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to('/' . ForumModule::getInstance()->id . "/thread/{$thread->slug}/{$thread->id}") ?>"><?= $thread->name ?></a>
+                        <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to(['/' . ForumModule::getInstance()->id . "/thread/view", 'id' => $thread->id, 'path' => $thread->slug]) ?>"><?= $thread->name ?></a>
                     </h3>
                     <p class="small mb-0"><span class="fw-bold"><?= $thread->createdBy->username ?></span> - <?= Yii::$app->formatter->asDatetime($thread->created_at) ?></p>
                     <!-- Phone size -->

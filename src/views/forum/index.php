@@ -29,7 +29,7 @@ use yii\helpers\Url;
             <div class="forum row py-2 <?= $index % 2 == 0 ? 'bg-light' : 'bg-lighter' ?> <?= $index < sizeof($forums) - 1 ? 'border-bottom' : 'rounded-bottom-1' ?>">
                 <div class="col">
                     <h3 class="h5 m-0">
-                        <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to('/' . ForumModule::getInstance()->id . "/{$forum->slug}/{$forum->id}") ?>"><?= $forum->name ?></a>
+                        <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to(['/' . ForumModule::getInstance()->id . "/forum/view", 'id' => $forum->id, 'path' => $forum->slug]) ?>"><?= $forum->name ?></a>
                     </h3>
                     <p class="small mb-0 d-md-block d-none"><?= $forum->description ?></p>
                     <!-- Phone size -->
