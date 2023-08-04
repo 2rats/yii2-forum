@@ -4,9 +4,7 @@
 /** @var Forum[] $forums */
 /** @var bool $subforum */
 
-use rats\forum\ForumModule;
 use rats\forum\models\Forum;
-use yii\helpers\Url;
 
 ?>
 <div class="category-container text-secondary">
