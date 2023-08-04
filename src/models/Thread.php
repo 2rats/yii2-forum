@@ -67,7 +67,7 @@ class Thread extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
-            $this->forum->threads = (int) $this->forum->threads + 1;
+            $this->forum->updateCounters(['threads' => 1]);
             $this->forum->save();
         }
         parent::afterSave($insert, $changedAttributes);

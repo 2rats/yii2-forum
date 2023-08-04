@@ -78,15 +78,15 @@ class Post extends ActiveRecord
             'updated_at' => \Yii::t('app', 'Updated at'),
         ];
     }
-    
+
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
             $this->thread->fk_last_post = $this->id;
-            $this->thread->posts = (int) $this->thread->posts + 1;
+            $this->thread->updateCounters(['posts' => 1]);
             $this->thread->save();
             $this->thread->forum->fk_last_post = $this->id;
-            $this->thread->forum->posts = (int) $this->thread->forum->posts + 1;
+            $this->thread->forum->updateCounters(['posts' => 1]);
             $this->thread->forum->save();
         }
         parent::afterSave($insert, $changedAttributes);
