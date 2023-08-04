@@ -43,6 +43,20 @@ class ThreadController extends Controller
             ->limit($pages->limit)
             ->all();
 
+        // Log view
+        $cookies = Yii::$app->request->cookies;
+        $visited_threads = $cookies->getValue('visited_threads', []);
+        if (!\yii\helpers\ArrayHelper::isIn($thread->id, $visited_threads)) {
+            $cookies = Yii::$app->response->cookies;
+            // add a new cookie to the response to be sent
+            $cookies->add(new \yii\web\Cookie([
+                'name' => 'visited_threads',
+                'value' => \yii\helpers\ArrayHelper::merge([$thread->id], $visited_threads),
+                'expire' => 0, // until the browser is closed
+            ]));
+            $thread->updateCounters(['views' => 1]);
+        }
+
         return $this->render('view', [
             'thread' => $thread,
             'posts' => $models,
