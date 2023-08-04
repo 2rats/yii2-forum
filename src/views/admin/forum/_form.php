@@ -27,8 +27,13 @@ use yii\bootstrap5\ActiveForm;
         ],
     ]) ?>
 
+    <?php
+    $parent_forums = Forum::find();
+    if ($model->id !== null) {
+        $parent_forums->andWhere(['!=', 'id', $model->id])->andWhere(['!=', 'fk_parent', $model->id]);
+    } ?>
     <?= $form->field($model, 'fk_parent')->widget(Select2::class, [
-        'data' => ArrayHelper::map(Forum::find()->where(['!=', 'id', $model->id])->andWhere(['!=', 'fk_parent', $model->id])->all(), 'id', 'name'),
+        'data' => ArrayHelper::map($parent_forums->all(), 'id', 'name'),
         'hideSearch' => false,
         'options' => [
             'prompt' => ''
