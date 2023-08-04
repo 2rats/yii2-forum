@@ -42,7 +42,7 @@ class ForumController extends Controller
             throw new NotFoundHttpException(Yii::t('app', 'Forum not found'));
         }
         if ($path != $forum->slug) {
-            return $this->redirect('/' . ForumModule::getInstance()->id . '/' . $forum->slug . '/' . $forum->id);
+            return $this->redirect(['/' . ForumModule::getInstance()->id . 'forum/view', 'id' => $forum->id, 'path' => $forum->slug]);
         }
 
         $sort = new Sort([

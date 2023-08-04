@@ -33,7 +33,7 @@ class ThreadController extends Controller
             throw new NotFoundHttpException(Yii::t('app', 'Thread not found'));
         }
         if ($path != $thread->slug) {
-            return $this->redirect('/' . ForumModule::getInstance()->id . '/thread/' . $thread->slug . '/' . $thread->id);
+            return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/view', 'id' => $thread->id, 'path' => $thread->slug]);
         }
 
         $query = $thread->getPosts();
@@ -79,6 +79,6 @@ class ThreadController extends Controller
             if ($thread_post->id == $post->id) break;
             if (($index + 1) % $this->page_items == 0) $page += 1;
         }
-        return $this->redirect("/" . ForumModule::getInstance()->id . "/thread/$path/$id?page=$page&post_id=$post_id");
+        return $this->redirect(["/" . ForumModule::getInstance()->id . "/thread/view", 'id' => $id, 'path' => $path, 'post_id' => $post_id, 'page' => $page]);
     }
 }
