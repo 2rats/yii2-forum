@@ -205,7 +205,7 @@ class Post extends ActiveRecord
         if ($this->status == $this::STATUS_DELETED)
             return htmlentities('<' . \Yii::t('app', 'deleted') . '>');
         if (!$trim)
-            return Markdown::process(($parsed_content), 'gfm');
+            return Markdown::process(($parsed_content), 'gfm-comment');
 
         $limit = 5;
         // take first rows
@@ -216,7 +216,7 @@ class Post extends ActiveRecord
         }
         // join first rows
         $parsed_content = implode("\n", array_slice($parsed_content, 0, $limit + 1));
-        return Markdown::process($parsed_content, 'gfm');
+        return Markdown::process($parsed_content, 'gfm-comment');
     }
 
     /**
