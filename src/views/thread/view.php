@@ -97,7 +97,7 @@ $this->registerCss('
                             </div>
                         <?php endif; ?>
                         <div class="flex-grow-1">
-                            <div class="content markdown-body" style="height: max-content"><?= $post->printContent() ?></div>
+                            <div class="content markdown-body mb-2" style="height: max-content"><?= $post->printContent() ?></div>
                         </div>
                         <?php if ($post->createdBy->signature) : ?>
                             <div class="p-2 pb-0 border-top small">
