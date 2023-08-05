@@ -244,7 +244,7 @@ class Post extends ActiveRecord
             return null;
         }
 
-        return $this->createdBy->signature;
+        return Markdown::process($this->createdBy->signature, 'gfm-comment');
     }
 
     /**
