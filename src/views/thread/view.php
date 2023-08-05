@@ -100,8 +100,10 @@ $this->registerCss('
                             <div class="content markdown-body" style="height: max-content"><?= $post->printContent() ?></div>
                         </div>
                         <?php if ($post->createdBy->signature) : ?>
-                            <div class="py-1 border-top ">
-                                <p class="mt-auto small mb-0"><?= $post->printCreatedBySignature() ?></p>
+                            <div class="p-2 pb-0 border-top small">
+                                <small class="children-m-0">
+                                    <?= $post->printCreatedBySignature() ?>
+                                </small>
                             </div>
                         <?php endif; ?>
                     </div>
