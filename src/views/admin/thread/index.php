@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use kartik\grid\GridView;
 use rats\forum\models\Forum;
+use yii\web\JsExpression;
 use yii\widgets\Pjax;
 
 /** @var yii\web\View $this */
@@ -43,8 +44,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     'options' => ['prompt' => ''],
                     'pluginOptions' => [
                         'allowClear' => true,
+                        'minimumInputLength' => 3,
+                        'ajax' => [
+                            'url' => \yii\helpers\Url::to(['forum-list']),
+                            'dataType' => 'json',
+                            'data' => new JsExpression('function(params) { return {q:params.term}; }')
+                        ],
+                        'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                        'templateResult' => new JsExpression('function(model) { return model.text; }'),
+                        'templateSelection' => new JsExpression('function (model) { return model.text; }'),
                     ],
-                    'data' => \yii\helpers\ArrayHelper::map(Forum::find()->all(), 'id', 'name')
+                    // 'data' => \yii\helpers\ArrayHelper::map(Forum::find()->all(), 'id', 'name')
                 ],
                 'headerOptions' => ['style' => 'min-width:250px'],
             ],

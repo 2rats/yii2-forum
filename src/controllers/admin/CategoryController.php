@@ -4,6 +4,9 @@ namespace rats\forum\controllers\admin;
 
 use rats\forum\models\Category;
 use rats\forum\models\search\CategorySearch;
+use rats\forum\models\User;
+use Yii;
+use yii\db\Query;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 
@@ -139,5 +142,25 @@ class CategoryController extends AdminController
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    public function actionUserList($q = null, $id = null)
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if ($id > 0) {
+            $out['results'] = ['id' => $id, 'text' => User::find($id)->name];
+        }
+        if (!is_null($q)) {
+            $query = new Query();
+            $query->select('id, username AS text')
+                ->from('forum_user')
+                ->where(['like', 'username', $q])
+                ->limit(20);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        return $out;
     }
 }

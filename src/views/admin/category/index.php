@@ -7,6 +7,7 @@ use rats\forum\models\User;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\JsExpression;
 use yii\widgets\Pjax;
 
 /* @var yii\web\View $this */
@@ -53,27 +54,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     'options' => ['prompt' => ''],
                     'pluginOptions' => [
                         'allowClear' => true,
+                        'minimumInputLength' => 3,
+                        'ajax' => [
+                            'url' => \yii\helpers\Url::to(['user-list']),
+                            'dataType' => 'json',
+                            'data' => new JsExpression('function(params) { return {q:params.term}; }')
+                        ],
+                        'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                        'templateResult' => new JsExpression('function(model) { return model.text; }'),
+                        'templateSelection' => new JsExpression('function (model) { return model.text; }'),
                     ],
-                    'data' => ArrayHelper::map(User::find()->all(), 'id', 'username')
+                    // 'data' => ArrayHelper::map(User::find()->all(), 'id', 'username')
                 ],
                 'headerOptions' => ['style' => 'min-width:200px'],
             ],
-            [
-                'attribute' => 'updated_by',
-                'value' => function ($model) {
-                    return $model->updatedBy->username;
-                },
-                'filterType' => \kartik\grid\GridView::FILTER_SELECT2,
-                'filterWidgetOptions' => [
-                    'options' => ['prompt' => ''],
-                    'pluginOptions' => [
-                        'allowClear' => true,
-                    ],
-                    'data' => ArrayHelper::map(User::find()->all(), 'id', 'username')
-                ],
-                'headerOptions' => ['style' => 'min-width:200px'],
-            ],
-
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Category $model, $key, $index, $column) {

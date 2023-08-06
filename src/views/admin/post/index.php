@@ -97,8 +97,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     'options' => ['prompt' => ''],
                     'pluginOptions' => [
                         'allowClear' => true,
+                        'minimumInputLength' => 3,
+                        'ajax' => [
+                            'url' => \yii\helpers\Url::to(['user-list']),
+                            'dataType' => 'json',
+                            'data' => new JsExpression('function(params) { return {q:params.term}; }')
+                        ],
+                        'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+                        'templateResult' => new JsExpression('function(model) { return model.text; }'),
+                        'templateSelection' => new JsExpression('function (model) { return model.text; }'),
                     ],
-                    'data' => ArrayHelper::map(User::find()->all(), 'id', 'username')
+                    // 'data' => ArrayHelper::map(User::find()->all(), 'id', 'username')
                 ],
                 'headerOptions' => ['style' => 'min-width:200px'],
             ],
