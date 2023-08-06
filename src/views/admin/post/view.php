@@ -1,6 +1,8 @@
 <?php
 
+use rats\forum\ForumModule;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
@@ -31,10 +33,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             [
-                'attribute' => 'thread.name',
-                'label' => Yii::t('app', 'Thread')
+                'attribute' => 'thread',
+                'label' => Yii::t('app', 'Thread'),
+                'value' => Html::a($model->thread->name, Url::to([
+                    '/' . ForumModule::getInstance()->id . '/admin/thread/view', 'id' => $model->thread->id
+                ])),
+                'format' => 'raw',
             ],
-            'fk_parent',
+            [
+                'attribute' => 'fk_parent',
+                'value' => $model->parent ? Html::a($model->parent->id, Url::to([
+                    '/' . ForumModule::getInstance()->id . '/admin/post/view', 'id' => $model->parent->id
+                ])) : null,
+                'format' => 'raw',
+            ],
             'content:ntext',
             [
                 'attribute' => 'status',

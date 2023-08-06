@@ -1,6 +1,8 @@
 <?php
 
+use rats\forum\ForumModule;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var yii\web\View $this */
@@ -16,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
+        <?= Html::a(Yii::t('app', 'View threads'), ['/' . ForumModule::getInstance()->id . '/admin/thread/index', 'ThreadSearch[fk_forum]' => $model->id], ['class' => 'btn btn-outline-primary']) ?>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -31,10 +34,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            ['attribute' => 'fk_category', 'value' => function ($model) {
-                return $model->name;
-            }],
-            'fk_parent',
+            [
+                'attribute' => 'fk_category',
+                'value' => Html::a($model->category->name, Url::to([
+                    '/' . ForumModule::getInstance()->id . '/admin/category/view', 'id' => $model->category->id
+                ])),
+                'format' => 'raw',
+            ],
+            [
+                'attribute' => 'fk_parent',
+                'value' => $model->parent ? Html::a($model->parent->name, Url::to([
+                    '/' . ForumModule::getInstance()->id . '/admin/forum/view', 'id' => $model->parent->id
+                ])) : null,
+                'format' => 'raw',
+            ],
             'name',
             'description:ntext',
             [

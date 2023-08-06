@@ -1,5 +1,6 @@
 <?php
 
+use rats\forum\ForumModule;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -15,10 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php
-    $user_role = implode('', array_keys(Yii::$app->authManager->getRolesByUser($model->id)));
-    if ((Yii::$app->authManager->checkAccess(Yii::$app->user->identity->id, 'assignAdmin') && $user_role == 'admin') || (Yii::$app->authManager->checkAccess(Yii::$app->user->identity->id, 'assignRole') && $user_role == 'user')) : ?>
-        <p>
+    <p>
+        <?= Html::a(Yii::t('app', 'View user posts'), ['/' . ForumModule::getInstance()->id . '/admin/post/index', 'PostSearch[created_by]' => $model->id], ['class' => 'btn btn-outline-primary']) ?>
+        <?php
+        $user_role = implode('', array_keys(Yii::$app->authManager->getRolesByUser($model->id)));
+        if ((Yii::$app->authManager->checkAccess(Yii::$app->user->identity->id, 'assignAdmin') && $user_role == 'admin') || (Yii::$app->authManager->checkAccess(Yii::$app->user->identity->id, 'assignRole') && $user_role == 'user')) : ?>
             <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
@@ -27,8 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'method' => 'post',
                 ],
             ]) ?>
-        </p>
-    <?php endif; ?>
+        <?php endif; ?>
+    </p>
 
     <?= DetailView::widget([
         'model' => $model,

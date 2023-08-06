@@ -1,6 +1,8 @@
 <?php
 
+use rats\forum\ForumModule;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
@@ -16,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
+        <?= Html::a(Yii::t('app', 'View posts'), ['/' . ForumModule::getInstance()->id . '/admin/post/index', 'PostSearch[fk_thread]' => $model->id], ['class' => 'btn btn-outline-primary']) ?>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -31,8 +34,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             [
-                'attribute' => 'forum.name',
-                'label' => Yii::t('app', 'Forum')
+                'attribute' => 'forum',
+                'label' => Yii::t('app', 'Forum'),
+                'value' => Html::a($model->forum->name, Url::to([
+                    '/' . ForumModule::getInstance()->id . '/admin/forum/view', 'id' => $model->forum->id
+                ])),
+                'format' => 'raw',
             ],
             'name',
             [

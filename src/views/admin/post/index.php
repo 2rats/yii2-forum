@@ -6,6 +6,8 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use kartik\grid\GridView;
 use rats\forum\models\Thread;
+use rats\forum\models\User;
+use yii\helpers\ArrayHelper;
 use yii\web\JsExpression;
 use yii\widgets\Pjax;
 
@@ -84,6 +86,21 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ],
                 'headerOptions' => ['style' => 'min-width:150px'],
+            ],
+            [
+                'attribute' => 'created_by',
+                'value' => function ($model) {
+                    return $model->createdBy->username;
+                },
+                'filterType' => \kartik\grid\GridView::FILTER_SELECT2,
+                'filterWidgetOptions' => [
+                    'options' => ['prompt' => ''],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                    'data' => ArrayHelper::map(User::find()->all(), 'id', 'username')
+                ],
+                'headerOptions' => ['style' => 'min-width:200px'],
             ],
             [
                 'class' => ActionColumn::className(),
