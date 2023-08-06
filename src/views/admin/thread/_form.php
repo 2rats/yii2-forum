@@ -5,6 +5,7 @@ use rats\forum\models\Forum;
 use rats\forum\models\Thread;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
+use yii\web\JsExpression;
 
 /** @var yii\web\View $this */
 /** @var rats\forum\models\Thread $model */
@@ -16,7 +17,18 @@ use yii\bootstrap5\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'fk_forum')->widget(Select2::class, [
-        'data' => \yii\helpers\ArrayHelper::map(Forum::find()->all(), 'id', 'name'),
+        'pluginOptions' => [
+            'allowClear' => true,
+            'minimumInputLength' => 3,
+            'ajax' => [
+                'url' => \yii\helpers\Url::to(['forum-list']),
+                'dataType' => 'json',
+                'data' => new JsExpression('function(params) { return {q:params.term}; }')
+            ],
+            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+            'templateResult' => new JsExpression('function(model) { return model.text; }'),
+            'templateSelection' => new JsExpression('function (model) { return model.text; }'),
+        ],
         'hideSearch' => false,
     ]) ?>
 

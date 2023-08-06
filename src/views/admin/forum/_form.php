@@ -6,6 +6,7 @@ use rats\forum\models\Forum;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
+use yii\web\JsExpression;
 
 /* @var yii\web\View $this */
 /* @var rats\forum\models\Forum $model */
@@ -27,19 +28,22 @@ use yii\bootstrap5\ActiveForm;
         ],
     ]) ?>
 
-    <?php
-    $parent_forums = Forum::find();
-    if ($model->id !== null) {
-        $parent_forums->andWhere(['!=', 'id', $model->id])->andWhere(['!=', 'fk_parent', $model->id]);
-    } ?>
     <?= $form->field($model, 'fk_parent')->widget(Select2::class, [
-        'data' => ArrayHelper::map($parent_forums->all(), 'id', 'name'),
         'hideSearch' => false,
         'options' => [
             'prompt' => ''
         ],
         'pluginOptions' => [
             'allowClear' => true,
+            'minimumInputLength' => 3,
+            'ajax' => [
+                'url' => \yii\helpers\Url::to(['parent-forum-list']),
+                'dataType' => 'json',
+                'data' => new JsExpression('function(params) {return {q:params.term, forum:' . ($model->id ?? 'null') . '}; }')
+            ],
+            'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
+            'templateResult' => new JsExpression('function(model) { return model.text; }'),
+            'templateSelection' => new JsExpression('function (model) { return model.text; }'),
         ],
     ]) ?>
 

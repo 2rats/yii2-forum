@@ -4,6 +4,7 @@ namespace rats\forum\controllers\admin;
 
 use rats\forum\models\Forum;
 use rats\forum\models\search\ForumSearch;
+use yii\db\Query;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 
@@ -140,5 +141,28 @@ class ForumController extends AdminController
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionParentForumList($q = null, $id = null, $forum = null)
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if ($id > 0) {
+            $out['results'] = ['id' => $id, 'text' => Forum::find($id)->name];
+        }
+        if (!is_null($q)) {
+            $query = new Query();
+            $query->select('id, name AS text')
+                ->from('forum_forum')
+                ->where(['like', 'name', $q])
+                ->limit(20);
+            if($forum != null){
+                $query->andWhere(['!=', 'id', $forum])->andWhere(['!=', 'fk_parent', $forum]);
+            }
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        return $out;
     }
 }

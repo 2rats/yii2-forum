@@ -41,7 +41,7 @@ class Post extends ActiveRecord
             [['fk_thread', 'fk_parent', 'status', 'created_by', 'updated_by'], 'integer'],
             [['content'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
-            [['fk_parent'], 'exist', 'skipOnError' => true, 'targetClass' => Post::class, 'targetAttribute' => ['fk_parent' => 'id']],
+            [['fk_parent'], 'exist', 'skipOnError' => false, 'targetClass' => Post::class, 'targetAttribute' => ['fk_parent' => 'id']],
             [['fk_thread'], 'exist', 'skipOnError' => true, 'targetClass' => Thread::class, 'targetAttribute' => ['fk_thread' => 'id']],
             [['fk_parent', 'fk_thread'], 'validateSameThread'],
             [['fk_thread'], 'validateLockedThread'],
@@ -57,7 +57,7 @@ class Post extends ActiveRecord
 
     public function validateSameThread($attribute, $params)
     {
-        if ($this->fk_parent !== null && $this->fk_parent !== '') {
+        if ($this->fk_parent !== null && $this->fk_parent !== '' && $this->parent !== null) {
             if ((int) $this->fk_thread !== (int) $this->parent->fk_thread) {
                 $this->addError($attribute, Yii::t('app', 'You can not reply to Posts from different thread.'));
             }
