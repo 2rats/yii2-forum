@@ -33,6 +33,11 @@ class ForumModule extends Module implements BootstrapInterface
             $app->getUrlManager()->addRules([
                 [
                     'class' => 'yii\web\UrlRule',
+                    'pattern' => $this->id . '/profile/<id:\d+>',
+                    'route' => $this->id . '/profile/view'
+                ],
+                [
+                    'class' => 'yii\web\UrlRule',
                     'pattern' => $this->id,
                     'route' => $this->id . '/forum'
                 ],

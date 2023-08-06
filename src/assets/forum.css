@@ -2,6 +2,12 @@
     --forum-primary-color: #212529;
 }
 
+@media (min-width: 768px) {
+    .profile-banner {
+        height: 200px;
+    }
+}
+
 .last-post .content>h1,
 .last-post .content>h2,
 .last-post .content>h3,

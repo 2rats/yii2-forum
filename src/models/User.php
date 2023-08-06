@@ -88,6 +88,16 @@ class User extends ActiveRecord
     }
 
     /**
+     * Gets query for [[Threads]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getThreads()
+    {
+        return $this->hasMany(Thread::class, ['created_by' => 'id']);
+    }
+
+    /**
      * Gets user roles.
      *
      * @return string[]
