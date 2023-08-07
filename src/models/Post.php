@@ -2,7 +2,9 @@
 
 namespace rats\forum\models;
 
+use rats\forum\ForumModule;
 use Yii;
+use yii\bootstrap5\Html;
 use yii\helpers\Markdown;
 
 /**
@@ -159,7 +161,10 @@ class Post extends ActiveRecord
      */
     public function printCreatedBy()
     {
-        return htmlentities($this->status == $this::STATUS_DELETED ? '<' . \Yii::t('app', 'deleted') . '>' : $this->createdBy->username);
+        if ($this->status == $this::STATUS_DELETED || $this->createdBy->status == User::STATUS_DELETED) {
+            return Html::tag('em', \Yii::t('app', 'deleted'), ['class' => 'small']);
+        }
+        return Html::a($this->createdBy->username, ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->createdBy->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
     }
 
     /**
@@ -227,7 +232,7 @@ class Post extends ActiveRecord
     public function getCreatedByRoles()
     {
         if ($this->status == $this::STATUS_DELETED || User::STATUS_DELETED == $this->createdBy->status) {
-            return [htmlentities('<' . \Yii::t('app', 'deleted') . '>')];
+            return [];
         }
 
         return $this->createdBy->roles;

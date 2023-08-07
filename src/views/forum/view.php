@@ -71,7 +71,7 @@ function getSortLink($sort, $label, $name)
                     <h3 class="h5 m-0">
                         <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to(['/' . ForumModule::getInstance()->id . "/thread/view", 'id' => $thread->id, 'path' => $thread->slug]) ?>"><?= $thread->name ?></a>
                     </h3>
-                    <p class="small mb-0"><span class="fw-bold"><?= $thread->createdBy->username ?></span> - <?= Yii::$app->formatter->asDatetime($thread->created_at) ?></p>
+                    <p class="small mb-0"><span class="fw-bold"><?= $thread->printcreatedBy() ?></span> - <?= Yii::$app->formatter->asDatetime($thread->created_at) ?></p>
                     <!-- Phone size -->
                     <div class="d-md-none d-block small">
                         <p class="mb-0">

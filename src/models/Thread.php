@@ -2,6 +2,9 @@
 
 namespace rats\forum\models;
 
+use rats\forum\ForumModule;
+use yii\bootstrap5\Html;
+
 /**
  * This is the model class for table "forum_thread".
  *
@@ -151,5 +154,18 @@ class Thread extends ActiveRecord
         }
 
         return \Yii::t('app', 'Unknown status');
+    }
+
+    /**
+     * Gets username of user who created Post or "removed" if Post was removed.
+     *
+     * @return string
+     */
+    public function printCreatedBy()
+    {
+        if ($this->createdBy->status == User::STATUS_DELETED) {
+            return Html::tag('em', \Yii::t('app', 'deleted'), ['class' => 'small']);
+        }
+        return Html::a($this->createdBy->username, ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->createdBy->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
     }
 }
