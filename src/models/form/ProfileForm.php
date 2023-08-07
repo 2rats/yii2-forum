@@ -34,6 +34,15 @@ class ProfileForm extends Model
         ];
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'real_name' => \Yii::t('app', 'Real name'),
+            'username' => \Yii::t('app', 'Username'),
+            'email' => \Yii::t('app', 'Email'),
+        ];
+    }
+
     public function init()
     {
         $this->_profile = User::find(Yii::$app->user->identity->id)->one();
