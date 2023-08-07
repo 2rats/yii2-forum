@@ -105,7 +105,7 @@ class User extends ActiveRecord
     public function getRoles()
     {
         return array_map(function ($role) {
-            $role->name = ucfirst(substr($role->name, mb_strlen('forum-')));
+            $role->name = \Yii::t('app', ucfirst(substr($role->name, mb_strlen('forum-'))));
 
             return $role;
         }, array_filter(\Yii::$app->authManager->getRolesByUser($this->id), function ($role) {

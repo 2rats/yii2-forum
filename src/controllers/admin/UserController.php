@@ -135,7 +135,7 @@ class UserController extends AdminController
         $user = $this->findModel($id);
         $user_role = implode('', array_keys(Yii::$app->authManager->getRolesByUser($id)));
 
-        if ($user_role == 'forum-moderator' || $user_role == 'forum-user') {
+        if (str_contains($user_role, 'forum-moderator') || str_contains($user_role, 'forum-user')) {
             if (Yii::$app->authManager->checkAccess(Yii::$app->user->identity->id, 'forum-assignModerator')) {
                 $user->status = User::STATUS_DELETED;
             }
