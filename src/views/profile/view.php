@@ -2,6 +2,7 @@
 
 /** @var yii\web\View $this */
 
+use yii\bootstrap5\Html;
 use yii\widgets\DetailView;
 
 $this->title = $user->username;
@@ -31,16 +32,14 @@ $this->params['breadcrumbs'][] = $user->username;
         <div class="shadow-sm p-4 text-black" style="background-color: #f8f9fa;">
             <div class="d-flex justify-content-md-end justify-content-center text-center py-1">
                 <?php if (Yii::$app->user->identity->id == $user->id) : ?>
-                    <button type="button" class="btn btn-outline-dark me-auto" style="width: 150px;">
-                        <?= Yii::t('app', 'Edit profile') ?>
-                    </button>
+                        <?= Html::a(Yii::t('app', 'Edit profile'), ['update', 'id' => $user->id], ['class' => 'btn btn-outline-dark my-auto me-auto', 'style' => 'width: 150px;']) ?>
                 <?php endif; ?>
                 <div class="px-3 border-end">
-                    <p class="mb-1 h5"><?= $user->getPosts()->count() ?></p>
+                    <p class="mb-1 h5"><?= Yii::$app->formatter->asInteger($user->getPosts()->count()) ?></p>
                     <p class="small text-muted mb-0"><?= Yii::t('app', 'Posts') ?></p>
                 </div>
                 <div class="px-3 border-end">
-                    <p class="mb-1 h5"><?= $user->getThreads()->count() ?></p>
+                    <p class="mb-1 h5"><?= Yii::$app->formatter->asInteger($user->getThreads()->count()) ?></p>
                     <p class="small text-muted mb-0"><?= Yii::t('app', 'Threads') ?></p>
                 </div>
                 <div class="px-3">
