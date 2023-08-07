@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $user->username;
                 <p class="small"><?= $user->email ?></p>
             </div>
             <div class="ms-4 ms-md-auto mt-auto me-3 mb-3">
-                <p class="mb-2 text-white fw-bold small"><?= Yii::t('app', 'Roles') ?></p>
+                <p class="mb-2 text-white fw-bold small"><?= Yii::t('app', 'Role') ?></p>
                 <?php foreach ($user->roles as $role) : ?>
                     <small class="w-fit bg-lighter shadow-sm rounded-1 ms-2 me-0 m-1 px-2 py-1 "><?= ucfirst($role->name) ?></small>
                 <?php endforeach; ?>
