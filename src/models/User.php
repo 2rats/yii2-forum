@@ -24,6 +24,7 @@ class User extends ActiveRecord
 {
     public const STATUS_DELETED = 0;
     public const STATUS_ACTIVE = 1;
+    public const STATUS_SILENCED = 2;
 
     public static function tableName()
     {
@@ -145,6 +146,9 @@ class User extends ActiveRecord
                 break;
             case $this::STATUS_ACTIVE:
                 return \Yii::t('app', 'Active');
+                break;
+            case $this::STATUS_SILENCED:
+                return \Yii::t('app', 'Silenced');
                 break;
         }
 

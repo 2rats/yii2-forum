@@ -1,13 +1,13 @@
 <?php
 
-use rats\forum\models\User;
 use kartik\select2\Select2;
-use yii\helpers\Html;
+use rats\forum\models\User;
 use yii\bootstrap5\ActiveForm;
+use yii\helpers\Html;
 
-/** @var yii\web\View $this */
-/** @var rats\forum\models\User $model */
-/** @var yii\bootstrap5\ActiveForm $form */
+/* @var yii\web\View $this */
+/* @var rats\forum\models\User $model */
+/* @var yii\bootstrap5\ActiveForm $form */
 ?>
 
 <div class="user-form">
@@ -22,6 +22,7 @@ use yii\bootstrap5\ActiveForm;
         'data' => [
             User::STATUS_ACTIVE => Yii::t('app', 'Active'),
             User::STATUS_DELETED => Yii::t('app', 'Deleted'),
+            User::STATUS_SILENCED => Yii::t('app', 'Silenced'),
         ],
         'hideSearch' => false,
     ]) ?>

@@ -1,14 +1,14 @@
 <?php
 
+use kartik\grid\GridView;
 use rats\forum\models\User;
+use yii\grid\ActionColumn;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\ActionColumn;
-use kartik\grid\GridView;
 use yii\widgets\Pjax;
 
-/** @var yii\web\View $this */
-/** @var yii\data\ActiveDataProvider $dataProvider */
+/* @var yii\web\View $this */
+/* @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = Yii::t('app', 'Forum Users');
 $this->params['breadcrumbs'][] = $this->title;
@@ -49,6 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'data' => [
                         User::STATUS_ACTIVE => Yii::t('app', 'Active'),
                         User::STATUS_DELETED => Yii::t('app', 'Deleted'),
+                        User::STATUS_SILENCED => Yii::t('app', 'Silenced'),
                     ],
                 ],
                 'headerOptions' => ['style' => 'min-width:150px'],
