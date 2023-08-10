@@ -4,24 +4,17 @@ namespace rats\forum\controllers\admin;
 
 use rats\forum\models\search\UserSearch;
 use rats\forum\models\User;
-use Yii;
 use yii\bootstrap5\ActiveForm;
-use yii\data\ActiveDataProvider;
-use yii\web\NotFoundHttpException;
-use yii\web\Response;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
-
-
+use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * UserController implements the CRUD actions for User model.
  */
 class UserController extends AdminController
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return ArrayHelper::merge(
@@ -49,16 +42,20 @@ class UserController extends AdminController
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+
         return $this->render('index', [
-            'searchModel' => $searchModel, 
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
      * Displays a single User model.
+     *
      * @param int $id
+     *
      * @return string
+     *
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
@@ -68,12 +65,14 @@ class UserController extends AdminController
         ]);
     }
 
-
     /**
      * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
+     *
      * @param int $id
+     *
      * @return string|\yii\web\Response
+     *
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
@@ -82,42 +81,47 @@ class UserController extends AdminController
 
         if (
             !$user->load($this->request->post())
-        ) return $this->render('update', [
-            'model' => $user,
-        ]);
+        ) {
+            return $this->render('update', [
+                'model' => $user,
+            ]);
+        }
 
         // for Ajax validation
-        if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
+        if (\Yii::$app->request->isAjax) {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+
             return ActiveForm::validate($user);
         }
 
-        $transaction = Yii::$app->db->beginTransaction();
+        $transaction = \Yii::$app->db->beginTransaction();
 
         if (
             $this->request->isPost && $user->save()
         ) {
             // assign role
-            $role = Yii::$app->authManager->getRole($this->request->post('role'));
+            $role = \Yii::$app->authManager->getRole($this->request->post('role'));
             if (!is_null($role)) {
                 $has_perms = false;
 
-                if ($role->name == 'forum-moderator' || $role->name == 'forum-user') {
-                    if (Yii::$app->authManager->checkAccess(Yii::$app->user->identity->id, 'forum-assignModerator')) {
+                if ('forum-moderator' == $role->name || 'forum-user' == $role->name) {
+                    if (\Yii::$app->authManager->checkAccess(\Yii::$app->user->identity->id, 'forum-assignModerator')) {
                         $has_perms = true;
                     }
                 }
 
                 if ($has_perms) {
-                    Yii::$app->authManager->revokeAll($user->id);
-                    Yii::$app->authManager->assign($role, $user->id);
+                    \Yii::$app->authManager->revokeAll($user->id);
+                    \Yii::$app->authManager->assign($role, $user->id);
                     $transaction->commit();
+
                     return $this->redirect(['view', 'id' => $user->id]);
                 }
             }
         }
 
         $transaction->rollBack();
+
         return $this->render('update', [
             'model' => $user,
         ]);
@@ -126,17 +130,20 @@ class UserController extends AdminController
     /**
      * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
+     *
      * @param int $id
+     *
      * @return \yii\web\Response
+     *
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
         $user = $this->findModel($id);
-        $user_role = implode('', array_keys(Yii::$app->authManager->getRolesByUser($id)));
+        $user_role = implode('', array_keys(\Yii::$app->authManager->getRolesByUser($id)));
 
         if (str_contains($user_role, 'forum-moderator') || str_contains($user_role, 'forum-user')) {
-            if (Yii::$app->authManager->checkAccess(Yii::$app->user->identity->id, 'forum-assignModerator')) {
+            if (\Yii::$app->authManager->checkAccess(\Yii::$app->user->identity->id, 'forum-assignModerator')) {
                 $user->status = User::STATUS_DELETED;
             }
         }
@@ -146,11 +153,32 @@ class UserController extends AdminController
         return $this->redirect(['index']);
     }
 
+    public function actionSilence($id, $revert = false)
+    {
+        $user = $this->findModel($id);
+        $user_role = implode('', array_keys(\Yii::$app->authManager->getRolesByUser($id)));
+        if (str_contains($user_role, 'forum-moderator') || str_contains($user_role, 'forum-user')) {
+            if (\Yii::$app->authManager->checkAccess(\Yii::$app->user->identity->id, 'forum-silenceUser')) {
+                if ($revert) {
+                    $user->status = User::STATUS_ACTIVE;
+                } else {
+                    $user->status = User::STATUS_SILENCED;
+                }
+            }
+        }
+        $user->save();
+
+        return $this->redirect(\Yii::$app->request->referrer ?: \Yii::$app->homeUrl);
+    }
+
     /**
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
+     *
      * @param int $id
+     *
      * @return User the loaded model
+     *
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
@@ -159,6 +187,6 @@ class UserController extends AdminController
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(\Yii::t('app', 'The requested page does not exist.'));
     }
 }

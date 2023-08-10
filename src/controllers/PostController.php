@@ -2,7 +2,9 @@
 
 /**
  * @file PostController.php
+ *
  * @brief This file contains the PostController class.
+ *
  * @author kazda01, mifka01
  */
 
@@ -11,7 +13,7 @@ namespace rats\forum\controllers;
 use rats\forum\ForumModule;
 use rats\forum\models\form\PostForm;
 use rats\forum\models\Thread;
-use Yii;
+use rats\forum\models\User;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -26,9 +28,6 @@ class PostController extends Controller
         parent::init();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function behaviors()
     {
         return [
@@ -38,7 +37,10 @@ class PostController extends Controller
                     [
                         'actions' => ['create'],
                         'allow' => true,
-                        'roles' => ['forum-createPost']
+                        'roles' => ['forum-createPost'],
+                        'matchCallback' => function () {
+                            return User::STATUS_SILENCED != User::findOne(\Yii::$app->user->identity->id)->status;
+                        }
                     ],
                 ],
             ],
@@ -50,19 +52,21 @@ class PostController extends Controller
             ],
         ];
     }
+
     public function actionCreate()
     {
         $model = new PostForm();
-        $thread = Thread::findOne(Yii::$app->request->post('PostForm')['fk_thread']);
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->addPost()) {
-            return $this->redirect(['/' . ForumModule::getInstance()->id . "/thread/highlight", 'id' => $thread->id, 'path' => $thread->slug, 'post_id' => $model->_post->id]);
+        $thread = Thread::findOne(\Yii::$app->request->post('PostForm')['fk_thread']);
+        if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->addPost()) {
+            return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $thread->id, 'path' => $thread->slug, 'post_id' => $model->_post->id]);
         }
 
-        if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
+        if (\Yii::$app->request->isAjax) {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+
             return ActiveForm::validate($model);
         }
 
-        return $this->redirect(['/' . ForumModule::getInstance()->id . "/thread/view", 'id' => $thread->id, 'path' => $thread->slug]);
+        return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/view', 'id' => $thread->id, 'path' => $thread->slug]);
     }
 }

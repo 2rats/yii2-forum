@@ -5,9 +5,10 @@
 use rats\forum\ForumModule;
 use rats\forum\models\form\PostForm;
 use rats\forum\models\Thread;
+use rats\forum\models\User;
 use yii\bootstrap5\LinkPager;
+use yii\helpers\Html;
 use yii\helpers\Url;
-
 
 $this->title = $thread->name;
 $this->params['breadcrumbs'][] = $thread->name;
@@ -73,6 +74,26 @@ $this->registerCss('
                                     <span class="small">- <?= Yii::$app->formatter->asDatetime($post->created_at) ?></span>
                                 </div>
                                 <div>
+                                    <?php if (Yii::$app->user->can('forum-silenceUser')) : ?>
+                                        <?php if (User::STATUS_SILENCED == $post->createdBy->status) : ?>
+                                            <?= Html::a(Yii::t('app', 'Unsilence user'), ['admin/user/silence', 'id' => $post->createdBy->id, 'revert' => true], [
+                                                'class' => 'small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover',
+                                                'data' => [
+                                                    'confirm' => Yii::t('app', 'Are you sure you want to unsilence this user?'),
+                                                    'method' => 'post',
+                                                ],
+                                            ]) ?>
+                                        <?php else : ?>
+                                            <?= Html::a(Yii::t('app', 'Silence user'), ['admin/user/silence', 'id' => $post->createdBy->id], [
+                                                'class' => 'small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover',
+                                                'data' => [
+                                                    'confirm' => Yii::t('app', 'Are you sure you want to silence this user?'),
+                                                    'method' => 'post',
+                                                ],
+                                            ]) ?>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+
                                     <?php if (Yii::$app->user->can('forum-editPost')) : ?>
                                         <a href="<?= Url::to(['/' . ForumModule::getInstance()->id . '/admin/post/view', 'id' => $post->id]) ?>" class="small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover me-3">
                                             <?= Yii::t('app', 'View in administration') ?>
@@ -123,16 +144,21 @@ $this->registerCss('
     ]); ?>
 </div>
 <div class="post-add mb-5">
-    <?php if (Yii::$app->user->can('forum-createPost') && $thread->status == Thread::STATUS_ACTIVE_UNLOCKED) : ?>
+    <?php if (Yii::$app->user->can('forum-createPost') && Thread::STATUS_ACTIVE_UNLOCKED == $thread->status && User::STATUS_SILENCED != User::findOne(Yii::$app->user->identity->id)->status) : ?>
         <?= $this->render('/post/_form', [
             'post_form' => new PostForm(),
             'fk_thread' => $thread->id,
-        ]); ?>
+        ]);
+        ?>
     <?php endif; ?>
-    <?php if ($thread->status == Thread::STATUS_ACTIVE_LOCKED) : ?>
+    <?php if (Thread::STATUS_ACTIVE_LOCKED == $thread->status) : ?>
         <p class="small text-center text-secondary mb-0"><?= Yii::t('app', 'You can not post in a locked thread.') ?></p>
     <?php endif; ?>
     <?php if (Yii::$app->user->isGuest) : ?>
         <p class="small text-center text-secondary mb-0"><?= Yii::t('app', 'You need to login to post.') ?></p>
+    <?php endif; ?>
+
+    <?php if (User::STATUS_SILENCED == User::findOne(Yii::$app->user->identity->id)->status) : ?>
+        <p class="small text-center text-secondary mb-0"><?= Yii::t('app', "You can't post because you've been silenced") ?></p>
     <?php endif; ?>
 </div>
