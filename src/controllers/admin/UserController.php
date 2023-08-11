@@ -153,16 +153,16 @@ class UserController extends AdminController
         return $this->redirect(['index']);
     }
 
-    public function actionSilence($id, $revert = false)
+    public function actionMute($id, $revert = false)
     {
         $user = $this->findModel($id);
         $user_role = implode('', array_keys(\Yii::$app->authManager->getRolesByUser($id)));
         if (str_contains($user_role, 'forum-moderator') || str_contains($user_role, 'forum-user')) {
-            if (\Yii::$app->authManager->checkAccess(\Yii::$app->user->identity->id, 'forum-silenceUser')) {
+            if (\Yii::$app->authManager->checkAccess(\Yii::$app->user->identity->id, 'forum-muteUser')) {
                 if ($revert) {
                     $user->status = User::STATUS_ACTIVE;
                 } else {
-                    $user->status = User::STATUS_SILENCED;
+                    $user->status = User::STATUS_MUTED;
                 }
             }
         }

@@ -13,8 +13,8 @@ use yii\helpers\Url;
 $this->title = $thread->name;
 $this->params['breadcrumbs'][] = $thread->name;
 $temp_forum = $thread->forum;
-while ($temp_forum !== null) {
-    array_unshift($this->params['breadcrumbs'], ['label' => $temp_forum->name, 'url' => Url::to(['/' . ForumModule::getInstance()->id . "/forum/view", 'id' => $temp_forum->id, 'path' => $temp_forum->slug])]);
+while (null !== $temp_forum) {
+    array_unshift($this->params['breadcrumbs'], ['label' => $temp_forum->name, 'url' => Url::to(['/' . ForumModule::getInstance()->id . '/forum/view', 'id' => $temp_forum->id, 'path' => $temp_forum->slug])]);
     $temp_forum = $temp_forum->parent;
 }
 
@@ -45,7 +45,7 @@ $this->registerCss('
 
 <div class="row justify-content-center my-3 post-container">
 
-    <?php if (sizeof($posts) == 0) : ?>
+    <?php if (0 == sizeof($posts)) : ?>
         <div class="col-11 post border rounded text-secondary my-1">
             <div class="no-results row py-2 bg-light rounded-1">
                 <div class="col-12 text-center"><?= Yii::t('app', 'No posts') ?></div>
@@ -70,24 +70,24 @@ $this->registerCss('
                         <div class="border-bottom mb-2">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <span class=""><a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $thread->id, 'path' => $thread->slug, 'post_id' => $post->id]); ?>">#<?= $index + 1 + (($pages->page) * 10) ?></a></span>
+                                    <span class=""><a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $thread->id, 'path' => $thread->slug, 'post_id' => $post->id]); ?>">#<?= $index + 1 + ($pages->page * 10) ?></a></span>
                                     <span class="small">- <?= Yii::$app->formatter->asDatetime($post->created_at) ?></span>
                                 </div>
                                 <div>
-                                    <?php if (Yii::$app->user->can('forum-silenceUser')) : ?>
-                                        <?php if (User::STATUS_SILENCED == $post->createdBy->status) : ?>
-                                            <?= Html::a(Yii::t('app', 'Unsilence user'), ['admin/user/silence', 'id' => $post->createdBy->id, 'revert' => true], [
+                                    <?php if (Yii::$app->user->can('forum-muteUser')) : ?>
+                                        <?php if (User::STATUS_MUTED == $post->createdBy->status) : ?>
+                                            <?= Html::a(Yii::t('app', 'Unmute user'), ['admin/user/mute', 'id' => $post->createdBy->id, 'revert' => true], [
                                                 'class' => 'small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover',
                                                 'data' => [
-                                                    'confirm' => Yii::t('app', 'Are you sure you want to unsilence this user?'),
+                                                    'confirm' => Yii::t('app', 'Are you sure you want to unmute this user?'),
                                                     'method' => 'post',
                                                 ],
                                             ]) ?>
                                         <?php else : ?>
-                                            <?= Html::a(Yii::t('app', 'Silence user'), ['admin/user/silence', 'id' => $post->createdBy->id], [
-                                                'class' => 'small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover',
+                                            <?= Html::a(Yii::t('app', 'Mute user'), ['admin/user/mute', 'id' => $post->createdBy->id], [
+                                                'class' => 'small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover me-3',
                                                 'data' => [
-                                                    'confirm' => Yii::t('app', 'Are you sure you want to silence this user?'),
+                                                    'confirm' => Yii::t('app', 'Are you sure you want to mute this user?'),
                                                     'method' => 'post',
                                                 ],
                                             ]) ?>
@@ -144,21 +144,18 @@ $this->registerCss('
     ]); ?>
 </div>
 <div class="post-add mb-5">
-    <?php if (Yii::$app->user->can('forum-createPost') && Thread::STATUS_ACTIVE_UNLOCKED == $thread->status && User::STATUS_SILENCED != User::findOne(Yii::$app->user->identity->id)->status) : ?>
+    <?php if (Yii::$app->user->can('forum-createPost') && Thread::STATUS_ACTIVE_UNLOCKED == $thread->status && User::STATUS_MUTED != User::findOne(Yii::$app->user->identity->id)->status) : ?>
         <?= $this->render('/post/_form', [
             'post_form' => new PostForm(),
             'fk_thread' => $thread->id,
         ]);
         ?>
     <?php endif; ?>
-    <?php if (Thread::STATUS_ACTIVE_LOCKED == $thread->status) : ?>
-        <p class="small text-center text-secondary mb-0"><?= Yii::t('app', 'You can not post in a locked thread.') ?></p>
-    <?php endif; ?>
     <?php if (Yii::$app->user->isGuest) : ?>
         <p class="small text-center text-secondary mb-0"><?= Yii::t('app', 'You need to login to post.') ?></p>
-    <?php endif; ?>
-
-    <?php if (User::STATUS_SILENCED == User::findOne(Yii::$app->user->identity->id)->status) : ?>
-        <p class="small text-center text-secondary mb-0"><?= Yii::t('app', "You can't post because you've been silenced") ?></p>
+    <?php elseif (Thread::STATUS_ACTIVE_LOCKED == $thread->status) : ?>
+        <p class="small text-center text-secondary mb-0"><?= Yii::t('app', 'You can not post in a locked thread.') ?></p>
+    <?php elseif (User::STATUS_MUTED == User::findOne(Yii::$app->user->identity->id)->status) : ?>
+        <p class="small text-center text-secondary mb-0"><?= Yii::t('app', "You can't post because you've been muted.") ?></p>
     <?php endif; ?>
 </div>

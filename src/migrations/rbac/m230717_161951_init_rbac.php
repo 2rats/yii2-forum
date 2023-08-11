@@ -1,10 +1,11 @@
 <?php
 
-use yii\db\Migration;
 use rats\forum\rbac\AuthorRule;
+use yii\db\Migration;
 
 /**
- * Class m230717_161951_init_rbac
+ * Class m230717_161951_init_rbac.
+ *
  * @note The following rights are available:
  *       USER
  *        forum-createThread
@@ -16,22 +17,18 @@ use rats\forum\rbac\AuthorRule;
  *        forum-editForum
  *        forum-editThread
  *        forum-editPost
- *        forum-silenceUser
+ *        forum-muteUser
  *       ADMIN
  *        forum-deletePost
  *        forum-deleteThread
  *        forum-deleteForum
  *        forum-assignModerator
- *
  * @note There are two types of deletion soft and hard:
  *       - Soft: It is contained in the edit right (e.g. editPost), it just marks the model as deleted
  *       - Hard: It has its own delete right (e.g. deletePost), it hard deletes the record from the database
  */
 class m230717_161951_init_rbac extends Migration
 {
-    /**
-     * {@inheritdoc}
-     */
     public function safeUp()
     {
         $auth = Yii::$app->authManager;
@@ -45,7 +42,7 @@ class m230717_161951_init_rbac extends Migration
         $createPost->description = 'Create a new post';
         $auth->add($createPost);
 
-        $authorRule = new AuthorRule;
+        $authorRule = new AuthorRule();
         $auth->add($authorRule);
 
         $editOwnPost = $auth->createPermission('forum-editOwnPost');
@@ -81,9 +78,9 @@ class m230717_161951_init_rbac extends Migration
         $editPost->description = 'Edit a post';
         $auth->add($editPost);
 
-        $silenceUser = $auth->createPermission('forum-silenceUser');
-        $silenceUser->description = 'Silence a user';
-        $auth->add($silenceUser);
+        $muteUser = $auth->createPermission('forum-muteUser');
+        $muteUser->description = 'Mute a user';
+        $auth->add($muteUser);
 
         $moderator = $auth->createRole('forum-moderator');
         $auth->add($moderator);
@@ -92,8 +89,7 @@ class m230717_161951_init_rbac extends Migration
         $auth->addChild($moderator, $editForum);
         $auth->addChild($moderator, $editThread);
         $auth->addChild($moderator, $editPost);
-        $auth->addChild($moderator, $silenceUser);
-
+        $auth->addChild($moderator, $muteUser);
 
         // ADMIN
         $deletePost = $auth->createPermission('forum-deletePost');
@@ -121,9 +117,6 @@ class m230717_161951_init_rbac extends Migration
         $auth->addChild($admin, $assignModerator);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function safeDown()
     {
         $auth = Yii::$app->authManager;
@@ -142,7 +135,7 @@ class m230717_161951_init_rbac extends Migration
         $auth->remove($auth->getPermission('forum-editForum'));
         $auth->remove($auth->getPermission('forum-editThread'));
         $auth->remove($auth->getPermission('forum-editPost'));
-        $auth->remove($auth->getPermission('forum-silenceUser'));
+        $auth->remove($auth->getPermission('forum-muteUser'));
         $auth->remove($auth->getPermission('forum-deletePost'));
         $auth->remove($auth->getPermission('forum-deleteThread'));
         $auth->remove($auth->getPermission('forum-deleteForum'));

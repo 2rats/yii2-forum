@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'data' => [
                         User::STATUS_ACTIVE => Yii::t('app', 'Active'),
                         User::STATUS_DELETED => Yii::t('app', 'Deleted'),
-                        User::STATUS_SILENCED => Yii::t('app', 'Silenced'),
+                        User::STATUS_MUTED => Yii::t('app', 'Muted'),
                     ],
                 ],
                 'headerOptions' => ['style' => 'min-width:150px'],
