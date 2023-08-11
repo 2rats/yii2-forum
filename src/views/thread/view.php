@@ -74,17 +74,17 @@ $this->registerCss('
                                     <span class="small">- <?= Yii::$app->formatter->asDatetime($post->created_at) ?></span>
                                 </div>
                                 <div>
-                                    <?php if (Yii::$app->user->can('forum-muteUser')) : ?>
+                                    <?php if (Yii::$app->user->can('forum-muteUser') && Yii::$app->user->id != $post->createdBy->id) : ?>
                                         <?php if (User::STATUS_MUTED == $post->createdBy->status) : ?>
-                                            <?= Html::a(Yii::t('app', 'Unmute user'), ['admin/user/mute', 'id' => $post->createdBy->id, 'revert' => true], [
-                                                'class' => 'small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover',
+                                            <?= Html::a(Yii::t('app', 'Unmute'), ['admin/user/mute', 'id' => $post->createdBy->id, 'revert' => true], [
+                                                'class' => 'small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover me-3',
                                                 'data' => [
                                                     'confirm' => Yii::t('app', 'Are you sure you want to unmute this user?'),
                                                     'method' => 'post',
                                                 ],
                                             ]) ?>
                                         <?php else : ?>
-                                            <?= Html::a(Yii::t('app', 'Mute user'), ['admin/user/mute', 'id' => $post->createdBy->id], [
+                                            <?= Html::a(Yii::t('app', 'Mute'), ['admin/user/mute', 'id' => $post->createdBy->id], [
                                                 'class' => 'small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover me-3',
                                                 'data' => [
                                                     'confirm' => Yii::t('app', 'Are you sure you want to mute this user?'),
