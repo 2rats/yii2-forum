@@ -1,4 +1,5 @@
 
+
 # Yii2 Forum Extension
 This Yii2 extension offers a simple set of forum features that make it easy to integrate a full-featured forum into your web application.
 
@@ -50,6 +51,51 @@ return [
     'password' => '',
     'charset' => 'utf8mb4',
 ];
+```
+
+### Modify signup method
+
+1. Open your application's signup process, where you create new users. This could be within a controller action, signup form or service that handles user registration.
+
+2. Inside your signup process, after creating the main user instance, call the `ForumModule::signupUser` function to create the associated forum user:
+
+```php
+use rats\forum\ForumModule;
+
+// ... Your signup process code ...
+
+// After creating the main user, call the signupUser function to create the forum user.
+ForumModule::signupUser($user);
+```
+Here, `$user` should be an instance of yours `app\models\User`.
+
+
+If you are using the default [Yii2 signup form](https://github.com/yiisoft/yii2-app-advanced/blob/master/frontend/models/SignupForm.php), you can change it like this:
+```php
+use rats\forum\ForumModule;
+
+class SignupForm extends Model{
+
+	// ... other code ...
+	
+	public function signup()
+	{
+	    if (!$this->validate()) {
+	        return null;
+	    }
+	    $user = new User();
+	    $user->username = $this->username;
+	    $user->email = $this->email;
+	    $user->setPassword($this->password);
+	    $user->generateAuthKey();
+	    $user->generateEmailVerificationToken();
+	    
+	    return $user->save() && $this->sendEmail($user) && ForumModule::signupUser($user);
+	}
+	
+	// ... other code ...
+
+}
 ```
 
 ## Configuration
