@@ -2,21 +2,24 @@
 
 /**
  * @file ForumModule.php
+ *
  * @brief This file contains the ForumModule class.
+ *
  * @author kazda01, mifka01
  */
 
 namespace rats\forum;
 
-use Yii;
-use yii\base\Module;
+use rats\forum\models\User;
 use yii\base\BootstrapInterface;
+use yii\base\Module;
 
 /**
  * @brief This class represents forum module.
- * @param class $userClass – class that represents user identity in your app
- * @param String $forumLayout – layout that is used in forum sites
- * @param String $adminLayout – layout that is used in administration of the forum
+ *
+ * @param class  $userClass   – class that represents user identity in your app
+ * @param string $forumLayout – layout that is used in forum sites
+ * @param string $adminLayout – layout that is used in administration of the forum
  */
 class ForumModule extends Module implements BootstrapInterface
 {
@@ -24,9 +27,8 @@ class ForumModule extends Module implements BootstrapInterface
     public $forumLayout = 'forum';
     public $adminLayout = 'admin';
 
-    /**
-     * {@inheritdoc}
-     */
+    public const USERNAME_LENGTH = 191;
+
     public function bootstrap($app)
     {
         if ($app instanceof \yii\web\Application) {
@@ -76,9 +78,6 @@ class ForumModule extends Module implements BootstrapInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function init()
     {
         if (!class_exists($this->userClass)) {
@@ -87,12 +86,12 @@ class ForumModule extends Module implements BootstrapInterface
         if (!is_subclass_of($this->userClass, 'yii\db\ActiveRecord')) {
             throw new \yii\base\InvalidConfigException("Class `{$this->userClass}` does not extend `yii\db\ActiveRecord`. You can choose different class in the module configuration (attribute 'userClass').");
         }
-        if (is_null(Yii::$app->authManager)) {
+        if (is_null(\Yii::$app->authManager)) {
             throw new \yii\base\InvalidConfigException("Module rats/yii2-forum depends on RBAC, set it up using the Yii2 docs.\n Link: https://www.yiiframework.com/doc/guide/2.0/en/security-authorization#configuring-rbac");
         }
 
-        Yii::setAlias('@2ratsForum', __DIR__);
-        Yii::$app->params['bsVersion'] = '5.x';
+        \Yii::setAlias('@2ratsForum', __DIR__);
+        \Yii::$app->params['bsVersion'] = '5.x';
 
         parent::init();
 
@@ -104,28 +103,43 @@ class ForumModule extends Module implements BootstrapInterface
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getViewPath()
     {
-        return Yii::getAlias('@2ratsForum/views');
+        return \Yii::getAlias('@2ratsForum/views');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getMigrationPath()
     {
-        return Yii::getAlias('@2ratsForum/migrations');
+        return \Yii::getAlias('@2ratsForum/migrations');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function run()
     {
         ForumAsset::register($this->getView());
+
         return parent::run();
+    }
+
+    /**
+     * Sign up a new user for the forum.
+     *
+     * @param app/models/User $user the user object containing signup information
+     *
+     * @return bool returns true if the user was successfully signed up, otherwise false
+     */
+    public static function signupUser($user)
+    {
+        $forum_user = new User();
+        $forum_user->username = substr($user->username, 0, self::USERNAME_LENGTH);
+        $forum_user->id = $user->id;
+
+        if ($forum_user->save()) {
+            $role = \Yii::$app->authManager->getRole('forum-user');
+            \Yii::$app->authManager->assign($role, $forum_user->id);
+
+            return true;
+        }
+
+        return false;
     }
 }
