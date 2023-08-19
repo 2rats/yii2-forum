@@ -1,9 +1,9 @@
 <?php
 
-use rats\forum\models\Forum;
-use yii\grid\ActionColumn;
 use kartik\grid\GridView;
 use rats\forum\models\Category;
+use rats\forum\models\Forum;
+use yii\grid\ActionColumn;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -22,6 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('app', 'Create Forum'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Reorder'), ['admin/category/reorder'], ['class' => 'btn btn-dark']) ?>
     </p>
 
     <?php Pjax::begin(); ?>

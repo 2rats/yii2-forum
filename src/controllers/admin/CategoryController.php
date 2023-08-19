@@ -3,9 +3,9 @@
 namespace rats\forum\controllers\admin;
 
 use rats\forum\models\Category;
+use rats\forum\models\Forum;
 use rats\forum\models\search\CategorySearch;
 use rats\forum\models\User;
-use Yii;
 use yii\db\Query;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
@@ -24,6 +24,7 @@ class CategoryController extends AdminController
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                        'reorder' => ['POST', 'GET'],
                     ],
                 ],
             ]
@@ -141,7 +142,7 @@ class CategoryController extends AdminController
             return $model;
         }
 
-        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+        throw new NotFoundHttpException(\Yii::t('app', 'The requested page does not exist.'));
     }
 
     public function actionUserList($q = null, $id = null)
@@ -161,6 +162,32 @@ class CategoryController extends AdminController
             $data = $command->queryAll();
             $out['results'] = array_values($data);
         }
+
         return $out;
+    }
+
+    public function actionReorder()
+    {
+        if (\Yii::$app->request->isPost) {
+            $data = json_decode(\Yii::$app->request->post('data', []), true);
+            foreach ($data as $order => $obj) {
+                $cat = Category::findOne($obj['category']);
+                $cat->ordering = $order + 1;
+                $cat->save();
+
+                foreach ($obj['forums'] as $forum_order => $forum) {
+                    $forum = Forum::findOne($forum);
+                    $forum->ordering = $forum_order + 1;
+                    $forum->fk_category = $cat->id;
+                    $forum->save();
+                }
+            }
+
+            return $this->asJson(['success' => true]);
+        }
+
+        return $this->render('reorder', [
+            'categories' => Category::find()->orderBy(['ordering' => SORT_ASC])->all(),
+        ]);
     }
 }

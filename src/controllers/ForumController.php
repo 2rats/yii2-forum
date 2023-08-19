@@ -2,7 +2,9 @@
 
 /**
  * @file ForumController.php
+ *
  * @brief This file contains the ForumController class.
+ *
  * @author kazda01, mifka01
  */
 
@@ -10,7 +12,6 @@ namespace rats\forum\controllers;
 
 use rats\forum\ForumModule;
 use rats\forum\models\Category;
-use Yii;
 use rats\forum\models\Forum;
 use rats\forum\models\Thread;
 use yii\data\Pagination;
@@ -31,15 +32,15 @@ class ForumController extends Controller
     public function actionIndex()
     {
         return $this->render('category', [
-            'categories' => Category::find()->all(),
+            'categories' => Category::find()->orderBy(['ordering' => SORT_ASC])->all(),
         ]);
     }
 
     public function actionView($id, $path)
     {
         $forum = Forum::find()->andWhere(['id' => $id, 'status' => [Forum::STATUS_ACTIVE_LOCKED, Forum::STATUS_ACTIVE_UNLOCKED]])->one();
-        if ($forum == null) {
-            throw new NotFoundHttpException(Yii::t('app', 'Forum not found'));
+        if (null == $forum) {
+            throw new NotFoundHttpException(\Yii::t('app', 'Forum not found'));
         }
         if ($path != $forum->slug) {
             return $this->redirect(['/' . ForumModule::getInstance()->id . 'forum/view', 'id' => $forum->id, 'path' => $forum->slug]);
