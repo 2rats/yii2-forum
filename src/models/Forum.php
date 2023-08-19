@@ -14,6 +14,7 @@ namespace rats\forum\models;
  * @property int         $status
  * @property int         $threads
  * @property int         $posts
+ * @property int         $ordering
  * @property int         $created_by
  * @property int         $updated_by
  * @property string|null $created_at
@@ -38,10 +39,10 @@ class Forum extends ActiveRecord
     public function rules()
     {
         return [
-            [['fk_parent', 'status', 'created_by', 'updated_by'], 'integer'],
+            [['ordering', 'fk_parent', 'status', 'created_by', 'updated_by'], 'integer'],
             [['name', 'fk_category'], 'required'],
             [['description'], 'string'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['ordering', 'created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 191],
             [['fk_parent'], 'exist', 'skipOnError' => true, 'targetClass' => Forum::class, 'targetAttribute' => ['fk_parent' => 'id']],
         ];
@@ -59,11 +60,21 @@ class Forum extends ActiveRecord
             'status' => \Yii::t('app', 'Status'),
             'threads' => \Yii::t('app', 'Threads'),
             'posts' => \Yii::t('app', 'Posts'),
+            'ordering' => \Yii::t('app', 'Ordering'),
             'created_by' => \Yii::t('app', 'Created by'),
             'updated_by' => \Yii::t('app', 'Updated by'),
             'created_at' => \Yii::t('app', 'Created at'),
             'updated_at' => \Yii::t('app', 'Updated at'),
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if ($insert && $this->isNewRecord) {
+            $this->ordering = static::find()->max('ordering') + 1;
+        }
+
+        return parent::beforeSave($insert);
     }
 
     /**
