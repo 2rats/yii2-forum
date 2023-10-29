@@ -3,10 +3,8 @@
 /** @var yii\web\View $this */
 /** @var Forum[] $forums */
 /** @var bool $subforum */
-
-use rats\forum\models\Forum;
-
 ?>
+
 <div class="category-container text-secondary">
     <?php if (sizeof($categories) == 0) : ?>
         <div class="no-results row py-2 bg-light rounded">
@@ -21,13 +19,7 @@ use rats\forum\models\Forum;
             </div>
         </div>
         <?= $this->render('index', [
-            'forums' => $category->getForums()->andWhere([
-                'fk_parent' => null,
-                'status' => [
-                    Forum::STATUS_ACTIVE_LOCKED,
-                    Forum::STATUS_ACTIVE_UNLOCKED
-                ]
-            ])->all(),
+            'categoryId' => $category->id,
             'subforum' => false
         ]); ?>
     <?php endforeach; ?>
