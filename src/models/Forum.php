@@ -2,6 +2,8 @@
 
 namespace rats\forum\models;
 
+use rats\forum\models\query\ForumQuery;
+
 /**
  * This is the model class for table "forum_forum".
  *
@@ -212,5 +214,14 @@ class Forum extends ActiveRecord
         }
 
         return \Yii::t('app', 'Unknown status');
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return ForumQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new ForumQuery(get_called_class());
     }
 }

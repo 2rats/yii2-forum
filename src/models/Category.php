@@ -2,6 +2,8 @@
 
 namespace rats\forum\models;
 
+use rats\forum\models\query\CategoryQuery;
+
 /**
  * This is the model class for table "forum_category".
  *
@@ -86,5 +88,14 @@ class Category extends ActiveRecord
     public function getUpdatedBy()
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return CategoryQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new CategoryQuery(get_called_class());
     }
 }

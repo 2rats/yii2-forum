@@ -2,6 +2,8 @@
 
 namespace rats\forum\models;
 
+use rats\forum\models\query\VoteQuery;
+
 /**
  * This is the model class for table "forum_vote".
  *
@@ -65,5 +67,14 @@ class Vote extends ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'fk_user']);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return VoteQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new VoteQuery(get_called_class());
     }
 }

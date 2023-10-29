@@ -3,6 +3,7 @@
 namespace rats\forum\models;
 
 use rats\forum\ForumModule;
+use rats\forum\models\query\PostQuery;
 use Yii;
 use yii\bootstrap5\Html;
 use yii\helpers\Markdown;
@@ -269,5 +270,14 @@ class Post extends ActiveRecord
         }
 
         return \Yii::t('app', 'Unknown status');
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return PostQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new PostQuery(get_called_class());
     }
 }

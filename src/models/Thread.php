@@ -3,6 +3,7 @@
 namespace rats\forum\models;
 
 use rats\forum\ForumModule;
+use rats\forum\models\query\ThreadQuery;
 use yii\bootstrap5\Html;
 
 /**
@@ -167,5 +168,14 @@ class Thread extends ActiveRecord
             return Html::tag('em', \Yii::t('app', 'deleted'), ['class' => 'small']);
         }
         return Html::a($this->createdBy->username, ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->createdBy->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return ThreadQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new ThreadQuery(get_called_class());
     }
 }
