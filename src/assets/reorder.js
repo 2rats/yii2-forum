@@ -28,8 +28,11 @@ $(function() {
     $('#save').click(function() {
         const sorted = []
         const cats = $('.category-sortable').sortable('toArray')
+        // unset first index of cats "3wm" because it's not a category
+        cats.shift()
 
         $('.forum-sortable').each(function(index) {
+            console.log(index);
             sorted.push({
                 category: cats[index],
                 forums: $(this).sortable('toArray'),
