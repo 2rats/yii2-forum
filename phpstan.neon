@@ -1,0 +1,10 @@
+parameters:
+    level: 0
+    excludePaths:
+        - vendor
+        - tests
+        - requirements.php
+    paths:
+        - ./
+    bootstrapFiles:
+        - vendor/yiisoft/yii2/Yii.php

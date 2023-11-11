@@ -26,6 +26,7 @@ class ForumModule extends Module implements BootstrapInterface
     public $userClass = \app\models\User::class;
     public $forumLayout = 'forum';
     public $adminLayout = 'admin';
+    public $viewPath = '@rats/forum/views';
 
     public const USERNAME_LENGTH = 191;
 
@@ -80,6 +81,8 @@ class ForumModule extends Module implements BootstrapInterface
 
     public function init()
     {
+        $this->setViewPath($this->viewPath);
+
         if (!class_exists($this->userClass)) {
             throw new \yii\base\InvalidConfigException("Class `{$this->userClass}` does not exist. You can choose different class in the module configuration (attribute 'userClass').");
         }
@@ -90,27 +93,20 @@ class ForumModule extends Module implements BootstrapInterface
             throw new \yii\base\InvalidConfigException("Module rats/yii2-forum depends on RBAC, set it up using the Yii2 docs.\n Link: https://www.yiiframework.com/doc/guide/2.0/en/security-authorization#configuring-rbac");
         }
 
-        \Yii::setAlias('@2ratsForum', __DIR__);
         \Yii::$app->params['bsVersion'] = '5.x';
 
         parent::init();
 
         $this->modules = [
             'gridview' => [
-                // you should consider using a shorter namespace here!
                 'class' => '\kartik\grid\Module',
             ],
         ];
     }
 
-    public function getViewPath()
-    {
-        return \Yii::getAlias('@2ratsForum/views');
-    }
-
     public function getMigrationPath()
     {
-        return \Yii::getAlias('@2ratsForum/migrations');
+        return \Yii::getAlias('@rats/forum/migrations');
     }
 
     public function run()
