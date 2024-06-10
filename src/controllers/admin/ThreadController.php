@@ -77,6 +77,7 @@ class ThreadController extends AdminController
             }
         } else {
             $model->loadDefaultValues();
+            $model->load(["Thread" => $this->request->get()]);
         }
 
         return $this->render('create', [

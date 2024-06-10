@@ -53,6 +53,22 @@ function getSortLink($sort, $label, $name)
 </div>
 <div class="row justify-content-center my-3 mt-1">
     <div class="col-11 thread-container border rounded-1 text-secondary">
+        <?php if (Yii::$app->user->can('forum-createThread') && Forum::STATUS_ACTIVE_UNLOCKED == $forum->status && User::STATUS_MUTED != User::findOne(Yii::$app->user->identity->id)->status) : ?>
+            <div class="row py-2 border-bottom rounded-top-1">
+                <div class="col-6 px-3 py-2">
+                    <h3 class="text-dark fw-bold mb-0 text-decoration-underline"><?= $forum->name ?></h3>
+                </div>
+            <div class="col-6 px-3 py-2 text-end">
+                    <a class="btn btn-primary" target="_blank" href="<?= Url::to(['/' . ForumModule::getInstance()->id . '/admin/thread/create?fk_forum=' . $forum->id ]) ?>"><?= Yii::t("app","Create Thread"); ?></a>
+                </div>
+            </div>
+        <?php else : ?>
+            <div class="row py-2 border-bottom rounded-top-1">
+                <div class="col-12 px-3 py-2">
+                    <h3 class="text-dark fw-bold mb-0 text-decoration-underline"><?= $forum->name ?></h3>
+                </div>
+            </div>
+        <?php endif;?>
         <div class="thread-header row py-2 border-bottom bg-lighter fw-bold rounded-top-1">
             <div class="col-12 col-md-9 border-end">
                 <span class="mx-2"><?= Yii::t('app', 'Thread') ?></span>

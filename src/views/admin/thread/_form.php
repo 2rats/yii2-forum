@@ -6,6 +6,7 @@ use rats\forum\models\Thread;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 use yii\web\JsExpression;
+use yii\helpers\ArrayHelper;
 
 /** @var yii\web\View $this */
 /** @var rats\forum\models\Thread $model */
@@ -13,10 +14,9 @@ use yii\web\JsExpression;
 ?>
 
 <div class="thread-form">
-
     <?php $form = ActiveForm::begin(); ?>
-
     <?= $form->field($model, 'fk_forum')->widget(Select2::class, [
+        'data' => ArrayHelper::map($model->getForum()->all(), 'id', 'name'),
         'pluginOptions' => [
             'allowClear' => true,
             'minimumInputLength' => 3,
