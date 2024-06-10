@@ -5,6 +5,7 @@
 use rats\forum\models\Forum;
 use rats\forum\ForumModule;
 use rats\forum\models\Thread;
+use rats\forum\models\User;
 use yii\bootstrap5\LinkPager;
 use yii\helpers\Url;
 
