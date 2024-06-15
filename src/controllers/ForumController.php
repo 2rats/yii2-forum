@@ -13,11 +13,13 @@ namespace rats\forum\controllers;
 use rats\forum\ForumModule;
 use rats\forum\models\Category;
 use rats\forum\models\Forum;
+use rats\forum\models\User;
 use rats\forum\models\Thread;
 use yii\data\Pagination;
 use yii\data\Sort;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\data\ActiveDataProvider;
 
 class ForumController extends Controller
 {
@@ -73,5 +75,10 @@ class ForumController extends Controller
             'pages' => $pages,
             'sort' => $sort,
         ]);
+    }
+
+    public function actionMembers()
+    {
+        return $this->render('members');
     }
 }
