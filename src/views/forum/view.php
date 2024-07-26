@@ -34,12 +34,7 @@ function getSortLink($sort, $label, $name)
 
 <?php if ($forum->forums) : ?>
     <?= $this->render('index', [
-        'forums' => $forum->getForums()->andWhere([
-            'status' => [
-                Forum::STATUS_ACTIVE_LOCKED,
-                Forum::STATUS_ACTIVE_UNLOCKED
-            ]
-        ])->all(),
+        'forums' => $forum->getForums()->active()->all(),
         'subforum' => true
     ]); ?>
 <?php endif; ?>
@@ -78,7 +73,7 @@ function getSortLink($sort, $label, $name)
                 <span class="mx-2"><?= Yii::t('app', 'Last post') ?></span>
             </div>
         </div>
-        <?php if (sizeof($threads) == 0) : ?>
+        <?php if (empty($threads)) : ?>
             <div class="no-results row py-2 bg-light rounded-bottom-1">
                 <div class="col-12 text-center"><?= Yii::t('app', 'No threads') ?></div>
             </div>

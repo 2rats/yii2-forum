@@ -6,7 +6,7 @@
 ?>
 
 <div class="category-container text-secondary">
-    <?php if (sizeof($categories) == 0) : ?>
+    <?php if (empty($categories)) : ?>
         <div class="no-results row py-2 bg-light rounded">
             <div class="col-12 text-center"><?= Yii::t('app', 'No forum categories') ?></div>
         </div>

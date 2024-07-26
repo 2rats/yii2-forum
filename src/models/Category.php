@@ -83,7 +83,7 @@ class Category extends ActiveRecord
      */
     public function getForums()
     {
-        return $this->hasMany(Forum::class, ['fk_category' => 'id'])->orderBy(['ordering' => SORT_ASC]);
+        return $this->hasMany(Forum::class, ['fk_category' => 'id'])->ordered();
     }
 
     /**

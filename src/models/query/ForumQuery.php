@@ -31,4 +31,12 @@ class ForumQuery extends \yii\db\ActiveQuery
     {
         return $this->orderBy(['ordering' => SORT_ASC]);
     }
+
+    /**
+     * Returns only top level forums
+     */
+    public function topLevel()
+    {
+        return $this->andWhere(['fk_parent' => null]);
+    }
 }

@@ -3,6 +3,8 @@
 namespace rats\forum\models\query;
 
 use rats\forum\models\Thread;
+use yii\db\Expression;
+
 
 /**
  * This is the ActiveQuery class for [[Thread]].
@@ -22,5 +24,13 @@ class ThreadQuery extends \yii\db\ActiveQuery
                 Thread::STATUS_ACTIVE_LOCKED
             ]
         ]);
+    }
+
+    /**
+     * Returns only new models (created within the last 24 hours)
+     */
+    public function new()
+    {
+        return $this->andWhere(['>=', 'created_at', new Expression('DATE_SUB(NOW(), INTERVAL 1 DAY)')]);
     }
 }

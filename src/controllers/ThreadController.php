@@ -28,7 +28,7 @@ class ThreadController extends Controller
 
     public function actionView($id, $path)
     {
-        $thread = Thread::find()->andWhere(['id' => $id, 'status' => [Thread::STATUS_ACTIVE_LOCKED, Thread::STATUS_ACTIVE_UNLOCKED]])->one();
+        $thread = Thread::find()->active()->andWhere(['id' => $id])->one();
         if ($thread == null) {
             throw new NotFoundHttpException(Yii::t('app', 'Thread not found'));
         }
@@ -66,7 +66,7 @@ class ThreadController extends Controller
 
     public function actionHighlight($id, $path, $post_id)
     {
-        $thread = Thread::find()->andWhere(['id' => $id, 'status' => [Thread::STATUS_ACTIVE_LOCKED, Thread::STATUS_ACTIVE_UNLOCKED]])->one();
+        $thread = Thread::find()->active()->andWhere(['id' => $id])->one();
         if ($thread == null) {
             throw new NotFoundHttpException(Yii::t('app', 'Thread not found'));
         }

@@ -34,13 +34,13 @@ class ForumController extends Controller
     public function actionIndex()
     {
         return $this->render('category', [
-            'categories' => Category::find()->active()->orderBy(['ordering' => SORT_ASC])->all(),
+            'categories' => Category::find()->active()->ordered()->all(),
         ]);
     }
 
     public function actionView($id, $path)
     {
-        $forum = Forum::find()->andWhere(['id' => $id, 'status' => [Forum::STATUS_ACTIVE_LOCKED, Forum::STATUS_ACTIVE_UNLOCKED]])->one();
+        $forum = Forum::find()->andWhere(['id' => $id])->active()->one();
         if (null == $forum) {
             throw new NotFoundHttpException(\Yii::t('app', 'Forum not found'));
         }
@@ -61,7 +61,7 @@ class ForumController extends Controller
         $subquery = $forum->getThreads()->leftJoin('forum_post', 'forum_thread.fk_last_post = forum_post.id')->select('forum_thread.id as thread_id, forum_post.created_at');
         $query = $forum->getThreads()->select(['forum_thread.*'])
             ->innerJoin(['last_post' => $subquery], 'forum_thread.id = last_post.thread_id')
-            ->andWhere(['status' => [Thread::STATUS_ACTIVE_LOCKED, Thread::STATUS_ACTIVE_UNLOCKED]])
+            ->active()
             ->orderBy(empty($sort->orders) ? 'pinned DESC' : $sort->orders);
         $countQuery = clone $query;
         $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->page_items]);

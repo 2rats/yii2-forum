@@ -54,7 +54,7 @@ class ProfileController extends Controller
 
     public function actionView($id)
     {
-        $user = User::find()->andWhere(['id' => $id, 'status' => [USER::STATUS_ACTIVE]])->one();
+        $user = User::find()->andWhere(['id' => $id])->active()->one();
         if ($user == null) {
             throw new NotFoundHttpException(Yii::t('app', 'User not found'));
         }

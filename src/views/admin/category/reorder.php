@@ -24,7 +24,7 @@ ReorderAsset::register($this);
         <?= Yii::t('app', 'An error has occurred.') ?>
     </div>
     <div class="category-container text-secondary category-sortable">
-        <?php if (0 == sizeof($categories)) : ?>
+        <?php if (empty($categories)) : ?>
             <div class="no-results row py-2 bg-light rounded">
                 <div class="col-12 text-center"><?= Yii::t('app', 'No forum categories') ?></div>
             </div>
@@ -46,13 +46,7 @@ ReorderAsset::register($this);
                     </h3>
                 </div>
                 <?= $this->render('reorder-forum', [
-                    'forums' => $category->getForums()->andWhere([
-                        'fk_parent' => null,
-                        'status' => [
-                            Forum::STATUS_ACTIVE_LOCKED,
-                            Forum::STATUS_ACTIVE_UNLOCKED
-                        ]
-                    ])->all(),
+                    'forums' => $category->getForums()->active()->topLevel()->all(),
                     'subforum' => false
                 ]); ?>
             </div>

@@ -37,7 +37,7 @@ class ForumListWidget extends ListView
             $this->dataProvider = new ActiveDataProvider([
                 'query' => Forum::find()->active()->ordered()->andWhere(['fk_category' => $this->categoryId]),
                 'pagination' => [
-                    'pageSize' => 15,
+                    'pageSize' => 20,
                 ],
             ]);
         }
