@@ -34,7 +34,7 @@ class ForumController extends Controller
     public function actionIndex()
     {
         return $this->render('category', [
-            'categories' => Category::find()->orderBy(['ordering' => SORT_ASC])->all(),
+            'categories' => Category::find()->active()->orderBy(['ordering' => SORT_ASC])->all(),
         ]);
     }
 

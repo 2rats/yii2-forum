@@ -11,6 +11,7 @@ use rats\forum\models\query\CategoryQuery;
  * @property string       $name
  * @property string|null  $description
  * @property int          $ordering
+ * @property int          status
  * @property int          $created_by
  * @property int          $updated_by
  * @property string|null  $created_at
@@ -21,6 +22,9 @@ use rats\forum\models\query\CategoryQuery;
  */
 class Category extends ActiveRecord
 {
+    public const STATUS_INACTIVE = 0;
+    public const STATUS_ACTIVE = 1;
+
     public static function tableName()
     {
         return 'forum_category';
@@ -29,6 +33,7 @@ class Category extends ActiveRecord
     public function rules()
     {
         return [
+            [['status'], 'integer'],
             [['name'], 'required'],
             [['description'], 'string'],
             [['ordering', 'created_by', 'updated_by'], 'integer'],
@@ -44,6 +49,7 @@ class Category extends ActiveRecord
             'name' => \Yii::t('app', 'Name'),
             'description' => \Yii::t('app', 'Description'),
             'ordering' => \Yii::t('app', 'Ordering'),
+            'status' => \Yii::t('app', 'Status'),
             'created_by' => \Yii::t('app', 'Created by'),
             'updated_by' => \Yii::t('app', 'Updated by'),
             'created_at' => \Yii::t('app', 'Created at'),
@@ -97,5 +103,24 @@ class Category extends ActiveRecord
     public static function find()
     {
         return new CategoryQuery(get_called_class());
+    }
+
+    /**
+     * Gets forum status in printable form.
+     *
+     * @return string
+     */
+    public function printStatus()
+    {
+        switch ($this->status) {
+            case $this::STATUS_INACTIVE:
+                return \Yii::t('app', 'Inactive');
+                break;
+            case $this::STATUS_ACTIVE:
+                return \Yii::t('app', 'Active');
+                break;
+        }
+
+        return \Yii::t('app', 'Unknown status');
     }
 }

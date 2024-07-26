@@ -44,6 +44,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['style' => 'min-width:200px'],
             ],
             [
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    return $model->printStatus();
+                },
+                'filterType' => \kartik\grid\GridView::FILTER_SELECT2,
+                'filterWidgetOptions' => [
+                    'hideSearch' => true,
+                    'options' => ['prompt' => ''],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                    'data' => [
+                        Category::STATUS_INACTIVE => Yii::t('app', 'Inactive'),
+                        Category::STATUS_ACTIVE => Yii::t('app', 'Active'),
+                    ],
+                ],
+                'headerOptions' => ['style' => 'min-width:150px'],
+            ],
+            [
                 'attribute' => 'created_by',
                 'value' => function ($model) {
                     return $model->createdBy->username;

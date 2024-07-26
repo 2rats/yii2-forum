@@ -35,6 +35,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'description:ntext',
             [
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    return $model->printStatus();
+                }
+            ],
+            [
                 'attribute' => 'created_by',
                 'value' => function ($model) {
                     return $model->createdBy->username;
