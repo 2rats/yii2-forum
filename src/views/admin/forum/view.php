@@ -4,6 +4,8 @@ use rats\forum\ForumModule;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
+use yii\grid\GridView;
+
 
 /* @var yii\web\View $this */
 /* @var rats\forum\models\Forum $model */
@@ -74,5 +76,30 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at:datetime',
         ],
     ]) ?>
+
+    <h2><?= Yii::t('app', 'Moderators') ?></h2>
+
+    <p>
+        <?= Html::a(Yii::t('app', 'Add moderator'), ['admin/forum-moderator/create', 'fk_forum' => $model->id], ['class' => 'btn btn-success']) ?>
+    </p>
+
+    <?= GridView::widget([
+        'dataProvider' => $model->getForumModeratorDataProvider(),
+        'columns' => [
+            'user.id',
+            'user.username',
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{delete}',
+                'urlCreator' => function ($action, $model, $key, $index) {
+                    if ($action === 'delete') {
+                        return ['admin/forum-moderator/delete', 'id' => $model->id];
+                    }
+                }
+            ]
+        ],
+    ])
+    ?>
+
 
 </div>

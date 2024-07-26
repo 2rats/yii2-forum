@@ -119,7 +119,7 @@ class ForumModule extends Module implements BootstrapInterface
     /**
      * Sign up a new user for the forum.
      *
-     * @param app/models/User $user the user object containing signup information
+     * @param rats/forum/models/User $user the user object containing signup information
      *
      * @return bool returns true if the user was successfully signed up, otherwise false
      */

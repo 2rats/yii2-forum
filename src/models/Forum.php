@@ -3,6 +3,9 @@
 namespace rats\forum\models;
 
 use rats\forum\models\query\ForumQuery;
+use yii\data\ActiveDataProvider;
+use rats\forum\models\ForumModerator;
+
 
 /**
  * This is the model class for table "forum_forum".
@@ -223,5 +226,18 @@ class Forum extends ActiveRecord
     public static function find()
     {
         return new ForumQuery(get_called_class());
+    }
+
+    public function getForumModerators()
+    {
+        return $this->hasMany(User::class, ['id' => 'fk_user'])->viaTable('forum_moderator', ['fk_forum' => 'id']);
+    }
+
+
+    public function getForumModeratorDataProvider()
+    {
+        return new ActiveDataProvider([
+            'query' => ForumModerator::find()->where(['fk_forum' => $this->id]),
+        ]);
     }
 }
