@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m240303_132642_update_rbac
+ * Class m240726_133809_update_moderator_rbac
  */
-class m240303_132642_update_rbac extends Migration
+class m240726_133809_update_moderator_rbac extends Migration
 {
     /**
      * {@inheritdoc}
@@ -14,7 +14,7 @@ class m240303_132642_update_rbac extends Migration
     {
         $auth = Yii::$app->authManager;
 
-        $rule = new \app\rbac\ForumModeratorRule();
+        $rule = new \rats\forum\rbac\ForumModeratorRule();
         $auth->add($rule);
 
 
@@ -48,6 +48,10 @@ class m240303_132642_update_rbac extends Migration
         $auth->addChild($moderator, $editAssignedForum);
         $auth->addChild($moderator, $editAssignedThread);
         $auth->addChild($moderator, $editAssignedPost);
+
+        $auth->removeChild($moderator, $editForum);
+        $auth->removeChild($moderator, $editThread);
+        $auth->removeChild($moderator, $editPost);
     }
 
     /**
@@ -62,5 +66,14 @@ class m240303_132642_update_rbac extends Migration
         $auth->remove($auth->getPermission('forum-editAssignedPost'));
 
         $auth->remove($auth->getRule('isAssignedToForum'));
+        
+        $moderator = $auth->getRole('forum-moderator');
+        $editForum = $auth->getPermission('forum-editForum');
+        $editThread = $auth->getPermission('forum-editThread');
+        $editPost = $auth->getPermission('forum-editPost');
+
+        $auth->addChild($moderator, $editForum);
+        $auth->addChild($moderator, $editThread);
+        $auth->addChild($moderator, $editPost);
     }
 }

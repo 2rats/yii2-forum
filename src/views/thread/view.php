@@ -95,9 +95,11 @@ $this->registerCss('
                                         <?php endif; ?>
                                     <?php endif; ?>
 
-                                    <?php if (Yii::$app->user->can('forum-editPost')) : ?>
+                                    <?php if (Yii::$app->user->can('forum-editPost', [
+                                        'post' => $post,
+                                    ])) : ?>
                                         <a href="<?= Url::to(['/' . ForumModule::getInstance()->id . '/admin/post/view', 'id' => $post->id]) ?>" class="small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover me-3">
-                                            <?= Yii::t('app', 'View in administration') ?>
+                                            <?= Yii::t('app', 'Edit') ?>
                                         </a>
                                     <?php endif; ?>
                                     <?php if (!$thread->isLocked()) : ?>

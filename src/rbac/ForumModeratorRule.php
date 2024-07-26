@@ -1,8 +1,8 @@
 <?php
 
-namespace app\rbac;
+namespace rats\forum\rbac;
 
-use app\models\ForumModerator;
+use rats\forum\models\ForumModerator;
 use yii\rbac\Rule;
 
 /**
