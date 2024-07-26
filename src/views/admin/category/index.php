@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('app', 'Create Category'), ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a(Yii::t('app', 'Reorder'), ['reorder'], ['class' => 'btn btn-dark']) ?>
+        <?= Html::a(Yii::t('app', 'Reorder'), ['reorder'], ['class' => 'btn btn-primary']) ?>
     </p>
 
 
