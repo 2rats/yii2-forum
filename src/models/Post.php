@@ -53,7 +53,7 @@ class Post extends ActiveRecord
 
     public function validateLockedThread($attribute, $params)
     {
-        if ($this->thread->status == Thread::STATUS_ACTIVE_LOCKED) {
+        if ($this->thread->isLocked() && $this->isNewRecord) {
             $this->addError($attribute, Yii::t('app', 'You can not post in a locked thread.'));
         }
     }

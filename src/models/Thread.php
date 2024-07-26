@@ -178,4 +178,12 @@ class Thread extends ActiveRecord
     {
         return new ThreadQuery(get_called_class());
     }
+
+    /**
+     * @return bool whether thread is locked
+     */
+    public function isLocked(): bool
+    {
+        return $this->status === self::STATUS_ACTIVE_LOCKED;
+    }
 }
