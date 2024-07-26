@@ -10,8 +10,8 @@ use yii\helpers\Url;
 
 ?>
 
-<div class="row justify-content-center mb-4">
-    <div class=" col-11 forum-container forum-sortable border rounded-1 text-secondary" style="display: none;">
+<div class="row justify-content-center mb-4" style="display: none;">
+    <div class=" col-11 forum-container border rounded-1 text-secondary forum-sortable">
         <?php foreach ($forums as $index => $forum) : ?>
             <div class="forum row py-2 bg-lighter border-bottom ?>" data-id=<?= $forum->id ?>>
                 <div class="col">

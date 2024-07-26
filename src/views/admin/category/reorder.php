@@ -32,7 +32,7 @@ ReorderAsset::register($this);
             <button class='btn btn-lg btn-dark' id='save'> <?= Yii::t('app', 'Save') ?></button>
         <?php endif; ?>
         <?php foreach ($categories as $index => $category) : ?>
-            <div class="category row justify-content-center mb-0" data-id="<?= $category->id ?>">
+            <div class="category row justify-content-center mb-0 py-2 border-bottom" data-id="<?= $category->id ?>">
                 <div class="col-11">
                     <h3 class="mb-0">
                         <?= $category->name ?>

@@ -22,7 +22,7 @@ $(function() {
 
         $this.toggle()
         $this.siblings().toggle()
-        $this.closest('.row').find('.forum-sortable').toggle()
+        $this.closest('.row').find('.forum-sortable').parent().toggle()
     })
 
     $('#save').click(function() {
