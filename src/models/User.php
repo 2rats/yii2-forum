@@ -179,4 +179,32 @@ class User extends ActiveRecord
     {
         return new UserQuery(get_called_class());
     }
+
+    /**
+     * @return bool whether user is active
+     */
+    public function isActive()
+    {
+        return $this->status == self::STATUS_ACTIVE;
+    }
+
+    /**
+     * @return bool whether user is muted
+     */
+    public function isMuted()
+    {
+        return $this->status == self::STATUS_MUTED;
+    }
+
+
+    /**
+     * @param Thread $thread
+     * @return bool whether user can post in thread
+     */
+    public function canPost(Thread $thread)
+    {
+        return \Yii::$app->user->can('forum-createPost') &&
+               !$this->isMuted() &&
+               $thread->isActive() && !$thread->isLocked();
+    }
 }

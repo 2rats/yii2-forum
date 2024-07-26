@@ -186,4 +186,20 @@ class Thread extends ActiveRecord
     {
         return $this->status === self::STATUS_ACTIVE_LOCKED;
     }
+
+    /**
+     * @return bool whether thread is pinned
+     */
+    public function isPinned(): bool
+    {
+        return $this->pinned === self::PINNED_TRUE;
+    }
+
+    /**
+     * @return bool whether thread is active
+     */
+    public function isActive()
+    {
+        return $this->status !== self::STATUS_INACTIVE;
+    }
 }

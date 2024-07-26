@@ -46,7 +46,7 @@ $this->registerCss('
 
 <div class="row justify-content-center my-3 post-container">
 
-    <?php if (0 == sizeof($posts)) : ?>
+    <?php if (empty($posts)) : ?>
         <div class="col-11 post border rounded text-secondary my-1">
             <div class="no-results row py-2 bg-light rounded-1">
                 <div class="col-12 text-center"><?= Yii::t('app', 'No posts') ?></div>
@@ -149,18 +149,23 @@ $this->registerCss('
     ]); ?>
 </div>
 <div class="post-add mb-5">
-    <?php if (Yii::$app->user->can('forum-createPost') && Thread::STATUS_ACTIVE_UNLOCKED == $thread->status && User::STATUS_MUTED != User::findOne(Yii::$app->user->identity->id)->status) : ?>
-        <?= $this->render('/post/_form', [
-            'post_form' => new PostForm(),
-            'fk_thread' => $thread->id,
-        ]);
+        <?php
+        $user = User::findOne(Yii::$app->user->identity->id);
         ?>
-    <?php endif; ?>
-    <?php if (Yii::$app->user->isGuest) : ?>
-        <p class="small text-center text-secondary mb-0"><?= Yii::t('app', 'You need to login to post.') ?></p>
-    <?php elseif ($thread->isLocked()) : ?>
-        <p class="small text-center text-secondary mb-0"><?= Yii::t('app', 'You can not post in a locked thread.') ?></p>
-    <?php elseif (User::STATUS_MUTED == User::findOne(Yii::$app->user->identity->id)->status) : ?>
-        <p class="small text-center text-secondary mb-0"><?= Yii::t('app', "You can't post because you've been muted.") ?></p>
-    <?php endif; ?>
+        <?php if (!Yii::$app->user->isGuest) : ?>
+            <?php if ($thread->isLocked()) : ?>
+                <p class="small text-center text-secondary mb-0">
+                    <?= Yii::t('app', 'You cannot post in a locked thread.') ?>
+                </p>
+            <?php elseif ($user->isMuted()) : ?>
+                <p class="small text-center text-secondary mb-0">
+                    <?= Yii::t('app', "You can't post because you've been muted.") ?>
+                </p>
+            <?php elseif ($user->canPost($thread)) : ?>
+                <?= $this->render('/post/_form', [
+                    'post_form' => new PostForm(),
+                    'fk_thread' => $thread->id,
+                ]); ?>
+            <?php endif; ?>
+        <?php endif; ?>
 </div>

@@ -9,6 +9,7 @@ use Yii;
 use yii\db\Query;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use rats\forum\ForumModule;
 
 /**
  * ThreadController implements the CRUD actions for Thread model.
@@ -153,5 +154,37 @@ class ThreadController extends AdminController
             $out['results'] = array_values($data);
         }
         return $out;
+    }
+
+    public function actionLock($id)
+    {
+        $model = $this->findModel($id);
+        $model->status = Thread::STATUS_ACTIVE_LOCKED;
+        $model->save();
+        return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/view', 'id' => $model->id, 'path' => $model->slug]);
+    }
+
+    public function actionUnlock($id)
+    {
+        $model = $this->findModel($id);
+        $model->status = Thread::STATUS_ACTIVE_UNLOCKED;
+        $model->save();
+        return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/view', 'id' => $model->id, 'path' => $model->slug]);
+    }
+
+    public function actionPin($id)
+    {
+        $model = $this->findModel($id);
+        $model->pinned = $model::PINNED_TRUE;
+        $model->save();
+        return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/view', 'id' => $model->id, 'path' => $model->slug]);
+    }
+
+    public function actionUnpin($id)
+    {
+        $model = $this->findModel($id);
+        $model->pinned = $model::PINNED_FALSE;
+        $model->save();
+        return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/view', 'id' => $model->id, 'path' => $model->slug]);
     }
 }
