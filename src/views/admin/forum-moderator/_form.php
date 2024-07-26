@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
             'allowClear' => true,
             'minimumInputLength' => 3,
             'ajax' => [
-                'url' => \yii\helpers\Url::to(['/admin/user/user-list']),
+                'url' => \yii\helpers\Url::to(['user-list']),
                 'dataType' => 'json',
                 'data' => new JsExpression('function(params) { return {q:params.term}; }')
             ],

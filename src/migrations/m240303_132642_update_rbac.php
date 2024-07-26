@@ -17,24 +17,37 @@ class m240303_132642_update_rbac extends Migration
         $rule = new \app\rbac\ForumModeratorRule();
         $auth->add($rule);
 
-        $editForum = $auth->createPermission('editForum');
-        $editForum->description = 'Edit forum';
-        $auth->add($editForum);
 
-        $editAssignedForum = $auth->createPermission('editAssignedForum');
+        $editForum = $auth->getPermission('forum-editForum');
+        $editThread = $auth->getPermission('forum-editThread');
+        $editPost = $auth->getPermission('forum-editPost');
+
+
+        $editAssignedForum = $auth->createPermission('forum-editAssignedForum');
         $editAssignedForum->description = 'Edit assigned forum';
         $editAssignedForum->ruleName = $rule->name;
         $auth->add($editAssignedForum);
 
-        // editAssignedForum will be used from editForum
+        $editAssignedThread = $auth->createPermission('forum-editAssignedThread');
+        $editAssignedThread->description = 'Edit assigned thread';
+        $editAssignedThread->ruleName = $rule->name;
+        $auth->add($editAssignedThread);
+
+        $editAssignedPost = $auth->createPermission('forum-editAssignedPost');
+        $editAssignedPost->description = 'Edit assigned post';
+        $editAssignedPost->ruleName = $rule->name;
+        $auth->add($editAssignedPost);
+
+        
         $auth->addChild($editAssignedForum, $editForum);
+        $auth->addChild($editAssignedThread, $editThread);
+        $auth->addChild($editAssignedPost, $editPost);
 
-        $user = $auth->getRole('user');
-        // let user edit assigned magazines
-        $auth->addChild($user, $editAssignedForum);
 
-        $admin = $auth->getRole('admin');
-        $auth->addChild($admin, $editForum);
+        $moderator = $auth->getRole('forum-moderator');
+        $auth->addChild($moderator, $editAssignedForum);
+        $auth->addChild($moderator, $editAssignedThread);
+        $auth->addChild($moderator, $editAssignedPost);
     }
 
     /**
@@ -44,8 +57,10 @@ class m240303_132642_update_rbac extends Migration
     {
         $auth = Yii::$app->authManager;
 
-        $auth->remove($auth->getPermission('editForum'));
-        $auth->remove($auth->getPermission('editAssignedForum'));
+        $auth->remove($auth->getPermission('forum-editAssignedForum'));	
+        $auth->remove($auth->getPermission('forum-editAssignedThread'));
+        $auth->remove($auth->getPermission('forum-editAssignedPost'));
+
         $auth->remove($auth->getRule('isAssignedToForum'));
     }
 }

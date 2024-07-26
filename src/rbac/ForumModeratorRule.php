@@ -20,12 +20,27 @@ class ForumModeratorRule extends Rule
      */
     public function execute($user, $item, $params)
     {
-        if (!isset($params['forum'])) {
+        /** @var Forum|null */
+        $forum = null;
+
+        if (isset($params['forum'])) {
+            $forum = $params['forum'];
+        }
+
+        if (isset($params['thread'])) {
+            $forum = $params['thread']->forum;
+        }
+
+        if (isset($params['post'])) {
+            $forum = $params['post']->thread->forum;
+        }
+
+        if ($forum === null) {
             return false;
         }
 
         return ForumModerator::find()->where([
-            'fk_forum' => $params['forum']->id,
+            'fk_forum' => $forum->id,
             'fk_user' => $user
         ])->exists();
     }
