@@ -156,7 +156,7 @@ class User extends ActiveRecord
     public function printStatus()
     {
         $statuses = self::getStatusOptions();
-        return isset($statuses[$this->status]) ? $statuses[$this->status] : Yii::t('app', 'Unknown');
+        return isset($statuses[$this->status]) ? $statuses[$this->status] : Yii::t('app', 'Unknown status');
     }
 
     /**
@@ -207,7 +207,7 @@ class User extends ActiveRecord
     public function canPost(Thread $thread)
     {
         return \Yii::$app->user->can('forum-createPost') &&
-               !$this->isMuted() &&
-               $thread->isActive() && !$thread->isLocked();
+            !$this->isMuted() &&
+            $thread->isActive() && !$thread->isLocked();
     }
 }

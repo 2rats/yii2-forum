@@ -261,7 +261,7 @@ class Post extends ActiveRecord
     public static function getStatusOptions()
     {
         return [
-            self::STATUS_ACTIVE=> \Yii::t('app', 'Inactive'),
+            self::STATUS_ACTIVE => \Yii::t('app', 'Inactive'),
             self::STATUS_DELETED => \Yii::t('app', 'Deleted'),
         ];
     }
@@ -274,7 +274,7 @@ class Post extends ActiveRecord
     public function printStatus()
     {
         $statuses = self::getStatusOptions();
-        return isset($statuses[$this->status]) ? $statuses[$this->status] : Yii::t('app', 'Unknown');
+        return isset($statuses[$this->status]) ? $statuses[$this->status] : Yii::t('app', 'Unknown status');
     }
 
     /**

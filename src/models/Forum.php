@@ -220,7 +220,7 @@ class Forum extends ActiveRecord
     public function printStatus()
     {
         $statuses = self::getStatusOptions();
-        return isset($statuses[$this->status]) ? $statuses[$this->status] : Yii::t('app', 'Unknown');
+        return isset($statuses[$this->status]) ? $statuses[$this->status] : Yii::t('app', 'Unknown status');
     }
 
     /**
