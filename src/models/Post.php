@@ -254,22 +254,27 @@ class Post extends ActiveRecord
     }
 
     /**
-     * Gets forum status in printable form.
+     * Gets post status options.
+     *
+     * @return string
+     */
+    public static function getStatusOptions()
+    {
+        return [
+            self::STATUS_ACTIVE=> \Yii::t('app', 'Inactive'),
+            self::STATUS_DELETED => \Yii::t('app', 'Deleted'),
+        ];
+    }
+
+    /**
+     * Gets post status in printable form.
      *
      * @return string
      */
     public function printStatus()
     {
-        switch ($this->status) {
-            case $this::STATUS_ACTIVE:
-                return \Yii::t('app', 'Active');
-                break;
-            case $this::STATUS_DELETED:
-                return \Yii::t('app', 'Deleted');
-                break;
-        }
-
-        return \Yii::t('app', 'Unknown status');
+        $statuses = self::getStatusOptions();
+        return isset($statuses[$this->status]) ? $statuses[$this->status] : Yii::t('app', 'Unknown');
     }
 
     /**

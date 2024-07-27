@@ -1,6 +1,7 @@
 <?php
 
 use rats\forum\models\Thread;
+use rats\forum\components\StatusColumn;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -8,6 +9,7 @@ use kartik\grid\GridView;
 use rats\forum\models\Forum;
 use yii\web\JsExpression;
 use yii\widgets\Pjax;
+
 
 /** @var yii\web\View $this */
 /** @var rats\forum\models\search\ThreadSearch $searchModel */
@@ -61,26 +63,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'name',
                 'headerOptions' => ['style' => 'min-width:200px'],
-            ],
+    ],
             [
-                'attribute' => 'status',
-                'value' => function ($model) {
-                    return $model->printStatus();
-                },
-                'filterType' => \kartik\grid\GridView::FILTER_SELECT2,
-                'filterWidgetOptions' => [
-                    'hideSearch' => true,
-                    'options' => ['prompt' => ''],
-                    'pluginOptions' => [
-                        'allowClear' => true,
-                    ],
-                    'data' => [
-                        Thread::STATUS_INACTIVE => Yii::t('app', 'Inactive'),
-                        Thread::STATUS_ACTIVE_UNLOCKED => Yii::t('app', 'Unlocked'),
-                        Thread::STATUS_ACTIVE_LOCKED => Yii::t('app', 'Locked'),
-                    ],
-                ],
-                'headerOptions' => ['style' => 'min-width:150px'],
+            'class' => StatusColumn::class,
             ],
             'posts',
             'views',

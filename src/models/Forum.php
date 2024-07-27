@@ -197,26 +197,30 @@ class Forum extends ActiveRecord
         return \yii\helpers\Inflector::slug($this->name);
     }
 
+
     /**
-     * Gets forum status in printable form.
+     * Gets thread status options.
+     *
+     * @return string
+     */
+    public static function getStatusOptions()
+    {
+        return [
+            self::STATUS_INACTIVE => \Yii::t('app', 'Inactive'),
+            self::STATUS_ACTIVE_LOCKED => \Yii::t('app', 'Locked'),
+            self::STATUS_ACTIVE_UNLOCKED => \Yii::t('app', 'Unlocked'),
+        ];
+    }
+
+    /**
+     * Gets thread status in printable form.
      *
      * @return string
      */
     public function printStatus()
     {
-        switch ($this->status) {
-            case $this::STATUS_INACTIVE:
-                return \Yii::t('app', 'Inactive');
-                break;
-            case $this::STATUS_ACTIVE_LOCKED:
-                return \Yii::t('app', 'Locked');
-                break;
-            case $this::STATUS_ACTIVE_UNLOCKED:
-                return \Yii::t('app', 'Unlocked');
-                break;
-        }
-
-        return \Yii::t('app', 'Unknown status');
+        $statuses = self::getStatusOptions();
+        return isset($statuses[$this->status]) ? $statuses[$this->status] : Yii::t('app', 'Unknown');
     }
 
     /**

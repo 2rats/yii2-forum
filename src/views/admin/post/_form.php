@@ -51,10 +51,7 @@ use yii\web\JsExpression;
     ]); ?>
 
     <?= $form->field($model, 'status')->widget(Select2::class, [
-        'data' => [
-            Post::STATUS_ACTIVE => Yii::t('app', 'Active'),
-            Post::STATUS_DELETED => Yii::t('app', 'Deleted'),
-        ],
+        'data' => $model::getStatusOptions(),
         'hideSearch' => false,
     ]) ?>
 

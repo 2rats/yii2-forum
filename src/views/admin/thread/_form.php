@@ -3,6 +3,7 @@
 use kartik\select2\Select2;
 use rats\forum\models\Forum;
 use rats\forum\models\Thread;
+use rats\forum\components\StatusColumn;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 use yii\web\JsExpression;
@@ -35,11 +36,7 @@ use yii\helpers\ArrayHelper;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'status')->widget(Select2::class, [
-        'data' => [
-            Thread::STATUS_INACTIVE => Yii::t('app', 'Inactive'),
-            Thread::STATUS_ACTIVE_UNLOCKED => Yii::t('app', 'Unlocked'),
-            Thread::STATUS_ACTIVE_LOCKED => Yii::t('app', 'Locked'),
-        ],
+        'data' => $model::getStatusOptions(),
         'hideSearch' => false,
     ]) ?>
 

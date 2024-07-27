@@ -47,19 +47,12 @@ use yii\web\JsExpression;
         ],
     ]) ?>
 
-
-
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-
     <?= $form->field($model, 'status')->widget(Select2::class, [
-        'data' => [
-            Forum::STATUS_INACTIVE => Yii::t('app', 'Inactive'),
-            Forum::STATUS_ACTIVE_UNLOCKED => Yii::t('app', 'Unlocked'),
-            Forum::STATUS_ACTIVE_LOCKED => Yii::t('app', 'Locked'),
-        ],
+        'data' => $model::getStatusOptions(),
         'hideSearch' => false,
     ]) ?>
 

@@ -19,11 +19,7 @@ use yii\helpers\Html;
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'status')->widget(Select2::class, [
-        'data' => [
-            User::STATUS_ACTIVE => Yii::t('app', 'Active'),
-            User::STATUS_DELETED => Yii::t('app', 'Deleted'),
-            User::STATUS_MUTED => Yii::t('app', 'Muted'),
-        ],
+        'data' => $model::getStatusOptions(),
         'hideSearch' => false,
     ]) ?>
 

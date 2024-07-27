@@ -135,25 +135,28 @@ class User extends ActiveRecord
     }
 
     /**
+     * Gets user status options.
+     *
+     * @return string
+     */
+    public static function getStatusOptions()
+    {
+        return [
+            self::STATUS_ACTIVE => \Yii::t('app', 'Active'),
+            self::STATUS_DELETED => \Yii::t('app', 'Deleted'),
+            self::STATUS_MUTED => \Yii::t('app', 'Muted'),
+        ];
+    }
+
+    /**
      * Gets user status in printable form.
      *
      * @return string
      */
     public function printStatus()
     {
-        switch ($this->status) {
-            case $this::STATUS_DELETED:
-                return \Yii::t('app', 'Deleted');
-                break;
-            case $this::STATUS_ACTIVE:
-                return \Yii::t('app', 'Active');
-                break;
-            case $this::STATUS_MUTED:
-                return \Yii::t('app', 'Muted');
-                break;
-        }
-
-        return \Yii::t('app', 'Unknown status');
+        $statuses = self::getStatusOptions();
+        return isset($statuses[$this->status]) ? $statuses[$this->status] : Yii::t('app', 'Unknown');
     }
 
     /**

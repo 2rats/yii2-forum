@@ -11,7 +11,7 @@ use rats\forum\models\query\CategoryQuery;
  * @property string       $name
  * @property string|null  $description
  * @property int          $ordering
- * @property int          status
+ * @property int          $status
  * @property int          $created_by
  * @property int          $updated_by
  * @property string|null  $created_at
@@ -105,22 +105,28 @@ class Category extends ActiveRecord
         return new CategoryQuery(get_called_class());
     }
 
+
     /**
-     * Gets forum status in printable form.
+     * Gets category status options.
+     *
+     * @return string
+     */
+    public static function getStatusOptions()
+    {
+        return [
+            self::STATUS_INACTIVE => \Yii::t('app', 'Inactive'),
+            self::STATUS_ACTIVE => \Yii::t('app', 'Active'),
+        ];
+    }
+
+    /**
+     * Gets status in printable form.
      *
      * @return string
      */
     public function printStatus()
     {
-        switch ($this->status) {
-            case $this::STATUS_INACTIVE:
-                return \Yii::t('app', 'Inactive');
-                break;
-            case $this::STATUS_ACTIVE:
-                return \Yii::t('app', 'Active');
-                break;
-        }
-
-        return \Yii::t('app', 'Unknown status');
+        $statuses = self::getStatusOptions();
+        return isset($statuses[$this->status]) ? $statuses[$this->status] : Yii::t('app', 'Unknown');
     }
 }

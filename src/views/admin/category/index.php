@@ -3,6 +3,7 @@
 use kartik\grid\GridView;
 use rats\forum\models\Category;
 use rats\forum\models\User;
+use rats\forum\components\StatusColumn;
 use yii\grid\ActionColumn;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -44,23 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['style' => 'min-width:200px'],
             ],
             [
-                'attribute' => 'status',
-                'value' => function ($model) {
-                    return $model->printStatus();
-                },
-                'filterType' => \kartik\grid\GridView::FILTER_SELECT2,
-                'filterWidgetOptions' => [
-                    'hideSearch' => true,
-                    'options' => ['prompt' => ''],
-                    'pluginOptions' => [
-                        'allowClear' => true,
-                    ],
-                    'data' => [
-                        Category::STATUS_INACTIVE => Yii::t('app', 'Inactive'),
-                        Category::STATUS_ACTIVE => Yii::t('app', 'Active'),
-                    ],
-                ],
-                'headerOptions' => ['style' => 'min-width:150px'],
+                'class' => StatusColumn::class,
             ],
             [
                 'attribute' => 'created_by',
