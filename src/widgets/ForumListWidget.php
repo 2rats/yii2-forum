@@ -6,9 +6,18 @@ use rats\forum\models\Forum;
 use yii\data\ActiveDataProvider;
 use yii\widgets\ListView;
 
+/**
+ * ForumListWidget renders a list of forums.
+ *
+ * Properties:
+ * @property integer|null $categoryId The ID of the category to filter forums by.
+ * @property integer $pageSize The number of items to display per page. Set to 0 to disable pagination. Default is 20.
+ *
+ */
 class ForumListWidget extends ListView
 {
     public $categoryId = null;
+    public $pageSize = 20;
 
     public $layout = "{items}{pager}";
     public $itemView = '@rats/forum/widgets/views/_forum';
@@ -16,6 +25,7 @@ class ForumListWidget extends ListView
     public $emptyTextOptions = [
         'class' => 'text-center text-muted',
     ];
+
     public $pager = [
         'class' => \yii\bootstrap5\LinkPager::class,
         'options' => [
@@ -34,13 +44,14 @@ class ForumListWidget extends ListView
         $this->emptyText = \Yii::t('app', 'No forums');
 
         if (!$this->dataProvider) {
+            $paginationConfig = $this->pageSize > 0 ? ['pageSize' => $this->pageSize] : false;
+
             $this->dataProvider = new ActiveDataProvider([
                 'query' => Forum::find()->active()->ordered()->andWhere(['fk_category' => $this->categoryId]),
-                'pagination' => [
-                    'pageSize' => 20,
-                ],
+                'pagination' => $paginationConfig,
             ]);
         }
         parent::init();
     }
 }
+
