@@ -1,6 +1,7 @@
 <?php
 
 use rats\forum\models\Post;
+use rats\forum\components\StatusColumn;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -69,23 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['style' => 'min-width:300px'],
             ],
             [
-                'attribute' => 'status',
-                'value' => function ($model) {
-                    return $model->printStatus();
-                },
-                'filterType' => \kartik\grid\GridView::FILTER_SELECT2,
-                'filterWidgetOptions' => [
-                    'hideSearch' => true,
-                    'options' => ['prompt' => ''],
-                    'pluginOptions' => [
-                        'allowClear' => true,
-                    ],
-                    'data' => [
-                        Post::STATUS_ACTIVE => Yii::t('app', 'Active'),
-                        Post::STATUS_DELETED => Yii::t('app', 'Deleted'),
-                    ],
-                ],
-                'headerOptions' => ['style' => 'min-width:150px'],
+                'class' => StatusColumn::class,
             ],
             [
                 'attribute' => 'created_by',
