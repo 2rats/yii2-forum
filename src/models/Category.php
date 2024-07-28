@@ -33,10 +33,9 @@ class Category extends ActiveRecord
     public function rules()
     {
         return [
-            [['status'], 'integer'],
             [['name'], 'required'],
             [['description'], 'string'],
-            [['ordering', 'created_by', 'updated_by'], 'integer'],
+            [['status', 'ordering', 'created_by', 'updated_by'], 'integer'],
             [['ordering', 'created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 191],
         ];

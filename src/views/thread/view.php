@@ -76,7 +76,7 @@ $this->registerCss('
                                 </div>
                                 <div>
                                     <?php if (Yii::$app->user->can('forum-muteUser') && Yii::$app->user->id != $post->createdBy->id) : ?>
-                                        <?php if (User::STATUS_MUTED == $post->createdBy->status) : ?>
+                                        <?php if ($post->createdBy->isMuted()) : ?>
                                             <?= Html::a(Yii::t('app', 'Unmute'), ['admin/user/mute', 'id' => $post->createdBy->id, 'revert' => true], [
                                                 'class' => 'small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover me-3',
                                                 'data' => [
@@ -149,23 +149,23 @@ $this->registerCss('
     ]); ?>
 </div>
 <div class="post-add mb-5">
-        <?php
-        $user = User::findOne(Yii::$app->user->identity->id);
-        ?>
-        <?php if (!Yii::$app->user->isGuest) : ?>
-            <?php if ($thread->isLocked()) : ?>
-                <p class="small text-center text-secondary mb-0">
-                    <?= Yii::t('app', 'You cannot post in a locked thread.') ?>
-                </p>
-            <?php elseif ($user->isMuted()) : ?>
-                <p class="small text-center text-secondary mb-0">
-                    <?= Yii::t('app', "You can't post because you've been muted.") ?>
-                </p>
-            <?php elseif ($user->canPost($thread)) : ?>
-                <?= $this->render('/post/_form', [
-                    'post_form' => new PostForm(),
-                    'fk_thread' => $thread->id,
-                ]); ?>
-            <?php endif; ?>
+    <?php
+    $user = User::findOne(Yii::$app->user->identity->id);
+    ?>
+    <?php if (!Yii::$app->user->isGuest) : ?>
+        <?php if ($thread->isLocked()) : ?>
+            <p class="small text-center text-secondary mb-0">
+                <?= Yii::t('app', 'You cannot post in a locked thread.') ?>
+            </p>
+        <?php elseif ($user->isMuted()) : ?>
+            <p class="small text-center text-secondary mb-0">
+                <?= Yii::t('app', "You can't post because you've been muted.") ?>
+            </p>
+        <?php elseif ($user->canPost($thread)) : ?>
+            <?= $this->render('/post/_form', [
+                'post_form' => new PostForm(),
+                'fk_thread' => $thread->id,
+            ]); ?>
         <?php endif; ?>
+    <?php endif; ?>
 </div>

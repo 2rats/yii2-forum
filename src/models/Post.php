@@ -162,7 +162,7 @@ class Post extends ActiveRecord
      */
     public function printCreatedBy()
     {
-        if ($this->status == $this::STATUS_DELETED || $this->createdBy->status == User::STATUS_DELETED) {
+        if ($this->isDeleted() || $this->createdBy->isDeleted()) {
             return Html::tag('em', \Yii::t('app', 'deleted'), ['class' => 'small']);
         }
         return Html::a($this->createdBy->username, ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->createdBy->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
@@ -208,7 +208,7 @@ class Post extends ActiveRecord
     public function printContent($trim = false)
     {
         $parsed_content = self::parseEmojis($this->content);
-        if ($this->status == $this::STATUS_DELETED)
+        if ($this->isDeleted())
             return htmlentities('<' . \Yii::t('app', 'deleted') . '>');
         if (!$trim)
             return Markdown::process(($parsed_content), 'gfm-comment');
@@ -232,7 +232,7 @@ class Post extends ActiveRecord
      */
     public function getCreatedByRoles()
     {
-        if ($this->status == $this::STATUS_DELETED || User::STATUS_DELETED == $this->createdBy->status) {
+        if ($this->isDeleted() || $this->createdBy->isDeleted()) {
             return [];
         }
 
@@ -246,7 +246,7 @@ class Post extends ActiveRecord
      */
     public function printCreatedBySignature()
     {
-        if ($this->status == $this::STATUS_DELETED || User::STATUS_DELETED == $this->createdBy->status) {
+        if ($this->isDeleted() || $this->createdBy->isDeleted()) {
             return null;
         }
 
@@ -284,5 +284,21 @@ class Post extends ActiveRecord
     public static function find()
     {
         return new PostQuery(get_called_class());
+    }
+
+    /**
+     * @return bool whether post is deleted
+     */
+    public function isDeleted(): bool
+    {
+        return $this->status === self::STATUS_DELETED;
+    }
+
+    /**
+     * @return bool whether post is active
+     */
+    public function isActive(): bool
+    {
+        return $this->status === self::STATUS_ACTIVE;
     }
 }

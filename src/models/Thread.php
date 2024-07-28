@@ -167,7 +167,7 @@ class Thread extends ActiveRecord
      */
     public function printCreatedBy()
     {
-        if ($this->createdBy->status == User::STATUS_DELETED) {
+        if ($this->createdBy->isDeleted()) {
             return Html::tag('em', \Yii::t('app', 'deleted'), ['class' => 'small']);
         }
         return Html::a($this->createdBy->username, ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->createdBy->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);

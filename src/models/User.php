@@ -199,9 +199,16 @@ class User extends ActiveRecord
         return $this->status == self::STATUS_MUTED;
     }
 
+    /**
+     * @return bool whether user is deleted 
+     */
+    public function isDeleted()
+    {
+        return $this->status == self::STATUS_DELETED;
+    }
 
     /**
-     * @param Thread $thread
+     * @param Thread $thread the thread to post in
      * @return bool whether user can post in thread
      */
     public function canPost(Thread $thread)
@@ -209,5 +216,16 @@ class User extends ActiveRecord
         return \Yii::$app->user->can('forum-createPost') &&
             !$this->isMuted() &&
             $thread->isActive() && !$thread->isLocked();
+    }
+
+    /**
+     * @param Forum $forum the forum to create thread in
+     * @return bool whether user can create new thread in forum
+     */
+    public function canCreateThread(Forum $forum)
+    {
+        return \Yii::$app->user->can('forum-createThread') &&
+            !$this->isMuted() &&
+            $forum->isActive() && !$forum->isLocked();
     }
 }

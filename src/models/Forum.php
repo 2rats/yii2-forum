@@ -212,6 +212,24 @@ class Forum extends ActiveRecord
         ];
     }
 
+
+    /**
+     * @return bool whether forum is locked
+     */
+    public function isLocked(): bool
+    {
+        return $this->status == self::STATUS_ACTIVE_LOCKED;
+    }
+
+
+    /**
+     * @return bool whether forum is active
+     */
+    public function isActive()
+    {
+        return $this->status !== self::STATUS_INACTIVE;
+    }
+
     /**
      * Gets thread status in printable form.
      *

@@ -39,7 +39,7 @@ class PostController extends Controller
                         'allow' => true,
                         'roles' => ['forum-createPost'],
                         'matchCallback' => function () {
-                            return User::STATUS_MUTED != User::findOne(\Yii::$app->user->identity->id)->status;
+                            return !User::findOne(\Yii::$app->user->identity->id)->isMuted();
                         }
                     ],
                 ],

@@ -49,13 +49,13 @@ function getSortLink($sort, $label, $name)
 </div>
 <div class="row justify-content-center my-3 mt-1">
     <div class="col-11 thread-container border rounded-1 text-secondary">
-        <?php if (Yii::$app->user->can('forum-createThread') && Forum::STATUS_ACTIVE_UNLOCKED == $forum->status && User::STATUS_MUTED != User::findOne(Yii::$app->user->identity->id)->status) : ?>
+        <?php if (User::findOne(Yii::$app->user->identity->id)->canCreateThread()) : ?>
             <div class="row py-2 border-bottom rounded-top-1">
                 <div class="col-6 px-3 py-2">
                     <h3 class="text-dark fw-bold mb-0 text-decoration-underline"><?= $forum->name ?></h3>
                 </div>
-            <div class="col-6 px-3 py-2 text-end">
-                    <a class="btn btn-primary" target="_blank" href="<?= Url::to(['/' . ForumModule::getInstance()->id . '/admin/thread/create?fk_forum=' . $forum->id ]) ?>"><?= Yii::t("app","Create Thread"); ?></a>
+                <div class="col-6 px-3 py-2 text-end">
+                    <a class="btn btn-primary" target="_blank" href="<?= Url::to(['/' . ForumModule::getInstance()->id . '/admin/thread/create?fk_forum=' . $forum->id]) ?>"><?= Yii::t("app", "Create Thread"); ?></a>
                 </div>
             </div>
         <?php else : ?>
@@ -64,7 +64,7 @@ function getSortLink($sort, $label, $name)
                     <h3 class="text-dark fw-bold mb-0 text-decoration-underline"><?= $forum->name ?></h3>
                 </div>
             </div>
-        <?php endif;?>
+        <?php endif; ?>
         <div class="thread-header row py-2 border-bottom bg-lighter fw-bold rounded-top-1">
             <div class="col-12 col-md-9 border-end">
                 <span class="mx-2"><?= Yii::t('app', 'Thread') ?></span>
@@ -98,13 +98,13 @@ function getSortLink($sort, $label, $name)
                 </div>
                 <div class="col-auto">
                     <div class="d-flex flex-column h-100 justify-content-center ">
-                        <?php if ($thread->status == Thread::STATUS_ACTIVE_LOCKED) : ?>
+                        <?php if ($thread->isLocked()) : ?>
                             <svg class="m-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                             </svg>
                         <?php endif; ?>
-                        <?php if ($thread->pinned == Thread::PINNED_TRUE) : ?>
+                        <?php if ($thread->isPinned()) : ?>
                             <svg class="m-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                             </svg>

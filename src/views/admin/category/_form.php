@@ -19,10 +19,7 @@ use rats\forum\models\Category;
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'status')->widget(Select2::class, [
-        'data' => [
-            Category::STATUS_INACTIVE => Yii::t('app', 'Inactive'),
-            Category::STATUS_ACTIVE => Yii::t('app', 'Active'),
-        ],
+        'data' => $model->getStatusOptions(),
         'hideSearch' => false,
     ]) ?>
 
