@@ -17,7 +17,7 @@ class PostQuery extends \yii\db\ActiveQuery
      */
     public function active()
     {
-        return $this->andWhere(['status' => Post::STATUS_ACTIVE]);
+        return $this->andWhere(['forum_post.status' => Post::STATUS_ACTIVE]);
     }
 
     /**

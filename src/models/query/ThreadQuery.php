@@ -19,7 +19,7 @@ class ThreadQuery extends \yii\db\ActiveQuery
     public function active()
     {
         return $this->andWhere([
-            'status' => [
+            'forum_thread.status' => [
                 Thread::STATUS_ACTIVE_UNLOCKED,
                 Thread::STATUS_ACTIVE_LOCKED
             ]
@@ -32,5 +32,14 @@ class ThreadQuery extends \yii\db\ActiveQuery
     public function new()
     {
         return $this->andWhere(['>=', 'created_at', new Expression('DATE_SUB(NOW(), INTERVAL 1 DAY)')]);
+    }
+
+    public function orderByLastPost()
+    {
+        return $this->innerJoinWith([
+            'lastPost' => function ($query) {
+                $query->active();
+            }
+        ])->orderBy(['forum_post.created_at' => SORT_DESC]);
     }
 }
