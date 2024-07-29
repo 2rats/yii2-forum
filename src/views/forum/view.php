@@ -19,10 +19,10 @@ while ($temp_forum->parent !== null) {
 
 function getSortLink($sort, $label, $name)
 {
-    $class = 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover ';
-    $sort_attr = str_replace('-', '', Yii::$app->request->get('sort', ''));
+    $class = 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover';
+    $sort_attr = str_replace('-', '', Yii::$app->request->get('sort', 'last_post.created_at'));
     if ($sort_attr == $name) {
-        $class .= 'fw-medium';
+        $class .= ' fw-medium';
     }
     return $sort->link($name, [
         'class' => $class,

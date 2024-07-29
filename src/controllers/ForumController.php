@@ -56,6 +56,9 @@ class ForumController extends Controller
                 'created_at',
                 'last_post.created_at'
             ],
+            'defaultOrder' => [
+                'last_post.created_at' => SORT_DESC
+            ]
         ]);
 
         $subquery = $forum->getThreads()->leftJoin('forum_post', 'forum_thread.fk_last_post = forum_post.id')->select('forum_thread.id as thread_id, forum_post.created_at');
