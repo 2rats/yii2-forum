@@ -84,7 +84,7 @@ function getSortLink($sort, $label, $name)
                     <h3 class="h5 m-0">
                         <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to(['/' . ForumModule::getInstance()->id . "/thread/view", 'id' => $thread->id, 'path' => $thread->slug]) ?>"><?= $thread->name ?></a>
                     </h3>
-                    <p class="small mb-0"><span class="fw-bold"><?= $thread->printcreatedBy() ?></span> - <?= Yii::$app->formatter->asDatetime($thread->created_at) ?></p>
+                    <p class="small mb-0"><span class="fw-bold"><?= $thread->getCreatedByHtml() ?></span> - <?= $thread->getCreatedAtString() ?></p>
                     <!-- Phone size -->
                     <div class="d-md-none d-block small">
                         <p class="mb-0">
@@ -92,7 +92,7 @@ function getSortLink($sort, $label, $name)
                             <span class="fw-medium"><?= Yii::t('app', 'Views') ?>: </span><span><?= $thread->views ?></span>
                         </p>
                         <?php if (!is_null($thread->lastPost)) : ?>
-                            <p class="small mb-0 text-end"><span class="fw-bold"><?= $thread->lastPost->printCreatedBy() ?></span> - <?= Yii::$app->formatter->asDatetime($thread->lastPost->created_at) ?></p>
+                            <p class="small mb-0 text-end"><span class="fw-bold"><?= $thread->lastPost->getCreatedByHtml() ?></span> - <?= $thread->lastPost->getCreatedAtString() ?></p>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -125,9 +125,9 @@ function getSortLink($sort, $label, $name)
                 </div>
                 <div class="col-3 d-md-block d-none my-auto last-post" style="font-size: .9rem;">
                     <?php if (!is_null($thread->lastPost)) : ?>
-                        <p class="small mb-0 fw-bold"><?= $thread->lastPost->printCreatedBy() ?></p>
+                        <p class="small mb-0 fw-bold"><?= $thread->lastPost->getCreatedByHtml() ?></p>
                         <span class="lines-1 small children-m-0 content"><?= $thread->lastPost->printContent() ?></span>
-                        <p class="small mb-0 text-end">- <?= Yii::$app->formatter->asDatetime($thread->lastPost->created_at) ?></p>
+                        <p class="small mb-0 text-end">- <?= $thread->lastPost->getCreatedAtString() ?></p>
                     <?php endif; ?>
                 </div>
             </div>

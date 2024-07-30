@@ -27,7 +27,7 @@ use yii\helpers\Url;
                 <span class="fw-medium"><?= Yii::t('app', 'Posts') ?>: </span><span><?= $model->posts ?></span>
             </p>
             <?php if (!is_null($model->lastPost)) : ?>
-                <p class="small mb-0 text-end"><span class="fw-bold"><?= $model->lastPost->printCreatedBy() ?></span> - <?= Yii::$app->formatter->asDatetime($model->lastPost->created_at) ?></p>
+                <p class="small mb-0 text-end"><span class="fw-bold"><?= $model->lastPost->getCreatedByHtml() ?></span> - <?= $model->lastPost->getCreatedAtString() ?></p>
             <?php endif; ?>
         </div>
     </div>
@@ -55,9 +55,9 @@ use yii\helpers\Url;
     </div>
     <div class="col-3 d-md-block d-none my-auto last-post" style="font-size: .9rem;">
         <?php if (!is_null($model->lastPost)) : ?>
-            <p class="small mb-0 fw-bold"><?= $model->lastPost->printCreatedBy() ?></p>
+            <p class="small mb-0 fw-bold"><?= $model->lastPost->getCreatedByHtml() ?></p>
             <span class="lines-1 small children-m-0 content"><?= $model->lastPost->printContent() ?></span>
-            <p class="small mb-0 text-end">- <?= Yii::$app->formatter->asDatetime($model->lastPost->created_at) ?></p>
+            <p class="small mb-0 text-end">- <?= $model->lastPost->getCreatedAtString() ?></p>
         <?php endif; ?>
     </div>
 </div>

@@ -25,9 +25,6 @@ use yii\helpers\Url;
                             <span class="fw-medium"><?= Yii::t('app', 'Threads') ?>: </span><span><?= $forum->threads ?></span> |
                             <span class="fw-medium"><?= Yii::t('app', 'Posts') ?>: </span><span><?= $forum->posts ?></span>
                         </p>
-                        <?php if (!is_null($forum->lastPost)) : ?>
-                            <p class="small mb-0 text-end"><span class="fw-bold"><?= $forum->lastPost->printCreatedBy() ?></span> - <?= Yii::$app->formatter->asDatetime($forum->lastPost->created_at) ?></p>
-                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="col-auto">

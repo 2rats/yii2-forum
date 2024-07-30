@@ -156,19 +156,6 @@ class Post extends ActiveRecord
     }
 
     /**
-     * Gets username of user who created Post or "removed" if Post was removed.
-     *
-     * @return string
-     */
-    public function printCreatedBy()
-    {
-        if ($this->isDeleted() || $this->createdBy->isDeleted()) {
-            return Html::tag('em', \Yii::t('app', 'deleted'), ['class' => 'small']);
-        }
-        return Html::a($this->createdBy->username, ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->createdBy->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
-    }
-
-    /**
      * Replaces text parts with emojis
      * 
      * @param string text
@@ -225,33 +212,6 @@ class Post extends ActiveRecord
         return Markdown::process($parsed_content, 'gfm-comment');
     }
 
-    /**
-     * Gets User roles or "removed" if Post was removed.
-     *
-     * @return string[]
-     */
-    public function getCreatedByRoles()
-    {
-        if ($this->isDeleted() || $this->createdBy->isDeleted()) {
-            return [];
-        }
-
-        return $this->createdBy->roles;
-    }
-
-    /**
-     * Gets content of Post or "removed" if Post was removed.
-     *
-     * @return string
-     */
-    public function printCreatedBySignature()
-    {
-        if ($this->isDeleted() || $this->createdBy->isDeleted()) {
-            return null;
-        }
-
-        return Markdown::process($this->createdBy->signature, 'gfm-comment');
-    }
 
     /**
      * Gets post status options.

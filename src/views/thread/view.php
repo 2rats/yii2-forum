@@ -58,7 +58,7 @@ $this->registerCss('
             <div style="min-height: 20vh;" class="row bg-lighter rounded-1">
                 <div class="py-2 col-12 col-md-2 border-md-end border-bottom border-md-bottom-0">
                     <p class="fw-bold m-0 text-center author">
-                        <?= $post->printCreatedBy() ?>
+                        <?= $post->getCreatedByHtml() ?>
                     </p>
                     <div class="d-flex justify-content-center">
                         <?php foreach ($post->createdByRoles as $role) : ?>
@@ -122,7 +122,7 @@ $this->registerCss('
                                             <path d="M5.921 11.9 1.353 8.62a.719.719 0 0 1 0-1.238L5.921 4.1A.716.716 0 0 1 7 4.719V6c1.5 0 6 0 7 8-2.5-4.5-7-4-7-4v1.281c0 .56-.606.898-1.079.62z" />
                                         </svg>
                                     </span>
-                                    <span class="fw-medium ms-1"><?= $post->parent->printCreatedBy() ?></span>
+                                    <span class="fw-medium ms-1"><?= $post->parent->getCreatedByHtml() ?></span>
                                 </div>
                                 <div class="small markdown-body"><?= $post->parent->printContent(true) ?></div>
                             </div>
@@ -130,10 +130,10 @@ $this->registerCss('
                         <div class="flex-grow-1">
                             <div class="content markdown-body mb-2" style="height: max-content"><?= $post->printContent() ?></div>
                         </div>
-                        <?php if ($post->printCreatedBySignature()) : ?>
+                        <?php if ($post->getCreatedBySignature()) : ?>
                             <div class="p-2 pb-0 border-top small">
                                 <small class="children-m-0">
-                                    <?= $post->printCreatedBySignature() ?>
+                                    <?= $post->getCreatedBySignature() ?>
                                 </small>
                             </div>
                         <?php endif; ?>

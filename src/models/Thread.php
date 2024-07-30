@@ -161,19 +161,6 @@ class Thread extends ActiveRecord
     }
 
     /**
-     * Gets username of user who created Post or "removed" if Post was removed.
-     *
-     * @return string
-     */
-    public function printCreatedBy()
-    {
-        if ($this->createdBy->isDeleted()) {
-            return Html::tag('em', \Yii::t('app', 'deleted'), ['class' => 'small']);
-        }
-        return Html::a($this->createdBy->username, ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->createdBy->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
-    }
-
-    /**
      * {@inheritdoc}
      * @return ThreadQuery the active query used by this AR class.
      */
