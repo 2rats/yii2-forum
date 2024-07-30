@@ -149,10 +149,10 @@ $this->registerCss('
     ]); ?>
 </div>
 <div class="post-add mb-5">
-    <?php
-    $user = User::findOne(Yii::$app->user->identity->id);
-    ?>
     <?php if (!Yii::$app->user->isGuest) : ?>
+        <?php
+        $user = User::findOne(Yii::$app->user->identity->id);
+        ?>
         <?php if ($thread->isLocked()) : ?>
             <p class="small text-center text-secondary mb-0">
                 <?= Yii::t('app', 'You cannot post in a locked thread.') ?>
