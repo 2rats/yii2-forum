@@ -1,21 +1,22 @@
 .sortable-selected {
-  outline: 1px solid; /* use instead of border */
-  margin-top: 1px;
+    outline: 1px solid;
+    /* use instead of border */
+    margin-top: 1px;
 }
 
 #save {
-  position: fixed;
-  bottom: 10%;
-  right: 5%;
-  z-index: 1000;
+    position: fixed;
+    bottom: 10%;
+    right: 5%;
+    z-index: 1000;
 }
 
-.forum,
-.category {
-  cursor: grab;
+.child,
+.parent {
+    cursor: grab;
 }
 
 .show-button,
 .hide-button {
-  cursor: pointer;
+    cursor: pointer;
 }

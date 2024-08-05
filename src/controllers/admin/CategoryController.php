@@ -3,12 +3,14 @@
 namespace rats\forum\controllers\admin;
 
 use rats\forum\models\Category;
-use rats\forum\models\Forum;
+use rats\forum\services\ReorderService;
 use rats\forum\models\search\CategorySearch;
 use rats\forum\models\User;
+use rats\forum\models\Forum;
 use yii\db\Query;
 use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * CategoryController implements the CRUD actions for Category model.
@@ -168,26 +170,27 @@ class CategoryController extends AdminController
 
     public function actionReorder()
     {
+
         if (\Yii::$app->request->isPost) {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+
             $data = json_decode(\Yii::$app->request->post('data', []), true);
-            foreach ($data as $order => $obj) {
-                $cat = Category::findOne($obj['category']);
-                $cat->ordering = $order + 1;
-                $cat->save();
+            $service = new ReorderService();
 
-                foreach ($obj['forums'] as $forum_order => $forum) {
-                    $forum = Forum::findOne($forum);
-                    $forum->ordering = $forum_order + 1;
-                    $forum->fk_category = $cat->id;
-                    $forum->save();
-                }
-            }
+            $result = $service->reorderItems(
+                $data,
+                Category::class,
+                Forum::class,
+                'fk_category',
+                'ordering',
+                'ordering'
+            );
 
-            return $this->asJson(['success' => true]);
+            return $this->asJson($result);
         }
 
         return $this->render('reorder', [
-            'categories' => Category::find()->orderBy(['ordering' => SORT_ASC])->all(),
+            'categories' => Category::find()->active()->ordered()->all(),
         ]);
     }
 }

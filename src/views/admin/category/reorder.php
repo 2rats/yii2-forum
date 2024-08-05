@@ -15,7 +15,7 @@ ReorderAsset::register($this);
 
 ?>
 
-<div class="forum-reorder">
+<div class="category-reorder">
     <h1 class='mb-3'><?= Html::encode($this->title) ?></h1>
     <div class="alert alert-success" role="alert" style="display: none;">
         <?= Yii::t('app', 'The reordering has been successfully saved.') ?>
@@ -23,7 +23,7 @@ ReorderAsset::register($this);
     <div class="alert alert-danger" role="alert" style="display: none;">
         <?= Yii::t('app', 'An error has occurred.') ?>
     </div>
-    <div class="category-container text-secondary category-sortable">
+    <div class="category-container text-secondary parent-reorder">
         <?php if (empty($categories)) : ?>
             <div class="no-results row py-2 bg-light rounded">
                 <div class="col-12 text-center"><?= Yii::t('app', 'No forum categories') ?></div>
@@ -32,7 +32,7 @@ ReorderAsset::register($this);
             <button class='btn btn-lg btn-dark' id='save'> <?= Yii::t('app', 'Save') ?></button>
         <?php endif; ?>
         <?php foreach ($categories as $index => $category) : ?>
-            <div class="category row justify-content-center mb-0 py-2 border-bottom" data-id="<?= $category->id ?>">
+            <div class="parent row justify-content-center mb-0 py-2 border-bottom" data-id="<?= $category->id ?>">
                 <div class="col-11">
                     <h3 class="mb-0">
                         <?= $category->name ?>

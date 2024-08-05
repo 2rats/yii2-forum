@@ -1,64 +1,64 @@
-$(function() {
-    $('.category-sortable').sortable({
-        animation: 150,
-        fallbackOnBody: true,
-        fallbackTolerance: 3,
-        swapThreshold: 0.65,
-    })
+$(document).ready(() => {
+  const animationSpeed = 150;
+  const fallbackTolerance = 3;
+  const swapThreshold = 0.65;
 
-    $('.forum-sortable').each(function() {
-        $(this).sortable({
-            group: 'shared',
-            multiDrag: true,
-            animation: 150,
-            fallbackTolerance: 3,
-            fallbackOnBody: true,
-            swapThreshold: 0.65,
-        })
-    })
+  const initializeSortable = ($element, options = {}) => {
+    $element.sortable({
+      animation: animationSpeed,
+      fallbackOnBody: true,
+      fallbackTolerance: fallbackTolerance,
+      swapThreshold: swapThreshold,
+      ...options,
+    });
+  };
 
-    $('.show-button, .hide-button').on('click', function() {
-        const $this = $(this)
+  initializeSortable($(".parent-reorder"));
 
-        $this.toggle()
-        $this.siblings().toggle()
-        $this.closest('.row').find('.forum-sortable').parent().toggle()
-    })
+  $(".child-items").each((_, element) => {
+    initializeSortable($(element), { group: "shared", multiDrag: true });
+  });
 
-    $('#save').click(function() {
-        const sorted = []
-        const cats = $('.category-sortable').sortable('toArray')
-        // unset first index of cats "3wm" because it's not a category
-        cats.shift()
+  $(".show-button, .hide-button").on("click", function () {
+    const $button = $(this);
+    $button.toggle();
+    $button.siblings().toggle();
+    $button.closest(".parent").find(".child-items").parent().toggle();
+  });
 
-        $('.forum-sortable').each(function(index) {
-            console.log(index);
-            sorted.push({
-                category: cats[index],
-                forums: $(this).sortable('toArray'),
-            })
-        })
-        const csrf = $('meta[name="csrf-token"]').attr('content')
+  const showAlert = (selector) => {
+    $(selector).fadeIn();
+    setTimeout(() => {
+      $(selector).fadeOut("fast");
+    }, 2000);
+  };
 
-        $.ajax({
-            type: 'POST',
-            url: window.location.href, // Same URL as the current page
-            data: { data: JSON.stringify(sorted) },
-            headers: {
-                'X-CSRF-Token': csrf, // Include CSRF token in headers
-            },
-            success: function(response) {
-                $('.alert-success').fadeIn()
-                setTimeout(function() {
-                    $('.alert-success').fadeOut('fast')
-                }, 2000)
-            },
-            error: function(error) {
-                $('.alert-danger').fadeIn()
-                setTimeout(function() {
-                    $('.alert-danger').fadeOut('fast')
-                }, 2000)
-            },
-        })
-    })
-})
+  $("#save").click(() => {
+    const sortedData = [];
+    const parentOrder = $(".parent-reorder").sortable("toArray");
+
+    // unset first "3wm" because it's not a parent
+    const index = parentOrder.indexOf("3wm");
+    parentOrder.splice(index, 1);
+
+    $(".child-items").each((index, element) => {
+      sortedData.push({
+        parentItem: parentOrder[index],
+        childItems: $(element).sortable("toArray"),
+      });
+    });
+
+    const csrfToken = $('meta[name="csrf-token"]').attr("content");
+
+    $.ajax({
+      type: "POST",
+      url: window.location.href,
+      data: { data: JSON.stringify(sortedData) },
+      headers: {
+        "X-CSRF-Token": csrfToken,
+      },
+      success: () => showAlert(".alert-success"),
+      error: () => showAlert(".alert-danger"),
+    });
+  });
+});
