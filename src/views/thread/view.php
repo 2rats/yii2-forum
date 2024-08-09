@@ -10,7 +10,17 @@ use yii\bootstrap5\LinkPager;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->title = $thread->name;
+
+$this->title = $thread->getSeoTitle();
+
+if ($description = $thread->getSeoDescription()) {
+    $this->params['description'] = $description;
+}
+
+if ($keywords = $thread->getSeoKeywords()) {
+    $this->params['keywords'] = $keywords;
+}
+
 $this->params['breadcrumbs'][] = $thread->name;
 $temp_forum = $thread->forum;
 while (null !== $temp_forum) {

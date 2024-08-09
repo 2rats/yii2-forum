@@ -50,6 +50,10 @@ use yii\helpers\ArrayHelper;
         'hideSearch' => false,
     ]) ?>
 
+    <?= $form->field($model, 'seo_title')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'seo_description')->textarea(['rows' => 3]) ?>
+    <?= $form->field($model, 'seo_keywords')->textInput(['maxlength' => true]) ?>
+
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>

@@ -9,7 +9,16 @@ use rats\forum\models\User;
 use yii\bootstrap5\LinkPager;
 use yii\helpers\Url;
 
-$this->title = $forum->name;
+$this->title = $forum->getSeoTitle();
+
+if ($description = $forum->getSeoDescription()) {
+    $this->params['description'] = $description;
+}
+
+if ($keywords = $forum->getSeoKeywords()) {
+    $this->params['keywords'] = $keywords;
+}
+
 $this->params['breadcrumbs'][] = $forum->name;
 $temp_forum = $forum;
 while ($temp_forum->parent !== null) {

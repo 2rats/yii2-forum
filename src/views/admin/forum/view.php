@@ -39,14 +39,16 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'fk_category',
                 'value' => Html::a($model->category->name, Url::to([
-                    '/' . ForumModule::getInstance()->id . '/admin/category/view', 'id' => $model->category->id
+                    '/' . ForumModule::getInstance()->id . '/admin/category/view',
+                    'id' => $model->category->id
                 ])),
                 'format' => 'raw',
             ],
             [
                 'attribute' => 'fk_parent',
                 'value' => $model->parent ? Html::a($model->parent->name, Url::to([
-                    '/' . ForumModule::getInstance()->id . '/admin/forum/view', 'id' => $model->parent->id
+                    '/' . ForumModule::getInstance()->id . '/admin/forum/view',
+                    'id' => $model->parent->id
                 ])) : null,
                 'format' => 'raw',
             ],
@@ -72,6 +74,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->updatedBy->username;
                 }
             ],
+            'seo_title',
+            'seo_description',
+            'seo_keywords',
             'created_at:datetime',
             'updated_at:datetime',
         ],

@@ -13,6 +13,9 @@ use yii\bootstrap5\Html;
  * @property int         $fk_forum
  * @property string      $name
  * @property int         $status
+ * @property string|null $seo_title
+ * @property string|null $seo_description
+ * @property string|null $seo_keywords
  * @property int         $threads
  * @property int         $views
  * @property int         $pinned
@@ -45,7 +48,7 @@ class Thread extends ActiveRecord
             [['fk_forum', 'name'], 'required'],
             [['fk_forum', 'status', 'views', 'pinned', 'created_by', 'updated_by'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['name'], 'string', 'max' => 191],
+            [['name', 'seo_title', 'seo_description', 'seo_keywords'], 'string', 'max' => 191],
             [['fk_forum'], 'exist', 'skipOnError' => true, 'targetClass' => Forum::class, 'targetAttribute' => ['fk_forum' => 'id']],
         ];
     }
@@ -191,5 +194,42 @@ class Thread extends ActiveRecord
     public function isActive()
     {
         return $this->status !== self::STATUS_INACTIVE;
+    }
+
+
+    /**
+     * Get SEO title
+     *
+     * @return string
+     */
+    public function getSeoTitle()
+    {
+        if (!empty($this->seo_title)) {
+            return $this->seo_title;
+        }
+
+        return $this->name;
+    }
+
+
+    /**
+     * Get SEO description
+     *
+     * @return string
+     */
+    public function getSeoDescription()
+    {
+        return $this->seo_description;
+    }
+
+
+    /**
+     * Get SEO keywords
+     *
+     * @return string
+     */
+    public function getSeoKeywords()
+    {
+        return $this->seo_keywords;
     }
 }

@@ -17,6 +17,9 @@ use rats\forum\models\ForumModerator;
  * @property string      $name
  * @property string|null $description
  * @property int         $status
+ * @property string|null $seo_title
+ * @property string|null $seo_description
+ * @property string|null $seo_keywords
  * @property int         $threads
  * @property int         $posts
  * @property int         $ordering
@@ -48,7 +51,7 @@ class Forum extends ActiveRecord
             [['name', 'fk_category'], 'required'],
             [['description'], 'string'],
             [['ordering', 'created_at', 'updated_at'], 'safe'],
-            [['name'], 'string', 'max' => 191],
+            [['name', 'seo_title', 'seo_description', 'seo_keywords'], 'string', 'max' => 191],
             [['fk_parent'], 'exist', 'skipOnError' => true, 'targetClass' => Forum::class, 'targetAttribute' => ['fk_parent' => 'id']],
         ];
     }
@@ -199,7 +202,7 @@ class Forum extends ActiveRecord
 
 
     /**
-     * Gets thread status options.
+     * Gets forum status options.
      *
      * @return string
      */
@@ -212,6 +215,16 @@ class Forum extends ActiveRecord
         ];
     }
 
+    /**
+     * Gets forum status in printable form.
+     *
+     * @return string
+     */
+    public function printStatus()
+    {
+        $statuses = self::getStatusOptions();
+        return isset($statuses[$this->status]) ? $statuses[$this->status] : Yii::t('app', 'Unknown status');
+    }
 
     /**
      * @return bool whether forum is locked
@@ -230,16 +243,6 @@ class Forum extends ActiveRecord
         return $this->status !== self::STATUS_INACTIVE;
     }
 
-    /**
-     * Gets thread status in printable form.
-     *
-     * @return string
-     */
-    public function printStatus()
-    {
-        $statuses = self::getStatusOptions();
-        return isset($statuses[$this->status]) ? $statuses[$this->status] : Yii::t('app', 'Unknown status');
-    }
 
     /**
      * {@inheritdoc}
@@ -261,5 +264,41 @@ class Forum extends ActiveRecord
         return new ActiveDataProvider([
             'query' => ForumModerator::find()->where(['fk_forum' => $this->id]),
         ]);
+    }
+
+    /**
+     * Get SEO title
+     *
+     * @return string
+     */
+    public function getSeoTitle()
+    {
+        if (!empty($this->seo_title)) {
+            return $this->seo_title;
+        }
+
+        return $this->name;
+    }
+
+
+    /**
+     * Get SEO description
+     *
+     * @return string
+     */
+    public function getSeoDescription()
+    {
+        return $this->seo_description;
+    }
+
+
+    /**
+     * Get SEO keywords
+     *
+     * @return string
+     */
+    public function getSeoKeywords()
+    {
+        return $this->seo_keywords;
     }
 }

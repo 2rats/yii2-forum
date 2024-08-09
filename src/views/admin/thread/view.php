@@ -37,7 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'forum',
                 'label' => Yii::t('app', 'Forum'),
                 'value' => Html::a($model->forum->name, Url::to([
-                    '/' . ForumModule::getInstance()->id . '/admin/forum/view', 'id' => $model->forum->id
+                    '/' . ForumModule::getInstance()->id . '/admin/forum/view',
+                    'id' => $model->forum->id
                 ])),
                 'format' => 'raw',
             ],
@@ -63,6 +64,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->updatedBy->username;
                 }
             ],
+
+            'seo_title',
+            'seo_description',
+            'seo_keywords',
             'created_at:datetime',
             'updated_at:datetime',
         ],
