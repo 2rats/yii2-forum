@@ -64,8 +64,8 @@ class ForumController extends Controller
         $subquery = $forum->getThreads()->leftJoin('forum_post', 'forum_thread.fk_last_post = forum_post.id')->select('forum_thread.id as thread_id, forum_post.created_at');
         $query = $forum->getThreads()->select(['forum_thread.*'])
             ->innerJoin(['last_post' => $subquery], 'forum_thread.id = last_post.thread_id')
-            ->active()
-            ->orderBy(empty($sort->orders) ? 'pinned DESC' : $sort->orders);
+            ->active()->orderBy(['pinned' => SORT_DESC] + $sort->orders);
+
         $countQuery = clone $query;
         $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->page_items]);
         $models = $query->offset($pages->offset)
