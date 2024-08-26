@@ -46,6 +46,21 @@ class ActiveRecord extends \yii\db\ActiveRecord
     }
 
     /**
+     * Formats the updated_ attribute using Yii's formatter.
+     *
+     * @param string|null $format The format to use for the date/time. If null, a global default will be used.
+     * @return string Formatted date/time string.
+     */
+    public function getUpdatedAtString($format = null)
+    {
+        if ($format === null) {
+            $format = 'd. M. Y, HH:mm';
+        }
+
+        return Yii::$app->formatter->asDateTime($this->updated_at, $format);
+    }
+
+    /**
      * Gets username of User who created Model or "deleted" if Model or User was removed.
      *
      * @return string
@@ -56,6 +71,19 @@ class ActiveRecord extends \yii\db\ActiveRecord
             return Html::tag('em', \Yii::t('app', 'deleted'), ['class' => 'small']);
         }
         return Html::a($this->createdBy->username, ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->createdBy->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
+    }
+
+    /**
+     * Gets username of User who updated Model or "deleted" if Model or User was removed.
+     *
+     * @return string
+     */
+    public function getUpdatedByHtml()
+    {
+        if ($this->updatedBy->isDeleted() || (method_exists($this, 'isDeleted') && $this->isDeleted())) {
+            return Html::tag('em', \Yii::t('app', 'deleted'), ['class' => 'small']);
+        }
+        return Html::a($this->updatedBy->username, ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->updatedBy->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
     }
 
     /**
@@ -86,4 +114,3 @@ class ActiveRecord extends \yii\db\ActiveRecord
         return Markdown::process($this->createdBy->signature, 'gfm-comment');
     }
 }
-

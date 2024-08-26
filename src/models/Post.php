@@ -261,4 +261,9 @@ class Post extends ActiveRecord
     {
         return $this->status === self::STATUS_ACTIVE;
     }
+
+    public function isEdited(): bool
+    {
+        return $this->updated_at > $this->created_at;
+    }
 }
