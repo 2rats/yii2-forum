@@ -155,6 +155,11 @@ li.breadcrumb-item>a:hover {
     animation-timing-function: linear;
 }
 
+.pagination {
+    --bs-pagination-padding-x: 0.7rem;
+    --bs-pagination-padding-y: 0.375rem;
+}
+
 .page-item.active .page-link {
     background-color: white;
     border-color: #0000003f;
