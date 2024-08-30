@@ -164,10 +164,10 @@ li.breadcrumb-item>a:hover {
 .page-item.active .page-link::before {
     position: absolute;
     bottom: -13%;
-    right: 4%;
+    left: 0;
     content: '';
     background-color: #5e5e5e;
-    width: 30px;
+    width: 100%;
     height: 1px;
 }
 
