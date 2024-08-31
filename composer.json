@@ -30,7 +30,9 @@
     "yiisoft/yii2-bootstrap5": "2.0.3",
     "kartik-v/yii2-widget-select2": "@dev",
     "yii2mod/yii2-markdown": "*",
-    "kartik-v/yii2-grid": "@dev"
+    "kartik-v/yii2-grid": "@dev",
+    "2rats/yii2-markdown": "@dev",
+    "yiisoft/yii2-imagine": "~2.2.0"
   },
   "repositories": [
     {

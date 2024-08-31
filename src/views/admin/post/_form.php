@@ -1,8 +1,6 @@
 <?php
 
 use kartik\select2\Select2;
-use rats\forum\models\Post;
-use rats\forum\models\Thread;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 use yii\web\JsExpression;
@@ -34,21 +32,7 @@ use yii\web\JsExpression;
 
     <?= $form->field($model, 'fk_parent')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'content')->widget(\yii2mod\markdown\MarkdownEditor::class, [
-        'editorOptions' => [
-            'showIcons' => ['code', 'table', 'horizontal-rule', 'heading-1', 'heading-2', 'heading-3'],
-            'hideIcons' => ['fullscreen', 'guide', 'side-by-side', 'heading', 'quote'],
-            'status' => false,
-            'insertTexts' => [
-                'image' => ["![" . Yii::t('app', 'Image description') . "](https://", ")"],
-                'link' => ["[" . Yii::t('app', 'Link text'), "](https://)"],
-                'table' => ["", "\n\n| Text | Text | Text |\n|------|------|------|\n| Text | Text | Text |\n"],
-            ],
-            'spellChecker' => false,
-            'toolbarTips' => false,
-            'placeholder' => Yii::t('app', 'Post text') . '..'
-        ],
-    ]); ?>
+    <?= $form->field($model, 'content')->widget(\rats\forum\widgets\MarkdownEditor::class); ?>
 
     <?= $form->field($model, 'status')->widget(Select2::class, [
         'data' => $model::getStatusOptions(),

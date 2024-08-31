@@ -19,6 +19,9 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use rats\forum\models\form\ImageUploadForm;
+use yii\helpers\Json;
+use Yii;
 
 class PostController extends Controller
 {
@@ -35,7 +38,7 @@ class PostController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['create'],
+                        'actions' => ['create', 'upload-image'],
                         'allow' => true,
                         'roles' => ['forum-createPost'],
                         'matchCallback' => function () {
@@ -48,6 +51,7 @@ class PostController extends Controller
                 'class' => VerbFilter::class,
                 'actions' => [
                     'create' => ['post'],
+                    'upload-image' => ['post'],
                 ],
             ],
         ];
@@ -68,5 +72,20 @@ class PostController extends Controller
         }
 
         return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/view', 'id' => $thread->id, 'path' => $thread->slug]);
+    }
+
+    public function actionUploadImage()
+    {
+        $model = new ImageUploadForm();
+
+        if (
+            Yii::$app->request->getIsPost() &&
+            $model->load(Yii::$app->request->post()) &&
+            ($file = $model->upload()) !== false
+        ) {
+            return Json::encode([
+                'filename' => $file->getFileUrl(),
+            ]);
+        }
     }
 }

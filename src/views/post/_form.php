@@ -60,21 +60,7 @@ $this->registerCss('
                         <div class="small content markdown-body">.reply .content</div>
                     </div>
 
-                    <?= $form->field($post_form, 'content')->widget(\yii2mod\markdown\MarkdownEditor::class, [
-                        'editorOptions' => [
-                            'showIcons' => ['code', 'table', 'horizontal-rule', 'heading-1', 'heading-2', 'heading-3'],
-                            'hideIcons' => ['fullscreen', 'guide', 'side-by-side', 'heading', 'quote'],
-                            'status' => false,
-                            'insertTexts' => [
-                                'image' => ["![" . Yii::t('app', 'Image description') . "](https://", ")"],
-                                'link' => ["[" . Yii::t('app', 'Link text'), "](https://)"],
-                                'table' => ["", "\n\n| Text | Text | Text |\n|------|------|------|\n| Text | Text | Text |\n"],
-                            ],
-                            'spellChecker' => false,
-                            'toolbarTips' => false,
-                            'placeholder' => Yii::t('app', 'Post text') . '..'
-                        ],
-                    ])->label(false); ?>
+                    <?= $form->field($post_form, 'content')->widget(\rats\forum\widgets\MarkdownEditor::class)->label(false); ?>
 
                     <?= $form->field($post_form, 'fk_thread')->hiddenInput(['value' => $fk_thread])->label(false) ?>
                     <?= $form->field($post_form, 'fk_parent')->hiddenInput(['value' => null])->label(false) ?>
