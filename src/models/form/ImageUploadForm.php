@@ -27,7 +27,7 @@ class ImageUploadForm extends Model
 
     private function getFilePath(): string
     {
-        return Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . File::UPLOAD_PATH . self::UPLOAD_SUBDIR . date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR;
+        return Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . File::UPLOAD_PATH . self::UPLOAD_SUBDIR;
     }
 
     private function uploadConvertedImage(): File
@@ -56,10 +56,10 @@ class ImageUploadForm extends Model
 
     private function getUniqueFilename(): string
     {
-        $filename = md5(rand() . time()) . '.jpg';
+        $filename = date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . md5(rand() . time()) . '.jpg';
         $path = $this->getFilePath();
         while (file_exists($path . $filename)) {
-            $filename = md5(rand() . time()) . '.jpg';
+            $filename = date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . md5(rand() . time()) . '.jpg';
         }
         return $filename;
     }
