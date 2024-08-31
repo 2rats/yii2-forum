@@ -7,7 +7,7 @@
     "forum"
   ],
   "type": "yii2-extension",
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "license": "BSD-3-Clause",
   "autoload": {
     "psr-4": {
