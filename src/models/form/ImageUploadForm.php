@@ -25,6 +25,11 @@ class ImageUploadForm extends Model
         ];
     }
 
+    private function getFilePathPrefix(): string
+    {
+        return date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR;
+    }
+
     private function getFilePath(): string
     {
         return Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . File::UPLOAD_PATH . self::UPLOAD_SUBDIR;
@@ -35,7 +40,7 @@ class ImageUploadForm extends Model
         $filename = $this->getUniqueFilename();
         $imagine = Image::resize($this->file->tempName, self::IMAGE_RESOLUTION, self::IMAGE_RESOLUTION);
         $path = $this->getFilePath() . $filename;
-        if (!file_exists($this->getFilePath())) {
+        if (!file_exists($this->getFilePath() . $this->getFilePathPrefix())) {
             mkdir($this->getFilePath(), 0777, true);
         }
         $imagine->save($path, ['jpeg_quality' => self::IMAGE_JPG_QUALITY]);
@@ -52,10 +57,10 @@ class ImageUploadForm extends Model
 
     private function getUniqueFilename(): string
     {
-        $filename = date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . md5(rand() . time()) . '.jpg';
+        $filename = $this->getFilePathPrefix() . md5(rand() . time()) . '.jpg';
         $path = $this->getFilePath();
         while (file_exists($path . $filename)) {
-            $filename = date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR . md5(rand() . time()) . '.jpg';
+            $filename = $this->getFilePathPrefix() . md5(rand() . time()) . '.jpg';
         }
         return $filename;
     }
