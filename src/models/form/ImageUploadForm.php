@@ -33,16 +33,12 @@ class ImageUploadForm extends Model
     private function uploadConvertedImage(): File
     {
         $filename = $this->getUniqueFilename();
-        try {
-            $imagine = Image::resize($this->file->tempName, self::IMAGE_RESOLUTION, self::IMAGE_RESOLUTION);
-            $path = $this->getFilePath() . $filename;
-            if(!file_exists($this->getFilePath())) {
-                mkdir($this->getFilePath(), 0777, true);
-            }
-            $imagine->save($path, ['jpeg_quality' => self::IMAGE_JPG_QUALITY]);
-        } catch (\Exception $e) {
-            return false;
+        $imagine = Image::resize($this->file->tempName, self::IMAGE_RESOLUTION, self::IMAGE_RESOLUTION);
+        $path = $this->getFilePath() . $filename;
+        if (!file_exists($this->getFilePath())) {
+            mkdir($this->getFilePath(), 0777, true);
         }
+        $imagine->save($path, ['jpeg_quality' => self::IMAGE_JPG_QUALITY]);
 
         $fileModel = new File([
             'filename' => self::UPLOAD_SUBDIR . $filename,
