@@ -15,8 +15,6 @@ class MarkdownEditor extends \rats\markdown\MarkdownEditor
         $this->uploadUrl = Url::to(['/' . ForumModule::getInstance()->id . '/post/upload-image']);
         
         $this->editorOptions = [
-            'showIcons' => ['code', 'table', 'horizontal-rule', 'heading-1', 'heading-2', 'heading-3'],
-            'hideIcons' => ['guide', 'side-by-side', 'heading', 'quote'],
             'status' => false,
             'insertTexts' => [
                 'image' => ["![" . Yii::t('app', 'Image description') . "](https://", ")"],
