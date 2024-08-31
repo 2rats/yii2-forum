@@ -51,7 +51,7 @@ class ImageUploadForm extends Model
             return $fileModel;
         }
         unlink($path);
-        return false;
+        throw new \Exception('Failed to save file model ' . print_r($fileModel->getErrors(), true));
     }
 
     private function getUniqueFilename(): string
