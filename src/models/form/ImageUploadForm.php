@@ -41,7 +41,7 @@ class ImageUploadForm extends Model
         $imagine = Image::resize($this->file->tempName, self::IMAGE_RESOLUTION, self::IMAGE_RESOLUTION);
         $path = $this->getFilePath() . $filename;
         if (!file_exists($this->getFilePath() . $this->getFilePathPrefix())) {
-            mkdir($this->getFilePath(), 0777, true);
+            mkdir($this->getFilePath() . $this->getFilePathPrefix(), 0777, true);
         }
         $imagine->save($path, ['jpeg_quality' => self::IMAGE_JPG_QUALITY]);
 
