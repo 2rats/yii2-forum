@@ -27,7 +27,7 @@ class ImageUploadForm extends Model
 
     private function getFilePath(): string
     {
-        return Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . File::UPLOAD_PATH . self::UPLOAD_SUBDIR;
+        return Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . File::UPLOAD_PATH . self::UPLOAD_SUBDIR . date('Y') . DIRECTORY_SEPARATOR . date('m') . DIRECTORY_SEPARATOR;
     }
 
     private function uploadConvertedImage(): File
@@ -36,6 +36,9 @@ class ImageUploadForm extends Model
         try {
             $imagine = Image::resize($this->file->tempName, self::IMAGE_RESOLUTION, self::IMAGE_RESOLUTION);
             $path = $this->getFilePath() . $filename;
+            if(!file_exists($this->getFilePath())) {
+                mkdir($this->getFilePath(), 0777, true);
+            }
             $imagine->save($path, ['jpeg_quality' => self::IMAGE_JPG_QUALITY]);
         } catch (\Exception $e) {
             return false;
