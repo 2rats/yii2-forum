@@ -14,6 +14,7 @@ use rats\forum\ForumModule;
 use rats\forum\models\form\PostForm;
 use rats\forum\models\Thread;
 use rats\forum\models\User;
+use rats\forum\models\Post;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -76,7 +77,7 @@ class PostController extends Controller
 
     public function actionUploadImage()
     {
-        $model = new ImageUploadForm();
+        $model = new ImageUploadForm(Post::IMAGE_UPLOAD_DIR);
 
         if (
             Yii::$app->request->getIsPost() &&

@@ -12,11 +12,17 @@ class ImageUploadForm extends Model
 {
     public $file;
 
-    private const UPLOAD_SUBDIR = 'post-images' . DIRECTORY_SEPARATOR;
+    private $UPLOAD_SUBDIR;
 
     private const IMAGE_RESOLUTION = 1024;
 
     private const IMAGE_JPG_QUALITY = 60;
+
+    public function __construct($subdir)
+    {
+        parent::__construct();
+        $this->UPLOAD_SUBDIR = $subdir . DIRECTORY_SEPARATOR;
+    }
 
     public function rules()
     {
@@ -32,7 +38,7 @@ class ImageUploadForm extends Model
 
     private function getFilePath(): string
     {
-        return Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . File::UPLOAD_PATH . self::UPLOAD_SUBDIR;
+        return Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . File::UPLOAD_PATH . $this->UPLOAD_SUBDIR;
     }
 
     private function uploadConvertedImage(): File
@@ -46,7 +52,7 @@ class ImageUploadForm extends Model
         $imagine->save($path, ['jpeg_quality' => self::IMAGE_JPG_QUALITY]);
 
         $fileModel = new File([
-            'filename' => self::UPLOAD_SUBDIR . $filename,
+            'filename' => $this->UPLOAD_SUBDIR . $filename,
         ]);
         if ($fileModel->save()) {
             return $fileModel;
