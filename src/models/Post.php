@@ -196,22 +196,23 @@ class Post extends ActiveRecord
      */
     public function printContent($trim = false)
     {
-        $parsed_content = self::parseEmojis($this->content);
+        $parsedContent = self::parseEmojis($this->content);
         if ($this->isDeleted())
             return htmlentities('<' . \Yii::t('app', 'deleted') . '>');
         if (!$trim)
-            return Markdown::process(($parsed_content), 'gfm-comment');
+            return Markdown::process(($parsedContent), 'gfm-comment');
 
         $limit = 5;
         // take first rows
-        $parsed_content = preg_split('#\n#', $parsed_content, $limit + 1);
+        $parsedContent = preg_split('#\n#', $parsedContent, $limit + 1);
         // if longer than limit, append "..."
-        if (sizeof($parsed_content) > $limit) {
-            $parsed_content[$limit] = "\n...";
+        if (sizeof($parsedContent) > $limit) {
+            $parsedContent[$limit] = "\n...";
         }
         // join first rows
-        $parsed_content = implode("\n", array_slice($parsed_content, 0, $limit + 1));
-        return Markdown::process($parsed_content, 'gfm-comment');
+        $parsedContent = implode("\n", array_slice($parsedContent, 0, $limit + 1));
+        $parsedContent = Markdown::process($parsedContent, 'gfm-comment');
+        return strip_tags($parsedContent);
     }
 
 
