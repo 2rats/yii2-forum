@@ -97,6 +97,17 @@ class Post extends ActiveRecord
         parent::afterSave($insert, $changedAttributes);
     }
 
+    public function afterDelete()
+    {
+        $this->thread->fk_last_post = $this->thread->getPosts()->max('id');
+        $this->thread->updateCounters(['posts' => -1]);
+        $this->thread->save();
+        $this->thread->forum->fk_last_post = $this->thread->forum->getPosts()->max('id');
+        $this->thread->forum->updateCounters(['posts' => -1]);
+        $this->thread->forum->save();
+        parent::afterDelete();
+    }
+
     /**
      * Gets query for [[CreatedBy]].
      *
