@@ -11,9 +11,7 @@ class MarkdownImageGroupService
         $group = false;
         $buffer = '';
 
-        $line = strtok($content, "\n");
-
-        while ($line !== false) {
+        foreach (explode("\n", $content) as $line) {
             if ($this->isImageLine($line)) {
                 if (!$group) {
                     $group = true;
@@ -22,14 +20,12 @@ class MarkdownImageGroupService
                 $buffer .=  Markdown::process($line, 'gfm-comment');
             }
             else {
-                if ($group && $line != "\n") {
+                if ($group && !empty($line)) {
                     $group = false;
                     $buffer .= '</div>';
                 }
-                $buffer .= $line . "\n\n";
+                $buffer .= !empty($line) ? $line . "\n" : "\n";
             }
-
-            $line = strtok("\n");
         }
 
         if ($group) {
