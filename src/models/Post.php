@@ -3,6 +3,7 @@
 namespace rats\forum\models;
 
 use rats\forum\ForumModule;
+use rats\forum\services\MarkdownImageGroupService;
 use rats\forum\models\query\PostQuery;
 use Yii;
 use yii\bootstrap5\Html;
@@ -207,11 +208,15 @@ class Post extends ActiveRecord
      */
     public function printContent($trim = false)
     {
+        $markdownImageService = new MarkdownImageGroupService();
+
         $parsedContent = self::parseEmojis($this->content);
         if ($this->isDeleted())
             return htmlentities('<' . \Yii::t('app', 'deleted') . '>');
-        if (!$trim)
+        if (!$trim) {
+            $parsedContent = $markdownImageService->groupImages($parsedContent);
             return Markdown::process(($parsedContent), 'gfm-comment');
+        }
 
         $limit = 5;
         // take first rows
@@ -222,6 +227,7 @@ class Post extends ActiveRecord
         }
         // join first rows
         $parsedContent = implode("\n", array_slice($parsedContent, 0, $limit + 1));
+        $parsedContent = $markdownImageService->groupImages($parsedContent);
         $parsedContent = Markdown::process($parsedContent, 'gfm-comment');
         return strip_tags($parsedContent);
     }

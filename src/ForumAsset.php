@@ -10,10 +10,12 @@ class ForumAsset extends AssetBundle
 
     public $js = [
         'postScroll.js',
-        'create_post.js'
+        'create_post.js',
+        'fancybox.umd.js',
     ];
     public $css = [
-        'forum.css'
+        'forum.css',
+        'fancybox.css',
     ];
 
     public $depends = [
