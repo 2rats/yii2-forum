@@ -28,15 +28,6 @@ while (null !== $temp_forum) {
     $temp_forum = $temp_forum->parent;
 }
 
-$this->registerJs('
-$(`.image-group`).each(function() {
-    Fancybox.bind(this,"img", 
-    {
-        groupAll: true
-    });
-});'
-);
-
 $this->registerCss('
 .markdown-body {
     box-sizing: border-box;
@@ -57,25 +48,6 @@ $this->registerCss('
         padding: 15px;
     }
     }
-
-    .image-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
-}
-
-.image-group img {
-    width: 100%;
-    height: 10em;
-    object-fit: cover;
-    display: block;
-    border-radius: 5px;
-    transition: transform 0.2s ease-in-out;
-}
-
-.image-group img:hover {
-    transform: scale(1.05);
-}
 ');
 
 ?>
