@@ -31,8 +31,7 @@ use yii\widgets\Pjax;
             </div>
 
             <?php Pjax::begin([
-                'enablePushState' => false,
-                'enableReplaceState' => false,
+                'linkSelector' => '.pagination a, .sort a',
             ]) ?>
 
             <?= MembersListWidget::widget() ?>

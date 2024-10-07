@@ -15,7 +15,7 @@ use rats\forum\ForumModule;
     <div class="col">
         <h3 class="h5 m-0">
             <a class="link-primary link-underline-opacity-0 link-underline-opacity-100-hover" href="
-                <?= Url::to(['/' . ForumModule::getInstance()->id . "/diskuse/profile/" . $model->id]) ?>"><?= $model->username ?></a>
+                <?= Url::to(['/' . ForumModule::getInstance()->id . "/profile/" . $model->id]) ?>"><?= $model->username ?></a>
         </h3>
         <div class="d-md-block d-none">
             <span class="small children-mb-0 lines-1"><?= $model->real_name ?></span>

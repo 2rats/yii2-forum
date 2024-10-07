@@ -8,6 +8,7 @@ use rats\forum\models\Thread;
 use rats\forum\models\User;
 use yii\bootstrap5\LinkPager;
 use yii\helpers\Url;
+use yii\widgets\Pjax;
 
 $this->title = $forum->getSeoTitle();
 
@@ -47,6 +48,11 @@ function getSortLink($sort, $label, $name)
         'subforum' => true
     ]); ?>
 <?php endif; ?>
+
+<?php Pjax::begin([
+    'scrollTo' => true,
+    'linkSelector' => '.pagination a, .sort a',
+]) ?>
 
 <div class="sort px-5">
     <span><?= Yii::t('app', 'Sort by') ?></span>
@@ -148,3 +154,5 @@ function getSortLink($sort, $label, $name)
         'pagination' => $pages,
     ]); ?>
 </div>
+
+<?php Pjax::end() ?>

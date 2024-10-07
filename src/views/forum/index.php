@@ -21,8 +21,7 @@ use yii\widgets\Pjax;
             </div>
         </div>
         <?php Pjax::begin([
-            'enablePushState' => false,
-            'enableReplaceState' => false,
+            'linkSelector' => '.pagination a, .sort a',
         ]) ?>
 
         <?= ForumListWidget::widget([
