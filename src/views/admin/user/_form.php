@@ -18,6 +18,10 @@ use yii\helpers\Html;
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'real_name')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'signature')->textArea(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'status')->widget(Select2::class, [
         'data' => $model::getStatusOptions(),
         'hideSearch' => false,
