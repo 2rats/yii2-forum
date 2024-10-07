@@ -54,6 +54,17 @@ function getSortLink($sort, $label, $name)
     'linkSelector' => '.pagination a, .sort a',
 ]) ?>
 
+<?php if (!empty($forum->forumModerators)): ?>
+    <div class="px-5">
+        <p class="mb-2 small">
+            <span class="fw-semibold"><?= Yii::t('app', 'Moderators') ?>:</span>
+            <?= implode(', ', array_map(function ($moderator) {
+                return $moderator->getProfileUrl();
+            }, $forum->forumModerators)); ?>
+        </p>
+    </div>
+<?php endif; ?>
+
 <div class="sort px-5">
     <span><?= Yii::t('app', 'Sort by') ?></span>
     <?= getSortLink($sort, Yii::t('app', 'Name'), 'name') ?> |

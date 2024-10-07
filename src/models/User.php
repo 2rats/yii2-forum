@@ -4,6 +4,7 @@ namespace rats\forum\models;
 
 use rats\forum\ForumModule;
 use rats\forum\models\query\UserQuery;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "forum_user".
@@ -241,5 +242,13 @@ class User extends ActiveRecord
         return \Yii::$app->user->can('forum-createThread') &&
             !$this->isMuted() &&
             $forum->isActive() && !$forum->isLocked();
+    }
+
+    public function getProfileUrl(): string {
+        
+        if ($this->isDeleted()) {
+            return Html::tag('em', \Yii::t('app', 'deleted'), ['class' => 'small']);
+        }
+        return Html::a($this->username, ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->updatedBy->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
     }
 }

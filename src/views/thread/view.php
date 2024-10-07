@@ -55,6 +55,17 @@ $this->registerCss('
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css" integrity="sha512-bm684OXnsiNuQSyrxuuwo4PHqr3OzxPpXyhT66DA/fhl73e1JmBxRKGnO/nRwWvOZxJLRCmNH7FII+Yn1JNPmg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
+<?php if (!empty($thread->forum->forumModerators)): ?>
+    <div class="px-5">
+        <p class="mb-2 small">
+            <span class="fw-semibold"><?= Yii::t('app', 'Moderators') ?>:</span>
+            <?= implode(', ', array_map(function ($moderator) {
+                return $moderator->getProfileUrl();
+            }, $thread->forum->forumModerators)); ?>
+        </p>
+    </div>
+<?php endif; ?>
+
 <div class="row justify-content-center my-3 post-container">
 
     <?php if (empty($posts)) : ?>
