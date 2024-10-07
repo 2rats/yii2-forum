@@ -10,11 +10,15 @@ namespace rats\forum\controllers;
 
 use rats\forum\ForumModule;
 use Yii;
+use rats\forum\models\User;
+use rats\forum\models\Forum;
 use rats\forum\models\Post;
 use rats\forum\models\Thread;
 use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\helpers\ArrayHelper;
+use yii\filters\AccessControl;
 
 class ThreadController extends Controller
 {
@@ -24,6 +28,37 @@ class ThreadController extends Controller
     {
         $this->layout = $this->module->forumLayout;
         parent::init();
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function behaviors()
+    {
+        return ArrayHelper::merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                            'actions' => ['create']
+                        ],
+                        [
+                            'allow' => true,
+                            'roles' => ['forum-admin', 'forum-moderator'],
+                            'actions' => ['highlight']
+                        ],
+                        [
+                            'allow' => true,
+                            'actions' => ['view']
+                        ]
+                    ]
+                ]
+            ]
+        );
     }
 
     public function actionView($id, $path)
@@ -80,5 +115,29 @@ class ThreadController extends Controller
             if (($index + 1) % $this->page_items == 0) $page += 1;
         }
         return $this->redirect(["/" . ForumModule::getInstance()->id . "/thread/view", 'id' => $id, 'path' => $path, 'post_id' => $post_id, 'page' => $page]);
+    }
+
+    public function actionCreate($fk_forum)
+    {
+        $forum = Forum::find()->active()->andWhere(['id' => $fk_forum])->one();
+        if ($forum == null) {
+            throw new NotFoundHttpException(Yii::t('app', 'Forum not found'));
+        }
+        if (!User::findOne(Yii::$app->user->identity->id)->canCreateThread($forum)) {
+            throw new NotFoundHttpException(Yii::t('app', 'You are not allowed to create threads'));
+        }
+
+        $thread = new Thread();
+        $thread->fk_forum = $fk_forum;
+        $thread->status = Thread::STATUS_ACTIVE_UNLOCKED;
+
+        if ($thread->load(Yii::$app->request->post()) && $thread->save()) {
+            return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/view', 'id' => $thread->id, 'path' => $thread->slug]);
+        }
+
+        return $this->render('create', [
+            'model' => $thread,
+            'forum' => $forum,
+        ]);
     }
 }
