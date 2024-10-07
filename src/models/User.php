@@ -249,6 +249,6 @@ class User extends ActiveRecord
         if ($this->isDeleted()) {
             return Html::tag('em', \Yii::t('app', 'deleted'), ['class' => 'small']);
         }
-        return Html::a($this->username, ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->updatedBy->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
+        return Html::a($this->username, ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
     }
 }
