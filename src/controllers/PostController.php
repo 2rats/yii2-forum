@@ -77,7 +77,7 @@ class PostController extends Controller
 
     public function actionUploadImage()
     {
-        $model = new ImageUploadForm(Post::IMAGE_UPLOAD_DIR);
+        $model = new ImageUploadForm(ImageUploadForm::DIR_PATH_POST);
 
         if (
             Yii::$app->request->getIsPost() &&

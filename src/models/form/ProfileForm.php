@@ -17,7 +17,11 @@ class ProfileForm extends Model
     public $real_name;
     public $username;
     public $email;
+    public $signature;
 
+    /**
+     * @var User
+     */
     public $_profile;
 
     /**
@@ -27,10 +31,13 @@ class ProfileForm extends Model
     {
         return [
             [['username', 'email', 'real_name'], 'string', 'max' => 191],
+            [['signature'], 'string', 'max' => 512],
             [['username', 'email'], 'required'],
             [['real_name'], 'default'],
             [['email'], 'email'],
-            [['username', 'email'], 'validateUnique'],
+            [['username', 'email'], 'unique', 'targetClass' => User::class, 'filter' => function($query) {
+                $query->andWhere(['<>', 'id', Yii::$app->user->identity->id]);
+            }],
         ];
     }
 
@@ -40,33 +47,19 @@ class ProfileForm extends Model
             'real_name' => \Yii::t('app', 'Real name'),
             'username' => \Yii::t('app', 'Username'),
             'email' => \Yii::t('app', 'Email'),
+            'signature' => \Yii::t('app', 'Signature'),
+            'image' => \Yii::t('app', 'Profile picture'),
         ];
     }
 
     public function init()
     {
-        $this->_profile = User::find(Yii::$app->user->identity->id)->one();
+        $this->_profile = User::findOne(Yii::$app->user->identity->id);
         $this->real_name = $this->_profile->real_name;
         $this->username = $this->_profile->username;
         $this->email = $this->_profile->email;
+        $this->signature = $this->_profile->signature;
     }
-
-    public function validateUnique($attribute, $params)
-    {
-        $user = User::find()->where([$attribute => $this->$attribute])->andWhere(['!=', 'id', Yii::$app->user->identity->id])->one();
-        if($user) {
-            $this->addError($attribute, Yii::t(
-                'yii',
-                '{attribute} "{value}" has already been taken.',
-                [
-                    'attribute' => $user->attributeLabels()[$attribute],
-                    'value' => $this->$attribute,
-                ]
-            ));
-        }
-    }
-
-    
 
     public function save()
     {
@@ -74,6 +67,7 @@ class ProfileForm extends Model
         $profile->username = $this->username;
         $profile->real_name = $this->real_name;
         $profile->email = $this->email;
+        $profile->signature = $this->signature;
         if ($profile->save()) {
             $this->_profile = $profile;
             return true;

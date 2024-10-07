@@ -33,8 +33,6 @@ class Post extends ActiveRecord
     public const STATUS_DELETED = 0;
     public const STATUS_ACTIVE = 1;
 
-    public const IMAGE_UPLOAD_DIR = 'post-images';
-
     public static function tableName()
     {
         return 'forum_post';

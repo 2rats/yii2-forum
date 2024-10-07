@@ -14,9 +14,23 @@ class ImageUploadForm extends Model
 
     private $UPLOAD_SUBDIR;
 
+    public const DIR_PATH_POST = 'post-images';
+
+    public const DIR_PATH_PROFILE = 'profile-images';
+
     private const IMAGE_RESOLUTION = 1024;
 
-    private const IMAGE_JPG_QUALITY = 60;
+    private const IMAGE_JPG_QUALITY = 80;
+
+    /**
+     * @var bool Whether to skip the validation if the file is empty.
+     */
+    public bool $skipOnEmpty = false;
+
+    /**
+     * @var bool Whether to use the active name for the file.
+     */
+    public bool $useActiveName = false;
 
     public function __construct($subdir)
     {
@@ -27,7 +41,7 @@ class ImageUploadForm extends Model
     public function rules()
     {
         return [
-            [['file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg, webp'],
+            [['file'], 'file', 'skipOnEmpty' => $this->skipOnEmpty, 'extensions' => 'png, jpg, jpeg, webp'],
         ];
     }
 
@@ -73,7 +87,11 @@ class ImageUploadForm extends Model
 
     public function load($data, $formName = null)
     {
-        $this->file = UploadedFile::getInstanceByName('file');
+        if($this->useActiveName){
+            $this->file = UploadedFile::getInstance($this, 'file');
+        } else {
+            $this->file = UploadedFile::getInstanceByName('file');
+        }
         return $this->file !== null;
     }
 

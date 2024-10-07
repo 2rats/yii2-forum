@@ -17,6 +17,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
+use rats\forum\models\form\ImageUploadForm;
 
 class ProfileController extends Controller
 {
@@ -66,7 +67,18 @@ class ProfileController extends Controller
 
     public function actionUpdate($id){
         $model = new ProfileForm();
+        $uploadImage = new ImageUploadForm(ImageUploadForm::DIR_PATH_PROFILE);
+        $uploadImage->skipOnEmpty = true;
+        $uploadImage->useActiveName = true;
+
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save()) {
+            if($uploadImage->load(Yii::$app->request->post())){
+                $file = $uploadImage->upload();
+                if($file != null) {
+                    $model->_profile->fk_image = $file->id;
+                    $model->_profile->save(false);
+                }
+            }
             return $this->redirect(['/' . ForumModule::getInstance()->id . "/profile/view", 'id' => $id]);
         }
 
@@ -76,7 +88,8 @@ class ProfileController extends Controller
         }
 
         return $this->render('update', [
-            'model' => $model
+            'profileFormModel' => $model,
+            'imageUploadFormModel' => $uploadImage,
         ]);
     }
 }

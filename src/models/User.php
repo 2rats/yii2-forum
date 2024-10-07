@@ -14,6 +14,7 @@ use rats\forum\models\query\UserQuery;
  * @property string|null            $real_name
  * @property int                    $status
  * @property string|null            $signature
+ * @property int|null               $fk_image
  * @property int                    $created_by
  * @property int                    $updated_by
  * @property string|null            $created_at
@@ -36,10 +37,11 @@ class User extends ActiveRecord
     {
         return [
             [['username'], 'required'],
-            [['status', 'created_by', 'updated_by'], 'integer'],
+            [['status', 'created_by', 'updated_by', 'fk_image'], 'integer'],
             [['signature'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['username', 'email', 'real_name'], 'string', 'max' => 191],
+            [['fk_image'], 'exist', 'skipOnEmpty' => true, 'targetClass' => File::class, 'targetAttribute' => ['fk_image' => 'id']],
         ];
     }
 
@@ -52,6 +54,7 @@ class User extends ActiveRecord
             'real_name' => \Yii::t('app', 'Real name'),
             'status' => \Yii::t('app', 'Status'),
             'signature' => \Yii::t('app', 'Signature'),
+            'fk_image' => \Yii::t('app', 'Profile picture'),
             'created_by' => \Yii::t('app', 'Created by'),
             'updated_by' => \Yii::t('app', 'Updated by'),
             'created_at' => \Yii::t('app', 'Created at'),
@@ -98,6 +101,17 @@ class User extends ActiveRecord
     {
         return $this->hasMany(Thread::class, ['created_by' => 'id']);
     }
+
+    /**
+     * Gets query for [[Image]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getImage()
+    {
+        return $this->hasOne(File::class, ['id' => 'fk_image']);
+    }
+
 
     /**
      * Gets user roles.
