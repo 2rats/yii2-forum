@@ -15,6 +15,7 @@ use rats\forum\models\Forum;
 use rats\forum\models\Post;
 use rats\forum\models\Thread;
 use yii\data\Pagination;
+use yii\data\Sort;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\helpers\ArrayHelper;
@@ -53,12 +54,30 @@ class ThreadController extends Controller
                         ],
                         [
                             'allow' => true,
-                            'actions' => ['view']
+                            'actions' => ['view', 'hot']
                         ]
                     ]
                 ]
             ]
         );
+    }
+
+    public function actionHot()
+    {
+        $query = Thread::find()->select(['forum_thread.*'])
+            ->leftJoin('forum_post AS last_post', 'forum_thread.fk_last_post = last_post.id')
+            ->active()->orderBy(['last_post.created_at' => SORT_DESC])->andWhere('last_post.created_at > NOW() - INTERVAL 3 DAY');
+
+        $countQuery = clone $query;
+        $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 20]);
+        $models = $query->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
+
+        return $this->render('hot', [
+            'threads' => $models,
+            'pages' => $pages,
+        ]);
     }
 
     public function actionView($id, $path)
