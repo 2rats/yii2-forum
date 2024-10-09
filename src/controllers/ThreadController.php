@@ -49,12 +49,7 @@ class ThreadController extends Controller
                         ],
                         [
                             'allow' => true,
-                            'roles' => ['forum-admin', 'forum-moderator'],
-                            'actions' => ['highlight']
-                        ],
-                        [
-                            'allow' => true,
-                            'actions' => ['view', 'hot']
+                            'actions' => ['view', 'hot', 'highlight']
                         ]
                     ]
                 ]
