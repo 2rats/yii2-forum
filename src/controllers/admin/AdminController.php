@@ -30,7 +30,7 @@ class AdminController extends \yii\web\Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['forum-admin', 'forum-moderator']
+                            'roles' => ['forum-admin']
                         ]
                     ]
                 ]

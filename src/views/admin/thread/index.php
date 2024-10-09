@@ -23,7 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Thread'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?php if (Yii::$app->user->can('forum-admin')): ?>
+            <?= Html::a(Yii::t('app', 'Create Thread'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?php endif; ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -63,9 +65,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'name',
                 'headerOptions' => ['style' => 'min-width:200px'],
-    ],
+            ],
             [
-            'class' => StatusColumn::class,
+                'class' => StatusColumn::class,
             ],
             'posts',
             'views',
@@ -87,6 +89,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Url::toRoute([$action, 'id' => $model->id]);
                 },
                 'headerOptions' => ['style' => 'min-width:75px'],
+                'visibleButtons' => [
+                    'update' => function ($model) {
+                        return Yii::$app->user->can('forum-editThread', ['thread' => $model]);
+                    },
+                    'delete' => function ($model) {
+                        return Yii::$app->user->can('forum-editThread', ['thread' => $model]);
+                    },
+                ]
             ],
         ],
     ]); ?>

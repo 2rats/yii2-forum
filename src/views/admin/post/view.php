@@ -18,14 +18,16 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php if (Yii::$app->user->can('forum-editThread', ['thread' => $model->thread])): ?>
+            <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                    'method' => 'post',
+                ],
+            ]) ?>
+        <?php endif; ?>
     </p>
 
     <?= DetailView::widget([
@@ -36,14 +38,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'thread',
                 'label' => Yii::t('app', 'Thread'),
                 'value' => Html::a($model->thread->name, Url::to([
-                    '/' . ForumModule::getInstance()->id . '/admin/thread/view', 'id' => $model->thread->id
+                    '/' . ForumModule::getInstance()->id . '/admin/thread/view',
+                    'id' => $model->thread->id
                 ])),
                 'format' => 'raw',
             ],
             [
                 'attribute' => 'fk_parent',
                 'value' => $model->parent ? Html::a($model->parent->id, Url::to([
-                    '/' . ForumModule::getInstance()->id . '/admin/post/view', 'id' => $model->parent->id
+                    '/' . ForumModule::getInstance()->id . '/admin/post/view',
+                    'id' => $model->parent->id
                 ])) : null,
                 'format' => 'raw',
             ],

@@ -10,6 +10,7 @@ use yii\db\Query;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use rats\forum\ForumModule;
+use yii\filters\AccessControl;
 
 /**
  * ThreadController implements the CRUD actions for Thread model.
@@ -23,6 +24,33 @@ class ThreadController extends AdminController
     {
         return array_merge(
             parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => ['update', 'delete', 'lock', 'unlock', 'pin', 'unpin'],
+                            'roles' => ['forum-editThread'],
+                            'roleParams' => function ($rule) {
+                                return [
+                                    'thread' => Thread::findOne(['id' => Yii::$app->request->get('id')])
+                                ];
+                            }
+                        ],
+                        [
+                            'allow' => true,
+                            'actions' => ['view', 'index', 'forum-list'],
+                            'roles' => ['forum-moderator'],
+                            'roleParams' => function ($rule) {
+                                return [
+                                    'thread' => Thread::findOne(['id' => Yii::$app->request->get('id')])
+                                ];
+                            }
+                        ]
+                    ]
+                ]
+            ],
             [
                 'verbs' => [
                     'class' => VerbFilter::className(),

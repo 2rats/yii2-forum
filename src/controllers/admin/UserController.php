@@ -15,24 +15,6 @@ use yii\web\Response;
  */
 class UserController extends AdminController
 {
-    public function behaviors()
-    {
-        return ArrayHelper::merge(
-            parent::behaviors(),
-            [
-                'access' => [
-                    'class' => AccessControl::class,
-                    'rules' => [
-                        [
-                            'allow' => true,
-                            'roles' => ['forum-admin', 'forum-moderator']
-                        ]
-                    ]
-                ]
-            ]
-        );
-    }
-
     /**
      * Lists all User models.
      *

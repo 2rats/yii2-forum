@@ -11,6 +11,7 @@ use Yii;
 use yii\db\Query;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * PostController implements the CRUD actions for Post model.
@@ -31,6 +32,31 @@ class PostController extends AdminController
                         'delete' => ['POST'],
                     ],
                 ],
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'actions' => ['update', 'delete'],
+                            'roles' => ['forum-editThread'],
+                            'roleParams' => function ($rule) {
+                                return [
+                                    'thread' => Post::findOne(['id' => Yii::$app->request->get('id')])?->thread
+                                ];
+                            }
+                        ],
+                        [
+                            'allow' => true,
+                            'actions' => ['view', 'index', 'thread-list', 'user-list'],
+                            'roles' => ['forum-moderator'],
+                            'roleParams' => function ($rule) {
+                                return [
+                                    'thread' => Post::findOne(['id' => Yii::$app->request->get('id')])?->thread
+                                ];
+                            }
+                        ]
+                    ]
+                ]
             ]
         );
     }

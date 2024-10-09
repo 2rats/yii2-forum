@@ -27,15 +27,6 @@ class ForumModeratorController extends AdminController
                         'delete' => ['POST'],
                     ],
                 ],
-                'access' => [
-                    'class' => AccessControl::class,
-                    'rules' => [
-                        [
-                            'allow' => true,
-                            'roles' => ['forum-admin']
-                        ]
-                    ]
-                ]
             ]
         );
     }
