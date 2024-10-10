@@ -21,9 +21,5 @@ class m241009_161808_add_last_post_index_to_thread_table extends Migration
 
     public function safeDown()
     {
-        $this->dropIndex(
-            "{{%idx-{$this->table_name}-fk_last_post}}",
-            "{{%{$this->table_name}}}"
-        );
     }
 }
