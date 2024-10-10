@@ -80,6 +80,13 @@ class Thread extends ActiveRecord
         parent::afterSave($insert, $changedAttributes);
     }
 
+    public function afterDelete()
+    {
+        $this->forum->updateCounters(['threads' => -1]);
+        $this->forum->save();
+        parent::afterDelete();
+    }
+
     /**
      * Gets query for [[CreatedBy]].
      *
