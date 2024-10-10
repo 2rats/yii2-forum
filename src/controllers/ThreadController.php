@@ -9,6 +9,7 @@
 namespace rats\forum\controllers;
 
 use rats\forum\ForumModule;
+use rats\forum\models\form\ThreadCreateForm;
 use Yii;
 use rats\forum\models\User;
 use rats\forum\models\Forum;
@@ -141,16 +142,14 @@ class ThreadController extends Controller
             throw new NotFoundHttpException(Yii::t('app', 'You are not allowed to create threads'));
         }
 
-        $thread = new Thread();
-        $thread->fk_forum = $fk_forum;
-        $thread->status = Thread::STATUS_ACTIVE_UNLOCKED;
-
-        if ($thread->load(Yii::$app->request->post()) && $thread->save()) {
+        $model = new ThreadCreateForm($forum);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $thread = $model->getThread();
             return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/view', 'id' => $thread->id, 'path' => $thread->slug]);
         }
 
         return $this->render('create', [
-            'model' => $thread,
+            'model' => $model,
             'forum' => $forum,
         ]);
     }

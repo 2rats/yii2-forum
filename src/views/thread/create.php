@@ -6,7 +6,7 @@ use rats\forum\ForumModule;
 
 /**
  * @var yii\web\View $this
- * @var rats\forum\models\Thread $model
+ * @var rats\forum\models\form\ThreadCreateForm $model
  * @var rats\forum\models\Forum $forum
  */
 
@@ -24,6 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php $form = ActiveForm::begin(); ?>
 
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+                
+            <?= $form->field($model, 'content')->widget(\rats\forum\widgets\MarkdownEditor::class)->label(false); ?>
 
             <div class="form-group">
                 <?= Html::submitButton(Yii::t('app', 'Create'), ['class' => 'btn btn-success']) ?>
