@@ -16,7 +16,6 @@ class ProfileForm extends Model
 {
     public $real_name;
     public $username;
-    public $email;
     public $signature;
 
     /**
@@ -30,12 +29,11 @@ class ProfileForm extends Model
     public function rules()
     {
         return [
-            [['username', 'email', 'real_name'], 'string', 'max' => 191],
+            [['username', 'real_name'], 'string', 'max' => 191],
             [['signature'], 'string', 'max' => 512],
-            [['username', 'email'], 'required'],
+            [['username'], 'required'],
             [['real_name'], 'default'],
-            [['email'], 'email'],
-            [['username', 'email'], 'unique', 'targetClass' => User::class, 'filter' => function($query) {
+            [['username'], 'unique', 'targetClass' => User::class, 'filter' => function($query) {
                 $query->andWhere(['<>', 'id', Yii::$app->user->identity->id]);
             }],
         ];
@@ -46,7 +44,6 @@ class ProfileForm extends Model
         return [
             'real_name' => \Yii::t('app', 'Real name'),
             'username' => \Yii::t('app', 'Username'),
-            'email' => \Yii::t('app', 'Email'),
             'signature' => \Yii::t('app', 'Signature'),
             'image' => \Yii::t('app', 'Profile picture'),
         ];
@@ -57,7 +54,6 @@ class ProfileForm extends Model
         $this->_profile = User::findOne(Yii::$app->user->identity->id);
         $this->real_name = $this->_profile->real_name;
         $this->username = $this->_profile->username;
-        $this->email = $this->_profile->email;
         $this->signature = $this->_profile->signature;
     }
 
@@ -66,7 +62,6 @@ class ProfileForm extends Model
         $profile = User::findOne(Yii::$app->user->id);
         $profile->username = $this->username;
         $profile->real_name = $this->real_name;
-        $profile->email = $this->email;
         $profile->signature = $this->signature;
         if ($profile->save()) {
             $this->_profile = $profile;

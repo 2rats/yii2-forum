@@ -25,7 +25,7 @@ $this->registerCss('
         <div style="min-height: 20vh;" class="row rounded-1">
             <div class="py-2 col-12 col-md-2 bg-lighter border-md-end border-bottom border-md-bottom-0">
                 <p class="fw-bold m-0 text-center">
-                    <?= $user->username ?>
+                    <?= $user->getDisplayName() ?>
                 </p>
                 <div class="d-flex justify-content-center">
                     <?php foreach ($user->roles as $role) : ?>

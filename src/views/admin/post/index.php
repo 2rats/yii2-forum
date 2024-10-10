@@ -77,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'created_by',
                 'value' => function ($model) {
-                    return $model->createdBy->username;
+                    return $model->createdBy->getDisplayName();
                 },
                 'filterType' => \kartik\grid\GridView::FILTER_SELECT2,
                 'filterWidgetOptions' => [

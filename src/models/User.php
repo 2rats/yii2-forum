@@ -244,11 +244,17 @@ class User extends ActiveRecord
             $forum->isActive() && !$forum->isLocked();
     }
 
-    public function getProfileUrl(): string {
-        
+    public function getProfileUrl(): string
+    {
+
         if ($this->isDeleted()) {
             return Html::tag('em', \Yii::t('app', 'deleted'), ['class' => 'small']);
         }
-        return Html::a($this->username, ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
+        return Html::a($this->getDisplayName(), ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
+    }
+
+    public function getDisplayName(): string
+    {
+        return empty($this->real_name) ? $this->username : $this->real_name;
     }
 }

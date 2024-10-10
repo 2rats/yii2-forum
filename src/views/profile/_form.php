@@ -22,9 +22,8 @@ use yii\bootstrap5\Html;
         <div class="col-6">
             <?= $form->field($profileFormModel, 'username')->textInput(['maxlength' => true]); ?>
         </div>
-        <?= $form->field($profileFormModel, 'email')->textInput(['maxlength' => true]); ?>
 
-        <?= $form->field($profileFormModel, 'signature')->textArea(['maxlength' => true]); ?>
+        <?= $form->field($profileFormModel, 'signature')->textArea(['maxlength' => true, 'rows' => 6]); ?>
     </div>
 
     <div class="d-flex justify-content-end">

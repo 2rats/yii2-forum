@@ -5,9 +5,9 @@
 use yii\bootstrap5\Html;
 use yii\widgets\DetailView;
 
-$this->title = $user->username;
+$this->title = $user->getDisplayName();
 $this->params['breadcrumbs'][] = Yii::t('app', 'Profile');
-$this->params['breadcrumbs'][] = $user->username;
+$this->params['breadcrumbs'][] = $user->getDisplayName();
 ?>
 <!-- Github markdown styles -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css" integrity="sha512-bm684OXnsiNuQSyrxuuwo4PHqr3OzxPpXyhT66DA/fhl73e1JmBxRKGnO/nRwWvOZxJLRCmNH7FII+Yn1JNPmg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $user->username;
                 <img src="" alt="Profile picture" class="img-thumbnail mt-4 mb-2">
             </div> -->
             <div class="ms-4 mt-md-auto mt-2 text-white">
-                <h5><?= $user->username ?></h5>
+                <h5><?= $user->getDisplayName() ?></h5>
                 <p class="small"><?= $user->email ?></p>
             </div>
             <div class="ms-4 ms-md-auto mt-auto me-3 mb-3">

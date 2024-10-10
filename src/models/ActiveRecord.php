@@ -70,7 +70,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
         if ($this->createdBy->isDeleted() || (method_exists($this, 'isDeleted') && $this->isDeleted())) {
             return Html::tag('em', \Yii::t('app', 'deleted'), ['class' => 'small']);
         }
-        return Html::a($this->createdBy->username, ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->createdBy->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
+        return Html::a($this->createdBy->getDisplayName(), ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->createdBy->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
     }
 
     /**
@@ -83,7 +83,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
         if ($this->updatedBy->isDeleted() || (method_exists($this, 'isDeleted') && $this->isDeleted())) {
             return Html::tag('em', \Yii::t('app', 'deleted'), ['class' => 'small']);
         }
-        return Html::a($this->updatedBy->username, ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->updatedBy->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
+        return Html::a($this->updatedBy->getDisplayName(), ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->updatedBy->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
     }
 
     /**

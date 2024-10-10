@@ -82,7 +82,9 @@ class Thread extends ActiveRecord
 
     public function afterDelete()
     {
+        $this->forum->fk_last_post = $this->forum->getPosts()->max('id');
         $this->forum->updateCounters(['threads' => -1]);
+        $this->forum->updateCounters(['posts' => $this->posts * -1]);
         $this->forum->save();
         parent::afterDelete();
     }
