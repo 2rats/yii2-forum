@@ -93,7 +93,11 @@ class UserController extends AdminController
                 }
 
                 if ($has_perms) {
-                    \Yii::$app->authManager->revokeAll($user->id);
+                    foreach(\Yii::$app->authManager->getRolesByUser($user->id) as $userRole) {
+                        if($userRole->name == 'forum-moderator' || $userRole->name == 'forum-user') {
+                            \Yii::$app->authManager->revoke($userRole, $user->id);
+                        }
+                    }
                     \Yii::$app->authManager->assign($role, $user->id);
                     $transaction->commit();
 
