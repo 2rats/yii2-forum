@@ -128,6 +128,7 @@ class ForumModule extends Module implements BootstrapInterface
         $forum_user = new User();
         $forum_user->username = substr($user->username, 0, self::USERNAME_LENGTH);
         $forum_user->id = $user->id;
+        $forum_user->email = $user->email;
 
         if ($forum_user->save()) {
             $role = \Yii::$app->authManager->getRole('forum-user');
