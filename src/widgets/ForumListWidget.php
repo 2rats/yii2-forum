@@ -10,9 +10,9 @@ use yii\widgets\ListView;
  * ForumListWidget renders a list of forums.
  *
  * Properties:
+ *
  * @property integer|null $categoryId The ID of the category to filter forums by.
  * @property integer $pageSize The number of items to display per page. Set to 0 to disable pagination. Default is 20.
- *
  */
 class ForumListWidget extends ListView
 {
@@ -46,10 +46,18 @@ class ForumListWidget extends ListView
         if (!$this->dataProvider) {
             $paginationConfig = $this->pageSize > 0 ? ['pageSize' => $this->pageSize] : false;
 
-            $this->dataProvider = new ActiveDataProvider([
-                'query' => Forum::find()->active()->ordered()->andWhere(['fk_category' => $this->categoryId]),
+            $this->dataProvider = new ActiveDataProvider(
+                [
+                    'query' => Forum::find()->active()->ordered()->andWhere(['fk_category' => $this->categoryId])->with(
+                        [
+                            'lastPost',
+                            'lastPost.thread',
+                            'lastPost.createdBy'
+                        ]
+                    ),
                 'pagination' => $paginationConfig,
-            ]);
+                ]
+            );
         }
         parent::init();
     }
