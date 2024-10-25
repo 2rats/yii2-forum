@@ -27,7 +27,7 @@ class PostForm extends Model
         return [
             [['content'], 'required'],
             [['content'], 'string'],
-            [['content'], 'validateMaxlength', 'params' => ['max' => 1000]],
+            [['content'], 'validateMaxlength', 'params' => ['max' => 5000]],
             ['content', 'filter', 'filter' => function ($value) {
                 return \yii\helpers\HtmlPurifier::process($value);
             }],
