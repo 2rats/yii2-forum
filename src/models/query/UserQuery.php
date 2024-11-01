@@ -25,7 +25,7 @@ class UserQuery extends \yii\db\ActiveQuery
      */
     public function ordered()
     {
-        return $this->orderBy(['created_by' => SORT_ASC]);
+        return $this->orderBy(['created_at' => SORT_ASC]);
     }
 
     /**
