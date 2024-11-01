@@ -41,7 +41,7 @@ class ImageUploadForm extends Model
     public function rules()
     {
         return [
-            [['file'], 'file', 'skipOnEmpty' => $this->skipOnEmpty, 'extensions' => 'png, jpg, jpeg, webp'],
+            [['file'], 'file', 'skipOnEmpty' => $this->skipOnEmpty, 'extensions' => 'png, jpg, jpeg, webp, gif', 'maxSize' => 1024 * 1024 * 5],
         ];
     }
 
@@ -57,13 +57,19 @@ class ImageUploadForm extends Model
 
     private function uploadConvertedImage(): File
     {
-        $filename = $this->getUniqueFilename();
-        $imagine = Image::resize($this->file->tempName, self::IMAGE_RESOLUTION, self::IMAGE_RESOLUTION);
-        $path = $this->getFilePath() . $filename;
         if (!file_exists($this->getFilePath() . $this->getFilePathPrefix())) {
             mkdir($this->getFilePath() . $this->getFilePathPrefix(), 0777, true);
         }
-        $imagine->save($path, ['jpeg_quality' => self::IMAGE_JPG_QUALITY]);
+
+        $filename = $this->getUniqueFilename($this->file->extension === 'gif' ? 'gif' : 'jpg');
+        $path = $this->getFilePath() . $filename;
+
+        if($this->file->extension === 'gif') {
+            move_uploaded_file($this->file->tempName, $path);
+        } else {
+            $imagine = Image::resize($this->file->tempName, self::IMAGE_RESOLUTION, self::IMAGE_RESOLUTION);
+            $imagine->save($path, ['jpeg_quality' => self::IMAGE_JPG_QUALITY]);
+        }
 
         $fileModel = new File([
             'filename' => $this->UPLOAD_SUBDIR . $filename,
@@ -75,12 +81,12 @@ class ImageUploadForm extends Model
         throw new \Exception('Failed to save file model ' . print_r($fileModel->getErrors(), true));
     }
 
-    private function getUniqueFilename(): string
+    private function getUniqueFilename(string $extension = 'jpg'): string
     {
-        $filename = $this->getFilePathPrefix() . md5(rand() . time()) . '.jpg';
+        $filename = $this->getFilePathPrefix() . md5(rand() . time()) . '.' . $extension;
         $path = $this->getFilePath();
         while (file_exists($path . $filename)) {
-            $filename = $this->getFilePathPrefix() . md5(rand() . time()) . '.jpg';
+            $filename = $this->getFilePathPrefix() . md5(rand() . time()) . '.' . $extension;;
         }
         return $filename;
     }

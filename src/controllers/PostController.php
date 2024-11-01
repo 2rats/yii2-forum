@@ -88,5 +88,8 @@ class PostController extends Controller
                 'filename' => $file->getFileUrl(),
             ]);
         }
+        return $this->asJson([
+            'error' => $model->getFirstError('file'),
+        ]);
     }
 }
