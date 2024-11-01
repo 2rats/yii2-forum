@@ -111,6 +111,6 @@ class ActiveRecord extends \yii\db\ActiveRecord
             return null;
         }
 
-        return Markdown::process($this->createdBy->signature, 'gfm-comment');
+        return Markdown::process($this->createdBy->signature ?? '', 'gfm-comment');
     }
 }
