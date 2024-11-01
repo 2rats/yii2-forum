@@ -11,6 +11,11 @@ class MarkdownImageGroupService
         $group = false;
         $buffer = '';
 
+        // wrap every image tag with new lines
+        $content = preg_replace_callback('/!\[([^\]]+)\]\(([^\)]+)\)/', function($matches){
+            return "\n" . $matches[0] . "\n";
+        }, $content);
+
         foreach (explode("\n", $content) as $line) {
             if ($this->isImageLine($line)) {
                 if (!$group) {
