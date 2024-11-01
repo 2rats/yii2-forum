@@ -17,9 +17,6 @@ use rats\forum\ForumModule;
             <a class="link-primary link-underline-opacity-0 link-underline-opacity-100-hover" href="
                 <?php echo Url::to(['/' . ForumModule::getInstance()->id . "/profile/" . $model->id]) ?>"><?php echo $model->getDisplayName() ?></a>
         </h3>
-        <div class="d-md-block d-none">
-            <span class="small children-mb-0 lines-1"><?php echo $model->username ?></span>
-        </div>
         <!-- Phone size -->
         <div class="d-md-none d-block small">
             <div class="row">
