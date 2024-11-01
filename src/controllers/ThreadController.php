@@ -89,7 +89,7 @@ class ThreadController extends Controller
         $query = $thread->getPosts();
         $countQuery = clone $query;
         $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->page_items]);
-        $models = $query->offset($pages->offset)
+        $models = $query->offset($pages->offset)->with(['createdBy'])
             ->limit($pages->limit)
             ->all();
 
