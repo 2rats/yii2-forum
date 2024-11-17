@@ -165,11 +165,11 @@ class Forum extends ActiveRecord
     /**
      * Gets query for [[LastPost]].
      *
-     * @return Post|null
+     * @return \yii\db\ActiveQuery
      */
     public function getLastPost()
     {
-        return null === $this->fk_last_post ? null : $this->hasOne(Post::class, ['id' => 'fk_last_post']);
+        $this->hasOne(Post::class, ['id' => 'fk_last_post']);
     }
 
     /**
