@@ -169,7 +169,7 @@ class Forum extends ActiveRecord
      */
     public function getLastPost()
     {
-        $this->hasOne(Post::class, ['id' => 'fk_last_post']);
+        return $this->hasOne(Post::class, ['id' => 'fk_last_post']);
     }
 
     /**
