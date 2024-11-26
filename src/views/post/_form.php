@@ -1,12 +1,12 @@
 <?php
 
 /** @var yii\web\View $this */
+/** @var rats\forum\models\form\PostForm $post_form */
+/** @var string $formAction */
 
-use rats\forum\ForumModule;
 use rats\forum\models\User;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
-use yii\helpers\Url;
 
 $user = User::findOne(Yii::$app->user->identity->id);
 
@@ -37,7 +37,7 @@ $this->registerCss('
                 <div class="d-flex flex-column h-100">
 
                     <?php $form = ActiveForm::begin([
-                        'action' => Url::to(['/' . ForumModule::getInstance()->id . '/post/create']),
+                        'action' => $formAction ?? '',
                         'method' => 'post',
                         'enableAjaxValidation' => true,
                     ]); ?>
@@ -63,7 +63,8 @@ $this->registerCss('
                     <?= $form->field($post_form, 'content')->widget(\rats\forum\widgets\MarkdownEditor::class)->label(false); ?>
 
                     <?= $form->field($post_form, 'fk_thread')->hiddenInput(['value' => $fk_thread])->label(false) ?>
-                    <?= $form->field($post_form, 'fk_parent')->hiddenInput(['value' => null])->label(false) ?>
+                    <?= $form->field($post_form, 'fk_parent')->hiddenInput()->label(false) ?>
+                    
 
                     <div class="d-flex justify-content-end">
                         <?= Html::submitButton(Yii::t('app', 'Send'), ['class' => 'btn btn-outline-dark']) ?>

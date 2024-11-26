@@ -4,6 +4,7 @@ namespace rats\forum\models\form;
 
 use rats\forum\models\Post;
 use rats\forum\models\Thread;
+use rats\forum\models\User;
 use Yii;
 use yii\base\Model;
 
@@ -14,10 +15,26 @@ use yii\base\Model;
 class PostForm extends Model
 {
     public $fk_parent;
+
     public $fk_thread;
+
     public $content;
 
-    public $_post;
+    /**
+     * @var Post|null
+     */
+    private $post = null;
+
+    public function __construct($config = [], ?Post $post = null)
+    {
+        parent::__construct($config);
+        $this->post = $post;
+        if ($post !== null) {
+            $this->fk_parent = $post->fk_parent;
+            $this->fk_thread = $post->fk_thread;
+            $this->content = $post->content;
+        }
+    }
 
     /**
      * @return array the validation rules.
@@ -58,18 +75,29 @@ class PostForm extends Model
         ];
     }
 
-    public function addPost()
+    public function save()
     {
-        $post = new Post([
-            'fk_parent' => $this->fk_parent,
-            'fk_thread' => $this->fk_thread,
-            'content' => $this->content,
-            'status' => Post::STATUS_ACTIVE,
-        ]);
-        if ($post->save()) {
-            $this->_post = $post;
+        if ($this->post === null) {
+            $this->post = new Post();
+            $this->post->fk_parent = $this->fk_parent;
+            $this->post->fk_thread = $this->fk_thread;
+            $this->post->status = Post::STATUS_ACTIVE;
+        }
+        $this->post->content = $this->content;
+
+        if ($this->post->save()) {
+            $user = User::findOne(Yii::$app->user->id);
+            $user->last_post_id = $this->post->id;
+            $user->save();
             return true;
         }
+
+        $this->post = null;
         return false;
+    }
+
+    public function getPost(): ?Post
+    {
+        return $this->post;
     }
 }

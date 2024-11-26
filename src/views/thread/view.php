@@ -117,11 +117,19 @@ $this->registerCss('
                                         <?php endif; ?>
                                     <?php endif; ?>
 
-                                    <?php if (Yii::$app->user->can('forum-editPost', [
-                                        'post' => $post,
-                                    ])) : ?>
+                                    <?php if (Yii::$app->user->can('forum-editPost', ['model' => $post]) && !$post->isDeleted()) : ?>
+                                        <a href="<?= Url::to(['/' . ForumModule::getInstance()->id . '/post/update', 'id' => $post->id]) ?>" class="small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover me-3">
+                                            <?= Yii::t('app', 'Edit') ?>
+                                        </a>
+                                    <?php elseif (Yii::$app->user->can('forum-editPost', ['post' => $post])) : ?>
                                         <a href="<?= Url::to(['/' . ForumModule::getInstance()->id . '/admin/post/view', 'id' => $post->id]) ?>" class="small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover me-3">
                                             <?= Yii::t('app', 'Edit') ?>
+                                        </a>
+                                    <?php endif; ?>
+
+                                    <?php if (Yii::$app->user->can('forum-deletePost', ['model' => $post]) && !$post->isDeleted()) : ?>
+                                        <a href="<?= Url::to(['/' . ForumModule::getInstance()->id . '/post/delete', 'id' => $post->id]) ?>" class="small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover me-3">
+                                            <?= Yii::t('app', 'Delete') ?>
                                         </a>
                                     <?php endif; ?>
                                     <?php if (!$thread->isLocked()) : ?>
@@ -187,6 +195,7 @@ $this->registerCss('
             <?= $this->render('/post/_form', [
                 'post_form' => new PostForm(),
                 'fk_thread' => $thread->id,
+                'formAction' => Url::to(['/' . ForumModule::getInstance()->id . '/post/create']),
             ]); ?>
         <?php endif; ?>
     <?php endif; ?>

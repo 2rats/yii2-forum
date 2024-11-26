@@ -23,6 +23,7 @@ use yii\widgets\ActiveForm;
 use rats\forum\models\form\ImageUploadForm;
 use yii\helpers\Json;
 use Yii;
+use yii\web\NotFoundHttpException;
 
 class PostController extends Controller
 {
@@ -46,6 +47,17 @@ class PostController extends Controller
                             return !User::findOne(\Yii::$app->user->identity->id)->isMuted();
                         }
                     ],
+                    [
+                        'actions' => ['update', 'delete'],
+                        'allow' => true,
+                        'roles' => ['forum-editPost'],
+                        'matchCallback' => function () {
+                            return !User::findOne(\Yii::$app->user->identity->id)->isMuted();
+                        },
+                        'roleParams' => function () {
+                            return ['model' => Post::findOne(\Yii::$app->request->get('id'))];
+                        },
+                    ],
                 ],
             ],
             'verbs' => [
@@ -58,12 +70,33 @@ class PostController extends Controller
         ];
     }
 
+    public function actionUpdate($id = null)
+    {
+        $post = $this->findModel($id);
+        $model = new PostForm([], $post);
+        if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->save() && ($post = $model->getPost()) !== null) {
+            return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $post->thread->id, 'path' => $post->thread->slug, 'post_id' => $post->id]);
+        }
+
+        if (\Yii::$app->request->isAjax) {
+            \Yii::$app->response->format = Response::FORMAT_JSON;
+
+            return ActiveForm::validate($model);
+        }
+
+        return $this->render('/post/update', [
+            'model' => $model,
+        ]);
+    }
+
+
     public function actionCreate()
     {
         $model = new PostForm();
         $thread = Thread::findOne(\Yii::$app->request->post('PostForm')['fk_thread']);
-        if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->addPost()) {
-            return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $thread->id, 'path' => $thread->slug, 'post_id' => $model->_post->id]);
+        if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->save() && $model->getPost() !== null) {
+            $post = $model->getPost();
+            return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $thread->id, 'path' => $thread->slug, 'post_id' => $post->id]);
         }
 
         if (\Yii::$app->request->isAjax) {
@@ -73,6 +106,15 @@ class PostController extends Controller
         }
 
         return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/view', 'id' => $thread->id, 'path' => $thread->slug]);
+    }
+
+    public function actionDelete()
+    {
+        $post = $this->findModel(\Yii::$app->request->get('id'));
+        $thread = $post->thread;
+        if ($post->delete()) {
+            return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/view', 'id' => $thread->id, 'path' => $thread->slug]);
+        }
     }
 
     public function actionUploadImage()
@@ -91,5 +133,21 @@ class PostController extends Controller
         return $this->asJson([
             'error' => $model->getFirstError('file'),
         ]);
+    }
+
+    /**
+     * Finds the Post model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param int $id ID
+     * @return Post the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Post::find()->active()->andWhere(['id' => $id])->one()) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 }

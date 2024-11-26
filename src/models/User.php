@@ -22,6 +22,7 @@ use yii\helpers\Html;
  * @property string|null            $updated_at
  * @property ForumModule::userClass $createdBy
  * @property ForumModule::userClass $updatedBy
+ * @property int|null               $last_post_id
  */
 class User extends ActiveRecord
 {
@@ -38,7 +39,7 @@ class User extends ActiveRecord
     {
         return [
             [['username'], 'required'],
-            [['status', 'created_by', 'updated_by', 'fk_image'], 'integer'],
+            [['status', 'created_by', 'updated_by', 'fk_image', 'last_post_id'], 'integer'],
             [['signature'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['username', 'email', 'real_name'], 'string', 'max' => 191],
