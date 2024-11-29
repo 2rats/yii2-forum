@@ -12,7 +12,7 @@ class MarkdownImageGroupService
         $buffer = '';
 
         // wrap every image tag with new lines
-        $content = preg_replace_callback('/!\[([^\]]+)\]\(([^\)]+)\)/', function($matches){
+        $content = preg_replace_callback('/!\[([^\]]+)\]\(([^\)]+)\)/', function ($matches) {
             return "\n\n" . $matches[0] . "\n";
         }, $content);
 
@@ -23,18 +23,17 @@ class MarkdownImageGroupService
                     $buffer .= '<div class="image-group">';
                 }
                 $buffer .=  Markdown::process($line, 'gfm-comment');
-            }
-            else {
-                if ($group && !empty($line)) {
+            } else {
+                if ($group && !empty(preg_replace('/\s+/', '', $line))) {
                     $group = false;
-                    $buffer .= '</div>';
+                    $buffer .= "</div>\n";
                 }
                 $buffer .= !empty($line) ? $line . "\n" : "\n";
             }
         }
 
         if ($group) {
-            $buffer .= '</div>';
+            $buffer .= "</div>\n";
         }
 
         return $buffer;
