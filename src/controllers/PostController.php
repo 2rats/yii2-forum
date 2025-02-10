@@ -73,6 +73,8 @@ class PostController extends Controller
     public function actionUpdate($id = null)
     {
         $post = $this->findModel($id);
+        $post->content = $post->printContent();
+
         $model = new PostForm([], $post);
         if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->save() && ($post = $model->getPost()) !== null) {
             return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $post->thread->id, 'path' => $post->thread->slug, 'post_id' => $post->id]);

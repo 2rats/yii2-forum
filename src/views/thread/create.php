@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 use rats\forum\ForumModule;
+use rats\forum\widgets\TinyMce;
+use yii\helpers\Url;
 
 /**
  * @var yii\web\View $this
@@ -25,7 +27,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
                 
-            <?= $form->field($model, 'content')->widget(\rats\forum\widgets\MarkdownEditor::class)->label(false); ?>
+            <?= $form->field($model, 'content')->widget(TinyMce::class, [
+                'imageUploadUrl' => Url::to(['post/upload-image']),
+            ])->label(false); ?>
 
             <div class="form-group">
                 <?= Html::submitButton(Yii::t('app', 'Create'), ['class' => 'btn btn-success']) ?>

@@ -1,9 +1,11 @@
 <?php
 
 use kartik\select2\Select2;
+use rats\forum\widgets\TinyMce;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 use yii\web\JsExpression;
+use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 /** @var rats\forum\models\Post $model */
@@ -32,7 +34,9 @@ use yii\web\JsExpression;
 
     <?= $form->field($model, 'fk_parent')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'content')->widget(\rats\forum\widgets\MarkdownEditor::class); ?>
+    <?= $form->field($model, 'content')->widget(TinyMce::class, [
+        'imageUploadUrl' => Url::to(['post/upload-image']),
+    ]); ?>
 
     <?= $form->field($model, 'status')->widget(Select2::class, [
         'data' => $model::getStatusOptions(),

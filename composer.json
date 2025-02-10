@@ -32,7 +32,9 @@
     "yii2mod/yii2-markdown": "*",
     "kartik-v/yii2-grid": "@dev",
     "2rats/yii2-markdown": "@dev",
-    "yiisoft/yii2-imagine": "~2.2.0"
+    "yiisoft/yii2-imagine": "~2.2.0",
+    "2amigos/yii2-tinymce-widget": "~1.1",
+    "league/html-to-markdown": "*"
   },
   "repositories": [
     {

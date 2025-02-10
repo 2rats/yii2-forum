@@ -44,6 +44,11 @@ class Post extends ActiveRecord
             [['fk_thread', 'content'], 'required'],
             [['fk_thread', 'fk_parent', 'status', 'created_by', 'updated_by'], 'integer'],
             [['content'], 'string'],
+            ['content', 'filter', 'filter' => function ($value) {
+                $htmlToMarkdown = new \League\HTMLToMarkdown\HtmlConverter(['strip_tags' => true]);
+                $htmlToMarkdown->getEnvironment()->addConverter(new \League\HTMLToMarkdown\Converter\TableConverter());
+                return $htmlToMarkdown->convert($value);
+            }],
             [['created_at', 'updated_at'], 'safe'],
             [['fk_parent'], 'exist', 'skipOnError' => false, 'targetClass' => Post::class, 'targetAttribute' => ['fk_parent' => 'id']],
             [['fk_thread'], 'exist', 'skipOnError' => true, 'targetClass' => Thread::class, 'targetAttribute' => ['fk_thread' => 'id']],
