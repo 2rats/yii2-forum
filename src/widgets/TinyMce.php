@@ -106,7 +106,6 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
             "image",
             "lists",
             "table",
-            "code",
         ],
 
         'menubar' => false,
@@ -116,7 +115,7 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
         'image_title' => false,
 
         'table_appearance_options' => true,
-        'toolbar' => "undo redo | bold italic h1 h2 h3 | code bullist numlist | link image table hr",
+        'toolbar' => "undo redo | bold italic h1 h2 h3 | codesample bullist numlist | link image table hr",
         'promotion' => false,
         'branding' => false,
         'license_key' => 'gpl',
