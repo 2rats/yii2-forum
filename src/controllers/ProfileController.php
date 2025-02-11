@@ -42,7 +42,7 @@ class ProfileController extends Controller
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['update'],
+                        'actions' => ['update', 'remove-image'],
                         'allow' => true,
                         'matchCallback' => function () {
                             return Yii::$app->user->identity->id == Yii::$app->request->get('id');
@@ -63,6 +63,19 @@ class ProfileController extends Controller
         return $this->render('/profile/view', [
             'user' => $user,
         ]);
+    }
+
+    public function actionRemoveImage($id)
+    {
+        $user = User::find()->andWhere(['id' => $id])->active()->one();
+        if ($user == null) {
+            throw new NotFoundHttpException(Yii::t('app', 'User not found'));
+        }
+
+        $user->fk_image = null;
+        $user->save(false);
+
+        return $this->redirect(['view', 'id' => $user->id]);
     }
 
     public function actionUpdate($id){

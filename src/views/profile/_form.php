@@ -26,7 +26,8 @@ use yii\bootstrap5\Html;
         <?= $form->field($profileFormModel, 'signature')->textArea(['maxlength' => true, 'rows' => 6]); ?>
     </div>
 
-    <div class="d-flex justify-content-end">
+    <div class="d-flex justify-content-between">
+        <?= Html::a(Yii::t('app', 'Remove profile picture'), ['remove-image', 'id' => $profileFormModel->_profile->id], ['class' => 'btn btn-danger btn-sm']) ?>
         <?= Html::submitButton(Yii::t('app', 'Send'), ['class' => 'btn btn-outline-dark']) ?>
     </div>
 </div>
