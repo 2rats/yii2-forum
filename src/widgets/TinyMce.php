@@ -106,6 +106,7 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
             "image",
             "lists",
             "table",
+            "codesample",
         ],
 
         'menubar' => false,
@@ -113,6 +114,13 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
         'object_resizing' => false,
         'image_dimensions' => false,
         'image_title' => false,
+
+        'codesample_languages' => [
+            [
+                'text' => 'text',
+                'value' => 'text'
+            ]
+        ],
 
         'table_appearance_options' => true,
         'toolbar' => "undo redo | bold italic h1 h2 h3 | codesample bullist numlist | link image table hr",
