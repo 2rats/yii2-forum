@@ -291,6 +291,6 @@ class Post extends ActiveRecord
     }
 
     public function getUrl(array $params = []): string {
-        return \yii\helpers\Url::to(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $this->thread->id, 'path' => $this->thread->slug, 'post_id' => $this->id] + $params);
+        return \yii\helpers\Url::to(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $this->thread?->id, 'path' => $this->thread?->slug, 'post_id' => $this->id] + $params);
     }
 }
