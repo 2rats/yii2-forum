@@ -205,7 +205,6 @@ class Thread extends ActiveRecord
         return $this->status !== self::STATUS_INACTIVE;
     }
 
-
     /**
      * Get SEO title
      *
@@ -220,7 +219,6 @@ class Thread extends ActiveRecord
         return $this->name;
     }
 
-
     /**
      * Get SEO description
      *
@@ -231,7 +229,6 @@ class Thread extends ActiveRecord
         return $this->seo_description;
     }
 
-
     /**
      * Get SEO keywords
      *
@@ -240,5 +237,9 @@ class Thread extends ActiveRecord
     public function getSeoKeywords()
     {
         return $this->seo_keywords;
+    }
+
+    public function getUrl(array $params = []): string {
+        return \yii\helpers\Url::to(['/' . ForumModule::getInstance()->id . '/thread/view', 'id' => $this->id, 'path' => $this->getSlug()] + $params);
     }
 }

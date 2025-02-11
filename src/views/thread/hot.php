@@ -47,13 +47,13 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Hot Threads');
                 <div class="col-2 d-md-block d-none">
                     <h3 class="h5 m-0">
                         <?php if ($thread->forum !== null): ?>
-                            <a class="small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to(['/' . ForumModule::getInstance()->id . "/forum/view", 'id' => $thread->forum->id, 'path' => $thread->forum->slug]) ?>"><?= $thread->forum->name ?></a>
+                            <a class="small link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= $thread->forum->getUrl() ?>"><?= $thread->forum->name ?></a>
                         <?php endif; ?>
                     </h3>
                 </div>
                 <div class="col">
                     <h3 class="h5 m-0">
-                        <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to(['/' . ForumModule::getInstance()->id . "/thread/view", 'id' => $thread->id, 'path' => $thread->slug]) ?>"><?= $thread->name ?></a>
+                        <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= $thread->getUrl() ?>"><?= $thread->name ?></a>
                     </h3>
                     <p class="small mb-0"><span class="fw-bold"><?= $thread->getCreatedByHtml() ?></span> - <?= $thread->getCreatedAtString() ?></p>
                     <!-- Phone size -->

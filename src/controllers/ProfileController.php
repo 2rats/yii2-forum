@@ -79,7 +79,7 @@ class ProfileController extends Controller
                     $model->_profile->save(false);
                 }
             }
-            return $this->redirect(['/' . ForumModule::getInstance()->id . "/profile/view", 'id' => $id]);
+            return $this->redirect($model->_profile->getUrl());
         }
 
         if (Yii::$app->request->isAjax) {

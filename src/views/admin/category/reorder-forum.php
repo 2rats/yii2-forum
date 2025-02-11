@@ -16,7 +16,7 @@ use yii\helpers\Url;
             <div class="forum child row py-2 bg-lighter border-bottom ?>" data-id=<?= $forum->id ?>>
                 <div class="col">
                     <h3 class="h5 m-0">
-                        <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to(['/' . ForumModule::getInstance()->id . '/forum/view', 'id' => $forum->id, 'path' => $forum->slug]) ?>"><?= $forum->name ?></a>
+                        <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= $forum->getUrl() ?>"><?= $forum->name ?></a>
                     </h3>
                     <p class="small mb-0 d-md-block d-none"><?= $forum->description ?></p>
                     <!-- Phone size -->

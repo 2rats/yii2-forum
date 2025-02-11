@@ -114,7 +114,7 @@ class ThreadController extends Controller
         ]);
     }
 
-    public function actionHighlight($id, $path, $post_id)
+    public function actionHighlight($id, $post_id)
     {
         $thread = Thread::find()->active()->andWhere(['id' => $id])->one();
         if ($thread == null) {
@@ -125,11 +125,11 @@ class ThreadController extends Controller
             throw new NotFoundHttpException(Yii::t('app', 'Post not found'));
         }
         $page = 1;
-        foreach ($thread->getPosts()->all() as $index => $thread_post) {
-            if ($thread_post->id == $post->id) break;
+        foreach ($thread->getPosts()->asArray()->select('id')->all() as $index => $data) {
+            if ($data['id'] == $post->id) break;
             if (($index + 1) % $this->page_items == 0) $page += 1;
         }
-        return $this->redirect(["/" . ForumModule::getInstance()->id . "/thread/view", 'id' => $id, 'path' => $path, 'post_id' => $post_id, 'page' => $page]);
+        return $this->redirect($thread->getUrl(['post_id' => $post_id, 'page' => $page]));
     }
 
     public function actionCreate($fk_forum)

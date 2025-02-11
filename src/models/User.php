@@ -247,11 +247,15 @@ class User extends ActiveRecord
 
     public function getProfileUrl(): string
     {
-
         if ($this->isDeleted()) {
             return Html::tag('em', \Yii::t('app', 'deleted'), ['class' => 'small']);
         }
-        return Html::a($this->getDisplayName(), ['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->id], ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
+        return Html::a($this->getDisplayName(), $this->getUrl(), ['class' => 'link-secondary link-underline-opacity-0 link-underline-opacity-100-hover']);
+    }
+
+    public function getUrl(): string
+    {
+        return \yii\helpers\Url::to(['/' . ForumModule::getInstance()->id . '/profile/view', 'id' => $this->id]);
     }
 
     public function getDisplayName(): string

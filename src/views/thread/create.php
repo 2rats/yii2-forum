@@ -13,7 +13,7 @@ use yii\helpers\Url;
  */
 
 $this->title = Yii::t('app', 'Create Thread');
-$this->params['breadcrumbs'][] = ['label' => $forum->name, 'url' => ['/' . ForumModule::getInstance()->id . '/forum/view', 'id' => $forum->id, 'path' => $forum->slug]];
+$this->params['breadcrumbs'][] = ['label' => $forum->name, 'url' => $forum->getUrl()];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

@@ -21,10 +21,10 @@ if ($keywords = $forum->getSeoKeywords()) {
 }
 
 $this->params['breadcrumbs'][] = $forum->name;
-$temp_forum = $forum;
-while ($temp_forum->parent !== null) {
-    array_unshift($this->params['breadcrumbs'], ['label' => $temp_forum->parent->name, 'url' => Url::to(['/' . ForumModule::getInstance()->id . "/forum/view", 'id' => $temp_forum->parent->id, 'path' => $temp_forum->parent->slug])]);
-    $temp_forum = $temp_forum->parent;
+$tempForum = $forum;
+while ($tempForum->parent !== null) {
+    array_unshift($this->params['breadcrumbs'], ['label' => $tempForum->parent->name, 'url' => $tempForum->parent->getUrl()]);
+    $tempForum = $tempForum->parent;
 }
 
 function getSortLink($sort, $label, $name)
@@ -108,7 +108,7 @@ function getSortLink($sort, $label, $name)
             <div class="thread row py-2 <?= $index % 2 == 0 ? 'bg-light' : 'bg-lighter' ?> <?= $index < sizeof($threads) - 1 ? 'border-bottom' : 'rounded-bottom-1' ?>">
                 <div class="col">
                     <h3 class="h5 m-0">
-                        <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to(['/' . ForumModule::getInstance()->id . "/thread/view", 'id' => $thread->id, 'path' => $thread->slug]) ?>"><?= $thread->name ?></a>
+                        <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= $thread->getUrl() ?>"><?= $thread->name ?></a>
                     </h3>
                     <p class="small mb-0"><span class="fw-bold"><?= $thread->getCreatedByHtml() ?></span> - <?= $thread->getCreatedAtString() ?></p>
                     <!-- Phone size -->

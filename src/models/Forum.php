@@ -2,6 +2,7 @@
 
 namespace rats\forum\models;
 
+use rats\forum\ForumModule;
 use rats\forum\models\query\ForumQuery;
 use yii\data\ActiveDataProvider;
 use rats\forum\models\ForumModerator;
@@ -300,5 +301,9 @@ class Forum extends ActiveRecord
     public function getSeoKeywords()
     {
         return $this->seo_keywords;
+    }
+
+    public function getUrl(array $params = []): string {
+        return \yii\helpers\Url::to(['/' . ForumModule::getInstance()->id . '/forum/view', 'id' => $this->id, 'path' => $this->slug] + $params);
     }
 }

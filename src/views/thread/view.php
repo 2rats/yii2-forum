@@ -22,10 +22,10 @@ if ($keywords = $thread->getSeoKeywords()) {
 }
 
 $this->params['breadcrumbs'][] = $thread->name;
-$temp_forum = $thread->forum;
-while (null !== $temp_forum) {
-    array_unshift($this->params['breadcrumbs'], ['label' => $temp_forum->name, 'url' => Url::to(['/' . ForumModule::getInstance()->id . '/forum/view', 'id' => $temp_forum->id, 'path' => $temp_forum->slug])]);
-    $temp_forum = $temp_forum->parent;
+$tempForum = $thread->forum;
+while (null !== $tempForum) {
+    array_unshift($this->params['breadcrumbs'], ['label' => $tempForum->name, 'url' => $tempForum->getUrl()]);
+    $tempForum = $tempForum->parent;
 }
 
 $this->registerCss('
@@ -93,7 +93,7 @@ $this->registerCss('
                         <div class="border-bottom mb-2">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <span class=""><a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $thread->id, 'path' => $thread->slug, 'post_id' => $post->id]); ?>">#<?= $index + 1 + ($pages->page * 10) ?></a></span>
+                                    <span class=""><a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= $post->getUrl() ?>">#<?= $index + 1 + ($pages->page * 10) ?></a></span>
                                     <span class="small">- <?= Yii::$app->formatter->asDatetime($post->created_at) ?></span>
                                 </div>
                                 <div>
@@ -145,7 +145,7 @@ $this->registerCss('
                         </div>
                         <?php if ($post->parent) : ?>
                             <div class="reply mx-5 small border-start border-3 p-2 mb-3 bg-lighter position-relative">
-                                <a class="stretched-link" href="<?= Url::to(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $thread->id, 'path' => $thread->slug, 'post_id' => $post->parent->id]); ?>"></a>
+                                <a class="stretched-link" href="<?= $post->getUrl() ?>"></a>
                                 <div class="mb-1 d-flex">
                                     <span>
                                         <svg class="mb-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply-fill" viewBox="0 0 16 16">

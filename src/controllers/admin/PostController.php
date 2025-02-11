@@ -85,8 +85,11 @@ class PostController extends AdminController
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $this->getView()->blocks['forumViewUrl'] = $model->getUrl();
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
@@ -123,6 +126,8 @@ class PostController extends AdminController
     {
         $model = $this->findModel($id);
         $model->content = $model->printContent();
+
+        $this->getView()->blocks['forumViewUrl'] = $model->getUrl();
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);

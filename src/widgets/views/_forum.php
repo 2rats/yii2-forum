@@ -15,7 +15,7 @@ use yii\helpers\Url;
 <div class="forum row py-2 <?= $index % 2 == 0 ? 'bg-light' : 'bg-lighter' ?>">
     <div class="col">
         <h3 class="h5 m-0">
-            <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= Url::to(['/' . ForumModule::getInstance()->id . "/forum/view", 'id' => $model->id, 'path' => $model->slug]) ?>"><?= $model->name ?></a>
+            <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= $model->getUrl() ?>"><?= $model->name ?></a>
         </h3>
         <div class="d-md-block d-none">
             <span class="small children-mb-0 lines-1"><?= $model->description ?></span>

@@ -77,7 +77,7 @@ class PostController extends Controller
 
         $model = new PostForm([], $post);
         if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->save() && ($post = $model->getPost()) !== null) {
-            return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $post->thread->id, 'path' => $post->thread->slug, 'post_id' => $post->id]);
+            return $this->redirect($post->getUrl());
         }
 
         if (\Yii::$app->request->isAjax) {
@@ -98,7 +98,7 @@ class PostController extends Controller
         $thread = Thread::findOne(\Yii::$app->request->post('PostForm')['fk_thread']);
         if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->save() && $model->getPost() !== null) {
             $post = $model->getPost();
-            return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $thread->id, 'path' => $thread->slug, 'post_id' => $post->id]);
+            return $this->redirect($post->getUrl());
         }
 
         if (\Yii::$app->request->isAjax) {
