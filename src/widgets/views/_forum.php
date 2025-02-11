@@ -23,8 +23,8 @@ use yii\helpers\Url;
         <!-- Phone size -->
         <div class="d-md-none d-block small">
             <p class="mb-0">
-                <span class="fw-medium"><?= Yii::t('app', 'Threads') ?>: </span><span><?= $model->threads ?></span> |
-                <span class="fw-medium"><?= Yii::t('app', 'Posts') ?>: </span><span><?= $model->posts ?></span>
+                <span class="fw-medium"><?= Yii::t('app', 'Threads') ?>: </span><span><?= Yii::$app->formatter->asInteger($model->threads) ?></span> |
+                <span class="fw-medium"><?= Yii::t('app', 'Posts') ?>: </span><span><?= Yii::$app->formatter->asInteger($model->posts) ?></span>
             </p>
             <?php if (!is_null($model->lastPost)) : ?>
                 <p class="small mb-0 text-end"><span class="fw-bold"><?= $model->lastPost->getCreatedByHtml() ?></span> - <?= $model->lastPost->getCreatedAtString() ?></p>
@@ -45,11 +45,11 @@ use yii\helpers\Url;
         <div class="row gx-2 h-100 align-items-center">
             <div class="col-6 text-center border-end">
                 <p class="small fw-bold mb-1"><?= Yii::t('app', 'Threads') ?></p>
-                <span><?= $model->threads ?></span>
+                <span><?= Yii::$app->formatter->asInteger($model->threads) ?></span>
             </div>
             <div class="col-6 text-center">
                 <p class="small fw-bold mb-1"><?= Yii::t('app', 'Posts') ?></p>
-                <span><?= $model->posts ?></span>
+                <span><?= Yii::$app->formatter->asInteger($model->posts) ?></span>
             </div>
         </div>
     </div>

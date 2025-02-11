@@ -22,8 +22,8 @@ use yii\helpers\Url;
                     <!-- Phone size -->
                     <div class="d-md-none d-block small">
                         <p class="mb-0">
-                            <span class="fw-medium"><?= Yii::t('app', 'Threads') ?>: </span><span><?= $forum->threads ?></span> |
-                            <span class="fw-medium"><?= Yii::t('app', 'Posts') ?>: </span><span><?= $forum->posts ?></span>
+                            <span class="fw-medium"><?= Yii::t('app', 'Threads') ?>: </span><span><?= Yii::$app->formatter->asInteger($forum->threads) ?></span> |
+                            <span class="fw-medium"><?= Yii::t('app', 'Posts') ?>: </span><span><?= Yii::$app->formatter->asInteger($forum->posts) ?></span>
                         </p>
                     </div>
                 </div>
@@ -41,11 +41,11 @@ use yii\helpers\Url;
                     <div class="row gx-2 h-100 align-items-center">
                         <div class="col-6 text-center border-end">
                             <p class="small fw-bold mb-1"><?= Yii::t('app', 'Threads') ?></p>
-                            <span><?= $forum->threads ?></span>
+                            <span><?= Yii::$app->formatter->asInteger($forum->threads) ?></span>
                         </div>
                         <div class="col-6 text-center">
                             <p class="small fw-bold mb-1"><?= Yii::t('app', 'Posts') ?></p>
-                            <span><?= $forum->posts ?></span>
+                            <span><?= Yii::$app->formatter->asInteger($forum->posts) ?></span>
                         </div>
                     </div>
                 </div>

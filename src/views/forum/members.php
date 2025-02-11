@@ -16,7 +16,7 @@ use yii\widgets\Pjax;
 
     <div class="row justify-content-center mb-2">
         <div class="col-11">
-            <h3 class="mb-0"><?php echo Yii::t('app', 'Forum Users') ?></h3>
+            <h3 class="mb-0"><?= Yii::t('app', 'Forum Users') ?></h3>
         </div>
     </div>
 
@@ -25,15 +25,15 @@ use yii\widgets\Pjax;
             <div class="forum-header row py-2 border-bottom bg-lighter fw-bold rounded-top-1">
                 <div class="col-6 border-end">
                     <span class="mx-2">
-                        <?php echo Yii::t('app', 'Display name') ?> /
-                        <?php echo Yii::t('app', 'Username') ?>
+                        <?= Yii::t('app', 'Display name') ?> /
+                        <?= Yii::t('app', 'Username') ?>
                     </span>
                 </div>
                 <div class="col-2 d-md-block d-none">
-                    <span class="mx-2"><?php echo Yii::t('app', 'Posts') ?></span>
+                    <span class="mx-2"><?= Yii::t('app', 'Posts') ?></span>
                 </div>
                 <div class="col-4 border-start ">
-                    <span class="mx-2"><?php echo Yii::t('app', 'Joined') ?></span>
+                    <span class="mx-2"><?= Yii::t('app', 'Joined') ?></span>
                 </div>
             </div>
 
@@ -43,7 +43,7 @@ use yii\widgets\Pjax;
                 ]
             ) ?>
 
-            <?php echo MembersListWidget::widget() ?>
+            <?= MembersListWidget::widget() ?>
 
             <?php Pjax::end() ?>
         </div>
