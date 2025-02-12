@@ -12,7 +12,7 @@ class MarkdownImageGroupService
         $buffer = '';
 
         // wrap every image tag with new lines
-        $content = preg_replace_callback('/!\[([^\]]+)\]\(([^\)]+)\)/', function ($matches) {
+        $content = preg_replace_callback('/!\[([^\]]*)\]\(([^\)]+)\)/', function ($matches) {
             return "\n\n" . $matches[0] . "\n";
         }, $content);
 
