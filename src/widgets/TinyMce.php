@@ -2,6 +2,7 @@
 
 namespace rats\forum\widgets;
 
+use rats\forum\ForumAsset;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 
@@ -10,7 +11,8 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
     public function __construct($config = [])
     {
         $this->clientOptions['language'] = 'cs';
-        $this->clientOptions['language_url'] = Url::to('@web/js/tinymce/cs.js');
+        $this->clientOptions['language_url'] = ForumAsset::register(\Yii::$app->view)->baseUrl . '/tinymce/cs.js';
+        $this->clientOptions['content_css'] = ForumAsset::register(\Yii::$app->view)->baseUrl . '/tinymce/custom.css';
 
         $this->imageUploadUrl = $config['imageUploadUrl'] ?? null;
 

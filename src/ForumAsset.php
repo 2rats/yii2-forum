@@ -13,11 +13,13 @@ class ForumAsset extends AssetBundle
         'create_post.js',
         'fancybox.umd.js',
         'forum-fancybox.js',
+        'tinymce/cs.js',
     ];
     public $css = [
         'forum.css',
         'fancybox.css',
         'forum-fancybox.css',
+        'tinymce/tinymce.css'
     ];
 
     public $depends = [
