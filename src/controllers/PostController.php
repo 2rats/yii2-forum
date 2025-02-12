@@ -106,24 +106,29 @@ class PostController extends Controller
     {
         $model = new PostForm();
         $thread = Thread::findOne(\Yii::$app->request->post('PostForm')['fk_thread']);
-        if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->save() && $model->getPost() !== null) {
-            $post = $model->getPost();
 
-            if(\Yii::$app->request->isAjax) {
-                \Yii::$app->response->setStatusCode(201);
+        if ($model->load(\Yii::$app->request->post())) {
+
+            if(!\Yii::$app->request->isAjax) {
+                // Not ajax, save the record and redirect
+                if ($model->validate() && $model->save() && $model->getPost() !== null) {
+                    $post = $model->getPost();
+                    return $this->redirect($post->getUrl());
+                }
+            } else if(count($model->images) > 0 && $model->validate() && $model->save() && $model->getPost() !== null) {
+                // With images, ajax, validate, save and return url JSON
+                $post = $model->getPost();
                 $response = [
                     'success' => true,
                     'url' => $post->getUrl(),
                 ];
                 return $this->asJson($response);
+            } else {
+                // With images invalid / without images valid or invalid, ajax, return validation errors 
+                \Yii::$app->response->format = Response::FORMAT_JSON;
+    
+                return ActiveForm::validate($model);
             }
-            return $this->redirect($post->getUrl());
-        }
-
-        if (\Yii::$app->request->isAjax) {
-            \Yii::$app->response->format = Response::FORMAT_JSON;
-
-            return ActiveForm::validate($model);
         }
 
         return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/view', 'id' => $thread->id, 'path' => $thread->slug]);

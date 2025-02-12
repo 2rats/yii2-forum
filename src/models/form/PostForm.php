@@ -81,6 +81,12 @@ class PostForm extends Model
         ];
     }
 
+    public function load($data, $formName = null)
+    {
+        $this->images = UploadedFile::getInstancesByName('PostForm[images]');
+        return parent::load($data, $formName);
+    }
+
     public function save()
     {
         if ($this->post === null) {
@@ -111,9 +117,7 @@ class PostForm extends Model
     }
 
     private function parseImages(): void {
-        $images = UploadedFile::getInstancesByName('PostForm[images]');
-
-        foreach($images as $image) {
+        foreach($this->images as $image) {
             $imageUploadForm = new ImageUploadForm(ImageUploadForm::DIR_PATH_POST);
             $imageUploadForm->file = $image;
             $uploadedImage = $imageUploadForm->upload();
