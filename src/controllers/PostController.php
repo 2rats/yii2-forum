@@ -73,10 +73,20 @@ class PostController extends Controller
     public function actionUpdate($id = null)
     {
         $post = $this->findModel($id);
-        $post->content = $post->printContent();
+        $post->content = $post->printContent(false, false);
 
         $model = new PostForm([], $post);
         if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->save() && ($post = $model->getPost()) !== null) {
+            
+
+            if(\Yii::$app->request->isAjax) {
+                \Yii::$app->response->setStatusCode(201);
+                $response = [
+                    'success' => true,
+                    'url' => $post->getUrl(),
+                ];
+                return $this->asJson($response);
+            }
             return $this->redirect($post->getUrl());
         }
 
@@ -98,6 +108,15 @@ class PostController extends Controller
         $thread = Thread::findOne(\Yii::$app->request->post('PostForm')['fk_thread']);
         if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->save() && $model->getPost() !== null) {
             $post = $model->getPost();
+
+            if(\Yii::$app->request->isAjax) {
+                \Yii::$app->response->setStatusCode(201);
+                $response = [
+                    'success' => true,
+                    'url' => $post->getUrl(),
+                ];
+                return $this->asJson($response);
+            }
             return $this->redirect($post->getUrl());
         }
 

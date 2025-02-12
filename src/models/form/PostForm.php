@@ -7,6 +7,8 @@ use rats\forum\models\Thread;
 use rats\forum\models\User;
 use Yii;
 use yii\base\Model;
+use yii\web\UploadedFile;
+use yii\helpers\Html;
 
 /**
  * PostForm is the model behind the login form.
@@ -19,6 +21,8 @@ class PostForm extends Model
     public $fk_thread;
 
     public $content;
+
+    public $images = [];
 
     /**
      * @var Post|null
@@ -42,6 +46,8 @@ class PostForm extends Model
     public function rules()
     {
         return [
+            ['images', 'file', 'extensions' => 'png, jpg, jpeg, gif', 'maxFiles' => 50, 'skipOnEmpty' => true],
+
             [['content'], 'required'],
             [['content'], 'string'],
             [['content'], 'validateMaxlength', 'params' => ['max' => 5000]],
@@ -83,6 +89,9 @@ class PostForm extends Model
             $this->post->fk_thread = $this->fk_thread;
             $this->post->status = Post::STATUS_ACTIVE;
         }
+
+        $this->parseImages();
+
         $this->post->content = $this->content;
 
         if ($this->post->save()) {
@@ -99,5 +108,18 @@ class PostForm extends Model
     public function getPost(): ?Post
     {
         return $this->post;
+    }
+
+    private function parseImages(): void {
+        $images = UploadedFile::getInstancesByName('PostForm[images]');
+
+        foreach($images as $image) {
+            $imageUploadForm = new ImageUploadForm(ImageUploadForm::DIR_PATH_POST);
+            $imageUploadForm->file = $image;
+            $uploadedImage = $imageUploadForm->upload();
+            if($uploadedImage !== false) {
+                $this->content .= Html::img($uploadedImage->getFileUrl());
+            }
+        }
     }
 }

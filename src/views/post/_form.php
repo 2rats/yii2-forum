@@ -42,6 +42,10 @@ $this->registerCss('
                         'action' => $formAction ?? '',
                         'method' => 'post',
                         'enableAjaxValidation' => true,
+                        'options' => [
+                            'id' => 'post-form',
+                            'class' => 'dropzone',
+                        ],
                     ]); ?>
 
                     <div class="reply mx-3 small border-start border-3 p-2 my-2 bg-lighter position-relative" style="display: none;">
@@ -66,9 +70,14 @@ $this->registerCss('
                         'imageUploadUrl' => Url::to(['post/upload-image']),
                     ])->label(false); ?>
 
+                    <div class="dz-message m-0 text-start btn btn-outline-primary btn-sm">
+                        <?= Yii::t('app', 'Upload multiple images') ?>
+                    </div>
+
+                    <div class="dropzone-previews"></div>
+
                     <?= $form->field($post_form, 'fk_thread')->hiddenInput(['value' => $fk_thread])->label(false) ?>
                     <?= $form->field($post_form, 'fk_parent')->hiddenInput()->label(false) ?>
-
 
                     <div class="d-flex justify-content-end">
                         <?= Html::submitButton(Yii::t('app', 'Send'), ['class' => 'btn btn-outline-dark']) ?>
@@ -76,6 +85,55 @@ $this->registerCss('
 
                     <?php ActiveForm::end(); ?>
 
+                    <?php $this->registerJs('
+                        $("#post-form").dropzone({
+                            clickable: ".dz-message",
+                            acceptedFiles: "image/*",
+                            autoProcessQueue: false,
+                            uploadMultiple: true,
+                            parallelUploads: 100,
+                            addRemoveLinks: true,
+                            maxFiles: 100,
+                            previewsContainer: ".dropzone-previews",
+                            maxFilesize: 5,
+                            dictCancelUpload: "Zrušit",
+                            dictCancelUploadConfirmation: "Opravdu chcete zrušit nahrávání?",
+                            dictRemoveFile: "Odstranit",
+                            dictFileTooBig: "Soubor je příliš velký ({{filesize}}MiB). Maximální velikost souboru je {{maxFilesize}}MiB.",
+                            dictMaxFilesExceeded: "Nelze nahrát více souborů.",
+
+                            paramName: "PostForm[images][]",
+
+                            init: function() {
+                                var myDropzone = this;
+
+                                this.element.querySelector("button[type=submit]").addEventListener("click", function(e) {
+                                    if(myDropzone.getQueuedFiles().length === 0) {
+                                        return;
+                                    }
+
+                                    e.preventDefault();
+                                    e.stopPropagation();
+
+                                    tinymce.triggerSave();
+
+                                    myDropzone.processQueue();
+                                });
+
+                                this.on("successmultiple", function(file, responseText, e) {
+                                    if(responseText.success) {
+                                        window.location = responseText.url;
+                                        return;
+                                    }
+                                    $("#post-form").yiiActiveForm("updateMessages", responseText, true);
+                                    myDropzone.files = myDropzone.files.map(function(file) {
+                                        file.status = Dropzone.QUEUED;
+                                        return file;
+                                    });
+                                });
+                            }
+                        });
+                    '); ?>
                 </div>
             </div>
         </div>

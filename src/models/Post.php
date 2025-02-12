@@ -209,7 +209,7 @@ class Post extends ActiveRecord
      *
      * @return string
      */
-    public function printContent($trim = false)
+    public function printContent($trim = false, bool $groupImages = true): string
     {
         $markdownImageService = new MarkdownImageGroupService();
 
@@ -217,7 +217,9 @@ class Post extends ActiveRecord
         if ($this->isDeleted())
             return htmlentities('<' . \Yii::t('app', 'deleted') . '>');
         if (!$trim) {
-            $parsedContent = $markdownImageService->groupImages($parsedContent);
+            if($groupImages) {
+                $parsedContent = $markdownImageService->groupImages($parsedContent);
+            }
             return Markdown::process(($parsedContent), 'gfm-comment');
         }
 

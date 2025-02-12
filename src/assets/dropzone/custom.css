@@ -1,0 +1,9 @@
+.dropzone {
+    border: none;
+    padding: 0;
+}
+
+.dropzone .dz-progress,
+.dropzone .dz-filename {
+    display: none;
+}

@@ -1,5 +1,5 @@
 .mce-content-body img {
-    max-width: 45%;
+    max-width: 15em;
     max-height: 45%;
     object-fit: cover;
     object-position: center;

@@ -14,16 +14,20 @@ class ForumAsset extends AssetBundle
         'fancybox.umd.js',
         'forum-fancybox.js',
         'tinymce/cs.js',
+        'dropzone/dropzone.min.js',
     ];
     public $css = [
         'forum.css',
         'fancybox.css',
         'forum-fancybox.css',
-        'tinymce/tinymce.css'
+        'tinymce/custom.css',
+        'dropzone/dropzone.min.css',
+        'dropzone/custom.css',
     ];
 
     public $depends = [
         'yii\web\JqueryAsset',
-        'yii\bootstrap5\BootstrapAsset'
+        'yii\bootstrap5\BootstrapAsset',
+        'dosamigos\tinymce\TinyMceAsset',
     ];
 }
