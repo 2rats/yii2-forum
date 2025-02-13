@@ -96,6 +96,16 @@ small,
     -webkit-box-orient: vertical;
 }
 
+.lines-3 {
+    line-height: 1.2rem !important;
+    min-height: 1.2rem !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
 .link-secondary {
     color: #5e5e5e !important;
 }

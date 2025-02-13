@@ -18,6 +18,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use rats\forum\models\form\ImageUploadForm;
+use rats\forum\models\Post;
+use yii\data\ActiveDataProvider;
 
 class ProfileController extends Controller
 {
@@ -60,8 +62,16 @@ class ProfileController extends Controller
             throw new NotFoundHttpException(Yii::t('app', 'User not found'));
         }
 
+        $postsDataProvider = new ActiveDataProvider([
+            'query' => Post::find()->active()->createdBy($id)->orderBy(['created_at' => SORT_DESC]),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+
         return $this->render('/profile/view', [
             'user' => $user,
+            'postsDataProvider' => $postsDataProvider,
         ]);
     }
 
@@ -78,16 +88,17 @@ class ProfileController extends Controller
         return $this->redirect(['view', 'id' => $user->id]);
     }
 
-    public function actionUpdate($id){
+    public function actionUpdate($id)
+    {
         $model = new ProfileForm();
         $uploadImage = new ImageUploadForm(ImageUploadForm::DIR_PATH_PROFILE);
         $uploadImage->skipOnEmpty = true;
         $uploadImage->useActiveName = true;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->save()) {
-            if($uploadImage->load(Yii::$app->request->post())){
+            if ($uploadImage->load(Yii::$app->request->post())) {
                 $file = $uploadImage->upload();
-                if($file != null) {
+                if ($file != null) {
                     $model->_profile->fk_image = $file->id;
                     $model->_profile->save(false);
                 }

@@ -27,4 +27,11 @@ class PostQuery extends \yii\db\ActiveQuery
     {
         return $this->andWhere(['>=', 'created_at', new Expression('DATE_SUB(NOW(), INTERVAL 1 DAY)')]);
     }
+
+    /**
+     * Returns only models created by the specified user
+     */
+    public function createdBy(int $id) {
+        return $this->andWhere(['created_by' => $id]);
+    }
 }
