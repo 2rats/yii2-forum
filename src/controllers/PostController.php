@@ -139,7 +139,10 @@ class PostController extends Controller
         $post = $this->findModel(\Yii::$app->request->get('id'));
         $thread = $post->thread;
         if ($post->delete()) {
-            return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/view', 'id' => $thread->id, 'path' => $thread->slug]);
+            if($thread->lastPost !== null) {
+                return $this->redirect($thread->lastPost->getUrl());
+            }
+            return $this->redirect($thread->getUrl());
         }
     }
 
