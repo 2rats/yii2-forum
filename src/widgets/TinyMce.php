@@ -115,7 +115,6 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
         'statusbar' => false,
         'object_resizing' => false,
         'image_dimensions' => false,
-        'image_title' => false,
 
         'codesample_languages' => [
             [
