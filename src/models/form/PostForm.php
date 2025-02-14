@@ -83,7 +83,7 @@ class PostForm extends Model
 
     public function load($data, $formName = null)
     {
-        $this->images = UploadedFile::getInstancesByName('PostForm[images]');
+        $this->images = UploadedFile::getInstancesByName($formName . '[images]');
         return parent::load($data, $formName);
     }
 

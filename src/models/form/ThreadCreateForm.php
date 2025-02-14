@@ -12,16 +12,23 @@ class ThreadCreateForm extends Model
 {
     private Forum $forum;
 
+    private PostForm $postForm;
+
     public function __construct(Forum $forum, $config = [])
     {
         $this->forum = $forum;
         parent::__construct($config);
+
+        $this->postForm = new PostForm();
     }
 
     private ?Thread $newThread = null;
 
     public $name;
+
     public $content;
+    
+    public $images;
 
     /**
      * @return array the validation rules.
@@ -29,29 +36,11 @@ class ThreadCreateForm extends Model
     public function rules()
     {
         return [
-            [['content', 'name'], 'required'],
+            [['name'], 'required'],
             [['name'], 'string', 'max' => 191],
-            [['content', 'name'], 'string'],
-            [['content'], 'validateMaxlength', 'params' => ['max' => 1000]],
-            ['content', 'filter', 'filter' => function ($value) {
-                return \yii\helpers\HtmlPurifier::process($value);
-            }],
-        ];
-    }
 
-    public function validateMaxlength($attribute, $params)
-    {
-        if (mb_strlen($this->$attribute) > $params['max']) {
-            $this->addError($attribute, Yii::t(
-                'app',
-                '{attribute} should contain at most {max, number} characters. (currently {current})',
-                [
-                    'attribute' => $this->attributeLabels()[$attribute],
-                    'max' => $params['max'],
-                    'current' => mb_strlen($this->$attribute),
-                ]
-            ));
-        }
+            [['content', 'images'], 'safe'],
+        ];
     }
 
     public function attributeLabels()
@@ -60,6 +49,30 @@ class ThreadCreateForm extends Model
             'name' => \Yii::t('app', 'Name'),
             'content' => \Yii::t('app', 'Post text'),
         ];
+    }
+
+    public function load($data, $formName = null)
+    {
+        $loaded = parent::load($data, $formName);
+        $loaded = $this->postForm->load($data, 'ThreadCreateForm') && $loaded;
+
+        return $loaded;
+    }
+
+    public function validate($attributeNames = null, $clearErrors = true)
+    {
+        $valid = parent::validate($attributeNames, $clearErrors);
+        $valid = $this->postForm->validate() && $valid;
+
+        return $valid;
+    }
+
+    public function getErrors($attribute = null)
+    {
+        $errors = parent::getErrors($attribute);
+        $errors = array_merge($this->postForm->getErrors(), $errors);
+
+        return $errors;
     }
 
     public function save(): bool
@@ -71,19 +84,14 @@ class ThreadCreateForm extends Model
         $thread->status = Thread::STATUS_ACTIVE_UNLOCKED;
         $thread->name = $this->name;
         if ($thread->save()) {
-            $post = new Post([
-                'fk_thread' => $thread->id,
-                'content' => $this->content,
-                'status' => Post::STATUS_ACTIVE,
-            ]);
+            $this->postForm->fk_thread = $thread->id;
 
-            if ($post->save()) {
+            if ($this->postForm->save()) {
                 $transaction->commit();
                 $this->newThread = $thread;
                 return true;
             }
         }
-
 
         $transaction->rollBack();
         return false;
@@ -92,5 +100,9 @@ class ThreadCreateForm extends Model
     public function getThread(): ?Thread
     {
         return $this->newThread;
+    }
+
+    public function getImages() {
+        return $this->postForm->images;
     }
 }

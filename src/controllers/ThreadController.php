@@ -21,6 +21,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 class ThreadController extends Controller
 {
@@ -142,10 +144,31 @@ class ThreadController extends Controller
             throw new NotFoundHttpException(Yii::t('app', 'You are not allowed to create threads'));
         }
 
+
         $model = new ThreadCreateForm($forum);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $thread = $model->getThread();
-            return $this->redirect(['/' . ForumModule::getInstance()->id . '/thread/view', 'id' => $thread->id, 'path' => $thread->slug]);
+
+        if ($model->load(Yii::$app->request->post())) {
+
+            if(!Yii::$app->request->isAjax) {
+                // Not ajax, save the record and redirect
+                if ($model->validate() && $model->save() && $model->getThread() !== null) {
+                    $thread = $model->getThread();
+                    return $this->redirect($thread->getUrl());
+                }
+            } else if(count($model->getImages()) > 0 && $model->validate() && $model->save() && $model->getThread() !== null) {
+                // With images, ajax, validate, save and return url JSON
+                $thread = $model->getThread();
+                $response = [
+                    'success' => true,
+                    'url' => $thread->getUrl(),
+                ];
+                return $this->asJson($response);
+            } else {
+                // With images invalid / without images valid or invalid, ajax, return validation errors 
+                Yii::$app->response->format = Response::FORMAT_JSON;
+    
+                return ActiveForm::validate($model);
+            }
         }
 
         return $this->render('create', [
