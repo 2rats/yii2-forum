@@ -96,9 +96,11 @@ class PostController extends Controller
             return ActiveForm::validate($model);
         }
 
-        return $this->render('/post/update', [
+        return $this->render(
+            '/post/update', [
             'model' => $model,
-        ]);
+            ]
+        );
     }
 
 
@@ -107,7 +109,7 @@ class PostController extends Controller
         $model = new PostForm();
         $thread = Thread::findOne(\Yii::$app->request->post('PostForm')['fk_thread']);
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(\Yii::$app->request->post(), "PostForm")) {
 
             if(!\Yii::$app->request->isAjax) {
                 // Not ajax, save the record and redirect
@@ -150,24 +152,28 @@ class PostController extends Controller
     {
         $model = new ImageUploadForm(ImageUploadForm::DIR_PATH_POST);
 
-        if (
-            Yii::$app->request->getIsPost() &&
-            $model->load(Yii::$app->request->post()) &&
-            ($file = $model->upload()) !== false
+        if (Yii::$app->request->getIsPost() 
+            && $model->load(Yii::$app->request->post()) 
+            && ($file = $model->upload()) !== false
         ) {
-            return Json::encode([
+            return Json::encode(
+                [
                 'filename' => $file->getFileUrl(),
-            ]);
+                ]
+            );
         }
-        return $this->asJson([
+        return $this->asJson(
+            [
             'error' => $model->getFirstError('file'),
-        ]);
+            ]
+        );
     }
 
     /**
      * Finds the Post model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
+     *
+     * @param  int $id ID
      * @return Post the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
