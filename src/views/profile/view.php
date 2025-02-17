@@ -104,24 +104,24 @@ if (Yii::$app->user->identity->id == $user->id) {
                         <?= ListView::widget([
                             'dataProvider' => $postsDataProvider,
                             'itemView' => '@rats/forum/widgets/views/_post',
-                            'layout' => "{items}\n{pager}",
+                            'layout' => "{items}",
                             'options' => ['class' => 'post-list'],
-                            'pager' => [
-                                'options' => [
-                                    'class' => 'd-flex',
-                                ],
-                                'listOptions' => [
-                                    'class' => 'pagination mx-auto mt-3 mt-md-0 pt-3',
-                                ],
-                                'linkOptions' => [
-                                    'class' => 'page-link text-dark',
-                                ],
-                            ],
                         ]) ?>
 
                         <?php Pjax::end() ?>
 
                     </div>
+
+                    <?= LinkPager::widget([
+                        'pagination' => $postsDataProvider->pagination,
+                        'options' => [
+                            'class' => 'd-flex justify-content-center mt-3',
+                        ],
+                        'linkOptions' => [
+                            'class' => 'page-link text-dark',
+                        ],
+                    ]) ?>
+
                 </div>
 
             <?php endif; ?>
