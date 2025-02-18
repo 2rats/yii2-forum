@@ -88,7 +88,7 @@ $this->registerCss('
                     <?php $this->registerJs('
                         $("#post-form").dropzone({
                             clickable: ".dz-message",
-                            acceptedFiles: "image/*",
+                            acceptedFiles: ".png,.jpeg,.jpg,.gif",
                             autoProcessQueue: false,
                             uploadMultiple: true,
                             parallelUploads: 100,
@@ -96,11 +96,6 @@ $this->registerCss('
                             maxFiles: 100,
                             previewsContainer: ".dropzone-previews",
                             maxFilesize: 5,
-                            dictCancelUpload: "Zrušit",
-                            dictCancelUploadConfirmation: "Opravdu chcete zrušit nahrávání?",
-                            dictRemoveFile: "Odstranit",
-                            dictFileTooBig: "Soubor je příliš velký ({{filesize}}MiB). Maximální velikost souboru je {{maxFilesize}}MiB.",
-                            dictMaxFilesExceeded: "Nelze nahrát více souborů.",
 
                             paramName: "PostForm[images][]",
 
