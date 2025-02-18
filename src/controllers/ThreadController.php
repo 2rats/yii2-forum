@@ -33,7 +33,7 @@ class ThreadController extends Controller
         $this->layout = $this->module->forumLayout;
         parent::init();
     }
-    
+
     /**
      * @inheritDoc
      */
@@ -118,14 +118,19 @@ class ThreadController extends Controller
 
     public function actionHighlight($id, $post_id)
     {
-        $thread = Thread::find()->active()->andWhere(['id' => $id])->one();
-        if ($thread == null) {
-            throw new NotFoundHttpException(Yii::t('app', 'Thread not found'));
-        }
         $post = Post::findOne($post_id);
         if (!$post) {
             throw new NotFoundHttpException(Yii::t('app', 'Post not found'));
         }
+
+        $thread = Thread::find()->active()->andWhere(['id' => $id])->one();
+        if ($thread == null) {
+            $thread = $post->thread;
+            if ($thread == null) {
+                throw new NotFoundHttpException(Yii::t('app', 'Thread not found'));
+            }
+        }
+
         $page = 1;
         foreach ($thread->getPosts()->asArray()->select('id')->all() as $index => $data) {
             if ($data['id'] == $post->id) break;
@@ -149,13 +154,13 @@ class ThreadController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 
-            if(!Yii::$app->request->isAjax) {
+            if (!Yii::$app->request->isAjax) {
                 // Not ajax, save the record and redirect
                 if ($model->validate() && $model->save() && $model->getThread() !== null) {
                     $thread = $model->getThread();
                     return $this->redirect($thread->getUrl());
                 }
-            } else if(count($model->getImages()) > 0 && $model->validate() && $model->save() && $model->getThread() !== null) {
+            } else if (count($model->getImages()) > 0 && $model->validate() && $model->save() && $model->getThread() !== null) {
                 // With images, ajax, validate, save and return url JSON
                 $thread = $model->getThread();
                 $response = [
@@ -166,7 +171,7 @@ class ThreadController extends Controller
             } else {
                 // With images invalid / without images valid or invalid, ajax, return validation errors 
                 Yii::$app->response->format = Response::FORMAT_JSON;
-    
+
                 return ActiveForm::validate($model);
             }
         }
