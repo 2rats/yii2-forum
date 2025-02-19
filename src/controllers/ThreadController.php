@@ -30,7 +30,9 @@ class ThreadController extends Controller
 
     public function init()
     {
-        $this->layout = $this->module->forumLayout;
+        if ($this->layout === null) {
+            $this->layout = $this->module->forumLayout;
+        }
         parent::init();
     }
 

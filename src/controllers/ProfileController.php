@@ -25,7 +25,9 @@ class ProfileController extends Controller
 {
     public function init()
     {
-        $this->layout = $this->module->forumLayout;
+        if ($this->layout === null) {
+            $this->layout = $this->module->forumLayout;
+        }
         parent::init();
     }
 
@@ -36,7 +38,7 @@ class ProfileController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => ['view'],

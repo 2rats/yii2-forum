@@ -29,7 +29,9 @@ class PostController extends Controller
 {
     public function init()
     {
-        $this->layout = $this->module->forumLayout;
+        if ($this->layout === null) {
+            $this->layout = $this->module->forumLayout;
+        }
         parent::init();
     }
 
@@ -37,7 +39,7 @@ class PostController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => ['create', 'upload-image'],
