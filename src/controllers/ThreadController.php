@@ -9,6 +9,7 @@
 namespace rats\forum\controllers;
 
 use rats\forum\ForumModule;
+use rats\forum\models\Category;
 use rats\forum\models\form\ThreadCreateForm;
 use Yii;
 use rats\forum\models\User;
@@ -62,14 +63,32 @@ class ThreadController extends Controller
         );
     }
 
-    public function actionHot()
+    public function actionHot(?string $category = null)
     {
         $query = Thread::find()->select(['forum_thread.*'])
-            ->leftJoin('forum_post AS last_post', 'forum_thread.fk_last_post = last_post.id')
-            ->active()->orderBy(['last_post.created_at' => SORT_DESC])->andWhere('last_post.created_at > NOW() - INTERVAL 3 DAY');
+            ->joinWith('lastPost lastPost')
+            ->orderBy(['lastPost.created_at' => SORT_DESC])
+            ->andWhere('lastPost.created_at > NOW() - INTERVAL 3 DAY')
+            ->active();
+
+        if ($category !== null) {
+            Yii::$app->session->set('forum__hot_category', $category);
+        } else {
+            $category = Yii::$app->session->get('forum__hot_category', null);
+        }
+
+        if (Category::find()->active()->andWhere(['id' => $category])->exists()) {
+            $query->joinWith('forum')->andWhere(['forum_forum.fk_category' => $category]);
+        } else {
+            $category = null;
+        }
 
         $countQuery = clone $query;
-        $pages = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 20]);
+        $pages = new Pagination([
+            'totalCount' => $countQuery->count(),
+            'pageSize' => 20,
+            'pageSizeParam' => false,
+        ]);
         $models = $query->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
@@ -77,6 +96,7 @@ class ThreadController extends Controller
         return $this->render('hot', [
             'threads' => $models,
             'pages' => $pages,
+            'category' => $category,
         ]);
     }
 

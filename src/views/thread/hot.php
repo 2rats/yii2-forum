@@ -3,9 +3,12 @@
 /**
  * @var yii\web\View $this
  * @var yii\data\Pagination $pages
+ * @var Category|null $category
  */
 
+use rats\forum\models\Category;
 use yii\bootstrap5\LinkPager;
+use yii\helpers\Url;
 use yii\widgets\Pjax;
 
 $this->params['breadcrumbs'][] = Yii::t('app', 'Hot Threads');
@@ -14,7 +17,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Hot Threads');
 
 <?php Pjax::begin([
     'scrollTo' => true,
-    'linkSelector' => '.pagination a',
+    'linkSelector' => '.pagination a, a.category-link',
 ]) ?>
 
 <div class="row justify-content-center my-3 mt-1">
@@ -22,6 +25,20 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Hot Threads');
         <div class="d-flex gap-2 justify-content-between px-3 py-2 border-bottom rounded-top-1">
             <div class="py-2">
                 <h3 class="text-dark fw-bold mb-0 text-decoration-underline"><?= Yii::t('app', 'Hot Threads') ?></h3>
+                <div class="row gy-1 mt-1">
+                    <a
+                        href="<?= Url::to(['', 'category' => false]) ?>"
+                        class="category-link col btn btn-sm me-1 text-nowrap <?= !$category ? 'disabled btn-primary' : 'btn-outline-primary' ?>">
+                        <?= Yii::t('app', 'All categories') ?>
+                    </a>
+                    <?php foreach (Category::find()->active()->ordered()->all() as $cat): ?>
+                        <a
+                            href="<?= Url::to(['', 'category' => $cat->id]) ?>"
+                            class="category-link col btn btn-sm me-1 text-nowrap <?= $cat->id == $category ? 'disabled btn-primary' : 'btn-outline-primary' ?>">
+                            <?= $cat->name ?>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
         <div class="thread-header row py-2 border-bottom bg-primary text-white">
