@@ -20,7 +20,7 @@ class ImageUploadForm extends Model
 
     private const IMAGE_RESOLUTION = 1024;
 
-    private const IMAGE_JPG_QUALITY = 80;
+    private const IMAGE_JPG_QUALITY = 90;
 
     /**
      * @var bool Whether to skip the validation if the file is empty.

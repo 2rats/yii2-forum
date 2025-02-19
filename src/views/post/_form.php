@@ -2,12 +2,13 @@
 
 /** @var yii\web\View $this */
 /** @var rats\forum\models\form\PostForm $post_form */
-/** @var string $formAction */
+/** @var string|null $formAction */
+/** @var int|null $fk_thread */
 
 use rats\forum\models\User;
+use rats\forum\widgets\TinyMce;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
-use rats\forum\widgets\TinyMce;
 use yii\helpers\Url;
 
 $user = User::findOne(Yii::$app->user->identity->id);
@@ -22,16 +23,18 @@ $this->registerCss('
 ?>
 
 <div class="row justify-content-center mt-2 mb-5 post-container text-secondary">
-    <h4><?= Yii::t('app', 'Add post') ?></h4>
+    <?php if ($post_form->post === null): ?>
+        <h4><?= Yii::t('app', 'Add post') ?></h4>
+    <?php endif; ?>
     <div class="col-11 post border shadow-sm bg-white rounded-1 text-secondary my-1">
         <div style="min-height: 20vh;" class="row rounded-1">
             <div class="py-2 col-12 col-md-2 bg-lighter border-md-end border-bottom border-md-bottom-0">
-                <p class="fw-bold m-0 text-center">
+                <p class="fw-bold m-0 text-center text-break">
                     <?= $user->getDisplayName() ?>
                 </p>
-                <div class="d-flex justify-content-center">
-                    <?php foreach ($user->roles as $role) : ?>
-                        <small class="w-fit bg-light rounded-1 m-1 px-2 py-1 "><?= ucfirst($role->name) ?></small>
+                <div class="d-flex justify-content-center flex-wrap">
+                    <?php foreach ($user->roles as $role): ?>
+                        <small class="w-fit bg-primary text-white rounded-1 m-1 px-2 py-1 "><?= ucfirst($role->name) ?></small>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -48,7 +51,7 @@ $this->registerCss('
                         ],
                     ]); ?>
 
-                    <div class="reply mx-3 small border-start border-3 p-2 my-2 bg-lighter position-relative" style="display: none;">
+                    <div class="reply mx-3 small border-start border-primary border-3 p-2 my-2 bg-lighter position-relative" style="display: none;">
                         <div class="mb-1 d-flex">
                             <span>
                                 <svg class="mb-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply-fill" viewBox="0 0 16 16">
@@ -76,59 +79,16 @@ $this->registerCss('
 
                     <div class="dropzone-previews"></div>
 
-                    <?= $form->field($post_form, 'fk_thread')->hiddenInput(['value' => $fk_thread])->label(false) ?>
+                    <?= $form->field($post_form, 'fk_thread')->hiddenInput(['value' => $fk_thread ?? $post_form->fk_thread])->label(false) ?>
                     <?= $form->field($post_form, 'fk_parent')->hiddenInput()->label(false) ?>
 
                     <div class="d-flex justify-content-end">
-                        <?= Html::submitButton(Yii::t('app', 'Send'), ['class' => 'btn btn-outline-dark']) ?>
+                        <?= Html::submitButton(Yii::t('app', 'Send'), ['class' => 'btn btn-primary']) ?>
                     </div>
 
                     <?php ActiveForm::end(); ?>
 
-                    <?php $this->registerJs('
-                        $("#post-form").dropzone({
-                            clickable: ".dz-message",
-                            acceptedFiles: ".png,.jpeg,.jpg,.gif",
-                            autoProcessQueue: false,
-                            uploadMultiple: true,
-                            parallelUploads: 100,
-                            addRemoveLinks: true,
-                            maxFiles: 100,
-                            previewsContainer: ".dropzone-previews",
-                            maxFilesize: 5,
-
-                            paramName: "PostForm[images][]",
-
-                            init: function() {
-                                var myDropzone = this;
-
-                                this.element.querySelector("button[type=submit]").addEventListener("click", function(e) {
-                                    if(myDropzone.getQueuedFiles().length === 0) {
-                                        return;
-                                    }
-
-                                    e.preventDefault();
-                                    e.stopPropagation();
-
-                                    tinymce.triggerSave();
-
-                                    myDropzone.processQueue();
-                                });
-
-                                this.on("successmultiple", function(file, responseText, e) {
-                                    if(responseText.success) {
-                                        window.location = responseText.url;
-                                        return;
-                                    }
-                                    $("#post-form").yiiActiveForm("updateMessages", responseText, true);
-                                    myDropzone.files = myDropzone.files.map(function(file) {
-                                        file.status = Dropzone.QUEUED;
-                                        return file;
-                                    });
-                                });
-                            }
-                        });
-                    '); ?>
+                    <?php $post_form->registerJs(); ?>
                 </div>
             </div>
         </div>

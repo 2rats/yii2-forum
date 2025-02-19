@@ -2,6 +2,7 @@
 
 namespace rats\forum\models\form;
 
+use rats\forum\LoadingOverlayAsset;
 use rats\forum\models\Post;
 use rats\forum\models\Thread;
 use rats\forum\models\User;
@@ -116,14 +117,79 @@ class PostForm extends Model
         return $this->post;
     }
 
-    private function parseImages(): void {
-        foreach($this->images as $image) {
+    private function parseImages(): void
+    {
+        foreach ($this->images as $image) {
             $imageUploadForm = new ImageUploadForm(ImageUploadForm::DIR_PATH_POST);
             $imageUploadForm->file = $image;
             $uploadedImage = $imageUploadForm->upload();
-            if($uploadedImage !== false) {
+            if ($uploadedImage !== false) {
                 $this->content .= Html::img($uploadedImage->getFileUrl());
             }
         }
+    }
+
+    public function registerJs(string $formName = 'PostForm'): void
+    {
+        LoadingOverlayAsset::register(Yii::$app->getView());
+        Yii::$app->getView()->registerJs('
+        $("#post-form").dropzone({
+            clickable: ".dz-message",
+            acceptedFiles: ".png,.jpeg,.jpg,.gif",
+            autoProcessQueue: false,
+            uploadMultiple: true,
+            parallelUploads: 100,
+            addRemoveLinks: true,
+            maxFiles: 100,
+            previewsContainer: ".dropzone-previews",
+            maxFilesize: 5,
+
+            // translations
+            dictDefaultMessage: "' . Yii::t('app', 'Drop files here to upload') . '",
+            dictFallbackMessage: "' . Yii::t('app', 'Your browser does not support drag\'n\'drop file uploads.') . '",
+            dictFallbackText: "' . Yii::t('app', 'Please use the fallback form below to upload your files like in the olden days.') . '",
+            dictFileTooBig: "' . Yii::t('app', 'File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.') . '",
+            dictInvalidFileType: "' . Yii::t('app', 'You can\'t upload files of this type.') . '",
+            dictResponseError: "' . Yii::t('app', 'Server responded with {{statusCode}} code.') . '",
+            dictCancelUpload: "' . Yii::t('app', 'Cancel upload') . '",
+            dictCancelUploadConfirmation: "' . Yii::t('app', 'Are you sure you want to cancel this upload?') . '",
+            dictRemoveFile: "' . Yii::t('app', 'Remove file') . '",
+            dictMaxFilesExceeded: "' . Yii::t('app', 'You can not upload any more files.') . '",
+
+            paramName: "' . $formName . '[images][]",
+
+            init: function() {
+                var myDropzone = this;
+
+                this.element.querySelector("button[type=submit]").addEventListener("click", function(e) {
+                    if(myDropzone.getQueuedFiles().length === 0) {
+                        return;
+                    }
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    $("#post-form").LoadingOverlay("show");
+
+                    tinymce.triggerSave();
+
+                    myDropzone.processQueue();
+                });
+
+                this.on("successmultiple", function(file, responseText, e) {
+                    if(responseText.success) {
+                        window.location = responseText.url;
+                        return;
+                    }
+                    $("#post-form").LoadingOverlay("hide");
+                    $("#post-form").yiiActiveForm("updateMessages", responseText, true);
+                    myDropzone.files = myDropzone.files.map(function(file) {
+                        file.status = Dropzone.QUEUED;
+                        return file;
+                    });
+                });
+            }
+        });
+    ');
     }
 }

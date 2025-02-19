@@ -27,7 +27,7 @@ class ThreadCreateForm extends Model
     public $name;
 
     public $content;
-    
+
     public $images;
 
     /**
@@ -102,7 +102,13 @@ class ThreadCreateForm extends Model
         return $this->newThread;
     }
 
-    public function getImages() {
+    public function getImages()
+    {
         return $this->postForm->images;
+    }
+
+    public function registerJs(): void
+    {
+        $this->postForm->registerJs('ThreadCreateForm');
     }
 }
