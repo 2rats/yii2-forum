@@ -91,7 +91,7 @@ function getSortLink($sort, $label, $name)
                 </div>
             </div>
         <?php endif; ?>
-        <div class="thread-header row py-2 border-bottom bg-lighter fw-bold rounded-top-1">
+        <div class="thread-header row py-2 border-bottom bg-secondary fw-bold rounded-top-1">
             <div class="col-12 col-md-9 border-end">
                 <span class="mx-2"><?= Yii::t('app', 'Thread') ?></span>
             </div>
@@ -100,12 +100,12 @@ function getSortLink($sort, $label, $name)
             </div>
         </div>
         <?php if (empty($threads)) : ?>
-            <div class="no-results row py-2 bg-light rounded-bottom-1">
+            <div class="no-results row py-2 bg-secondary-subtle rounded-bottom-1">
                 <div class="col-12 text-center"><?= Yii::t('app', 'No threads') ?></div>
             </div>
         <?php endif; ?>
         <?php foreach ($threads as $index => $thread) : ?>
-            <div class="thread row py-2 <?= $index % 2 == 0 ? 'bg-light' : 'bg-lighter' ?> <?= $index < sizeof($threads) - 1 ? 'border-bottom' : 'rounded-bottom-1' ?>">
+            <div class="thread row py-2 <?= $index % 2 == 0 ? 'bg-secondary-subtle' : 'bg-secondary' ?> <?= $index < sizeof($threads) - 1 ? 'border-bottom' : 'rounded-bottom-1' ?>">
                 <div class="col">
                     <h3 class="h5 m-0">
                         <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= $thread->getUrl() ?>"><?= $thread->name ?></a>

@@ -10,7 +10,7 @@ use yii\widgets\ListView;
  */
 ?>
 
-<div class="post row py-2 <?= $index % 2 == 0 ? 'bg-white' : 'bg-light' ?> <?= $index < $widget->dataProvider->getPagination()->pageSize - 1 ? 'border-bottom' : 'rounded-bottom-1' ?>">
+<div class="post row py-2 <?= $index % 2 == 0 ? 'bg-white' : 'bg-secondary-subtle' ?> <?= $index < $widget->dataProvider->getPagination()->pageSize - 1 ? 'border-bottom' : 'rounded-bottom-1' ?>">
     <div class="col-12 col-md-2">
         <h3 class="h5 m-0">
             <?php if ($model?->thread?->forum !== null): ?>

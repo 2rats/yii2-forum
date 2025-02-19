@@ -53,12 +53,12 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Hot Threads');
             </div>
         </div>
         <?php if (empty($threads)): ?>
-            <div class="no-results row py-2 bg-light rounded-bottom-1">
+            <div class="no-results row py-2 bg-secondary-subtle rounded-bottom-1">
                 <div class="col-12 text-center"><?= Yii::t('app', 'No threads') ?></div>
             </div>
         <?php endif; ?>
         <?php foreach ($threads as $index => $thread): ?>
-            <div class="thread row py-2 <?= $index % 2 == 0 ? 'bg-white' : 'bg-light' ?> <?= $index < sizeof($threads) - 1 ? 'border-bottom' : 'rounded-bottom-1' ?>">
+            <div class="thread row py-2 <?= $index % 2 == 0 ? 'bg-white' : 'bg-secondary-subtle' ?> <?= $index < sizeof($threads) - 1 ? 'border-bottom' : 'rounded-bottom-1' ?>">
                 <div class="col-2 d-md-block d-none">
                     <h3 class="h5 m-0">
                         <?php if ($thread->forum !== null): ?>

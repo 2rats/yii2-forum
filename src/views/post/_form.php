@@ -28,7 +28,7 @@ $this->registerCss('
     <?php endif; ?>
     <div class="col-11 post border shadow-sm bg-white rounded-1 text-secondary my-1">
         <div style="min-height: 20vh;" class="row rounded-1">
-            <div class="py-2 col-12 col-md-2 bg-lighter border-md-end border-bottom border-md-bottom-0">
+            <div class="py-2 col-12 col-md-2 bg-secondary border-md-end border-bottom border-md-bottom-0">
                 <p class="fw-bold m-0 text-center text-break">
                     <?= $user->getDisplayName() ?>
                 </p>
@@ -51,7 +51,7 @@ $this->registerCss('
                         ],
                     ]); ?>
 
-                    <div class="reply mx-3 small border-start border-primary border-3 p-2 my-2 bg-lighter position-relative" style="display: none;">
+                    <div class="reply mx-3 small border-start border-primary border-3 p-2 my-2 bg-secondary position-relative" style="display: none;">
                         <div class="mb-1 d-flex">
                             <span>
                                 <svg class="mb-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-reply-fill" viewBox="0 0 16 16">

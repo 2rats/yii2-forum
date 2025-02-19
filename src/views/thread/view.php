@@ -95,14 +95,14 @@ $this->registerCss('
 <?php endif; ?>
 <?php if (empty($posts)): ?>
     <div class="col-11 post border rounded text-secondary my-1">
-        <div class="no-results row py-2 bg-light rounded-1">
+        <div class="no-results row py-2 bg-secondary-subtle rounded-1">
             <div class="col-12 text-center"><?= Yii::t('app', 'No posts') ?></div>
         </div>
     </div>
 <?php endif; ?>
 <?php foreach ($posts as $index => $post): ?>
     <div class="col-12 col-lg-11 post border rounded-1 text-secondary my-2 my-md-1 shadow-sm" id="post-<?= $post->id ?>">
-        <div style="min-height: 20vh;" class="row bg-lighter rounded-1">
+        <div style="min-height: 20vh;" class="row bg-secondary rounded-1">
             <div class="py-2 col-12 col-md-2 border-md-end border-bottom border-md-bottom-0 gx-2">
                 <div class="row gx-2 text-start text-md-center">
                     <?php if ($image = $post->createdBy->image): ?>
@@ -191,7 +191,7 @@ $this->registerCss('
                         </div>
                     </div>
                     <?php if ($post->parent): ?>
-                        <div class="reply mx-2 mx-md-5 small border-start border-primary border-3 p-2 mb-3 bg-lighter position-relative">
+                        <div class="reply mx-2 mx-md-5 small border-start border-primary border-3 p-2 mb-3 bg-secondary position-relative">
                             <a class="stretched-link" href="<?= $post->parent->getUrl() ?>"></a>
                             <div class="mb-1 d-flex">
                                 <span>

@@ -13,7 +13,7 @@ use yii\helpers\Url;
 <div class="row justify-content-center mb-4" style="display: none;">
     <div class=" col-11 forum-container border rounded-1 text-secondary child-items">
         <?php foreach ($forums as $index => $forum) : ?>
-            <div class="forum child row py-2 bg-lighter border-bottom ?>" data-id=<?= $forum->id ?>>
+            <div class="forum child row py-2 bg-secondary border-bottom ?>" data-id=<?= $forum->id ?>>
                 <div class="col">
                     <h3 class="h5 m-0">
                         <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= $forum->getUrl() ?>"><?= $forum->name ?></a>

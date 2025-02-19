@@ -12,7 +12,7 @@ use yii\helpers\Url;
  */
 ?>
 
-<div class="forum row py-2 <?= $index % 2 == 0 ? 'bg-light' : 'bg-lighter' ?>">
+<div class="forum row py-2 <?= $index % 2 == 0 ? 'bg-secondary-subtle' : 'bg-secondary' ?>">
     <div class="col">
         <h3 class="h5 m-0">
             <a class="link-secondary link-underline-opacity-0 link-underline-opacity-100-hover" href="<?= $model->getUrl() ?>"><?= $model->name ?></a>

@@ -11,7 +11,7 @@ use rats\forum\ForumModule;
  */
 ?>
 
-<div class="row py-2 <?= $index % 2 == 0 ? 'bg-light' : 'bg-lighter' ?>">
+<div class="row py-2 <?= $index % 2 == 0 ? 'bg-secondary-subtle' : 'bg-secondary' ?>">
     <div class="col">
         <h3 class="h5 m-0">
             <a class="link-primary link-underline-opacity-0 link-underline-opacity-100-hover" href="

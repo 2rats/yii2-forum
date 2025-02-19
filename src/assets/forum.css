@@ -3,7 +3,8 @@
 }
 
 /* add sorting icons to gridview sort links */
-a.asc:after, a.desc:after {
+a.asc:after,
+a.desc:after {
     content: '';
     left: 3px;
     display: inline-block;
@@ -66,18 +67,6 @@ a:hover {
 
 .reply .reply-remove:hover {
     transform: rotate(90deg);
-}
-
-.bg-light {
-    background-color: #f4f4f4 !important;
-}
-
-.bg-lighter {
-    background-color: #fbfbfb !important;
-}
-
-.text-secondary {
-    color: #5e5e5e !important;
 }
 
 small,

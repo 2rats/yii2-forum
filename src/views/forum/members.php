@@ -22,7 +22,7 @@ use yii\widgets\Pjax;
 
     <div class="row justify-content-center mb-4">
         <div class="col-11 border rounded-1 text-secondary">
-            <div class="forum-header row py-2 border-bottom bg-lighter fw-bold rounded-top-1">
+            <div class="forum-header row py-2 border-bottom bg-secondary fw-bold rounded-top-1">
                 <div class="col-6 border-end">
                     <span class="mx-2">
                         <?= Yii::t('app', 'Display name') ?> /
