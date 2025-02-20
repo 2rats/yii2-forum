@@ -95,10 +95,6 @@ small,
     -webkit-box-orient: vertical;
 }
 
-.link-secondary {
-    color: #5e5e5e !important;
-}
-
 @media (min-width: 768px) {
     .border-md-end {
         border-right: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
