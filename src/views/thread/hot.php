@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Hot Threads');
                 </div>
             </div>
         </div>
-        <div class="thread-header row py-2 border-bottom bg-primary text-white">
+        <div class="thread-header row py-2 border-bottom text-bg-primary">
             <div class="col-2 border-md-end d-md-block d-none">
                 <span class="mx-2 fw-bold"><?= Yii::t('app', 'Forum') ?></span>
             </div>

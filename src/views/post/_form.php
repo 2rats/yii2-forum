@@ -34,7 +34,7 @@ $this->registerCss('
                 </p>
                 <div class="d-flex justify-content-center flex-wrap">
                     <?php foreach ($user->roles as $role): ?>
-                        <small class="w-fit bg-primary text-white rounded-1 m-1 px-2 py-1 "><?= ucfirst($role->name) ?></small>
+                        <small class="w-fit text-bg-primary rounded-1 m-1 px-2 py-1 "><?= ucfirst($role->name) ?></small>
                     <?php endforeach; ?>
                 </div>
             </div>

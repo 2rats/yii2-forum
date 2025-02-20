@@ -35,7 +35,7 @@ class ForumListWidget extends ListView
             'class' => 'pagination mx-auto mt-3 mt-md-0 pt-3',
         ],
         'linkOptions' => [
-            'class' => 'page-link text-dark',
+            'class' => 'page-link text-bg-primary',
         ],
     ];
 
