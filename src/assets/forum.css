@@ -52,14 +52,6 @@ a.desc:after {
 }
 
 /* Override links */
-a {
-    color: var(--forum-primary-color);
-}
-
-a:hover {
-    color: var(--forum-primary-color);
-}
-
 .reply .reply-remove {
     transition: transform .25s ease-in-out;
     cursor: pointer;
