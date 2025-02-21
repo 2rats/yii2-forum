@@ -78,7 +78,7 @@ function getSortLink($sort, $label, $name)
         <?php if (!Yii::$app->user->isGuest && User::findOne(Yii::$app->user->identity->id)->canCreateThread($forum)) : ?>
             <div class="row py-2 border-bottom rounded-top-1">
                 <div class="col-6 px-3 py-2">
-                    <h3 class="text-dark fw-bold mb-0 text-decoration-underline"><?= $forum->name ?></h3>
+                    <h3 class="text-tertiary fw-bold mb-0 text-decoration-underline"><?= $forum->name ?></h3>
                 </div>
                 <div class="col-6 px-3 py-2 text-end">
                     <a class="btn btn-primary" href="<?= Url::to(['/' . ForumModule::getInstance()->id . '/thread/create?fk_forum=' . $forum->id]) ?>"><?= Yii::t("app", "Create Thread"); ?></a>
@@ -87,7 +87,7 @@ function getSortLink($sort, $label, $name)
         <?php else : ?>
             <div class="row py-2 border-bottom rounded-top-1">
                 <div class="col-12 px-3 py-2">
-                    <h3 class="text-dark fw-bold mb-0 text-decoration-underline"><?= $forum->name ?></h3>
+                    <h3 class="text-tertiary fw-bold mb-0 text-decoration-underline"><?= $forum->name ?></h3>
                 </div>
             </div>
         <?php endif; ?>

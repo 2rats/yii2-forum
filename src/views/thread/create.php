@@ -18,37 +18,43 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-<div class="pe-4">
-    <div class="card shadow-sm border">
+<div class="pe-lg-4">
+    <div class="card shadow-sm border text-bg-secondary">
         <div class="card-body p-3">
-            <h1 class="h4 text-primary mb-3"><?= Html::encode($this->title) ?></h1>
+            <h1 class="h4 text-tertiary mb-3"><?php echo Html::encode($this->title) ?></h1>
 
-            <?php $form = ActiveForm::begin([
+            <?php $form = ActiveForm::begin(
+                [
                 'method' => 'post',
                 'enableAjaxValidation' => true,
                 'options' => [
                     'id' => 'post-form',
                     'class' => 'dropzone',
                 ],
-            ]); ?>
+                ]
+            ); ?>
 
 
-            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+            <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'content')->widget(TinyMce::class, [
+            <?php echo $form->field($model, 'content')->widget(
+                TinyMce::class, [
                 'imageUploadUrl' => Url::to(['post/upload-image']),
-            ]); ?>
+                ]
+            ); ?>
 
             <div class="dz-message m-0 text-start btn btn-outline-primary btn-sm">
-                <?= Yii::t('app', 'Upload multiple images') ?>
+                <?php echo Yii::t('app', 'Upload multiple images') ?>
             </div>
 
             <div class="dropzone-previews"></div>
 
             <div class="form-group">
-                <?= Html::submitButton(Yii::t('app', 'Create'), [
+                <?php echo Html::submitButton(
+                    Yii::t('app', 'Create'), [
                     'class' => 'btn btn-primary px-4',
-                ]) ?>
+                    ]
+                ) ?>
             </div>
 
             <?php ActiveForm::end(); ?>

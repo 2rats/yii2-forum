@@ -122,14 +122,14 @@ $this->registerCss('
                         <span class="fw-bold">
                             <?= $post->getCreatedByHtml() ?>
                         </span>
-                        <p class="small text-muted mb-0 mt-0 mt-md-1"><?= Yii::t('app', 'Posts') ?>: <?= Yii::$app->formatter->asInteger($post->createdBy->getPosts()->count()) ?>
+                        <p class="small text-secondary mb-0 mt-0 mt-md-1"><?= Yii::t('app', 'Posts') ?>: <?= Yii::$app->formatter->asInteger($post->createdBy->getPosts()->count()) ?>
                             <br class="d-none d-md-block">
                             <?php foreach ($post->getCreatedByRoles() as $role): ?>
                                 <small class="badge text-bg-primary m-1 px-2 py-1 "><?= ucfirst($role->name) ?></small>
                             <?php endforeach; ?>
                         </p>
-                        <p class="small text-muted mb-0 mt-0 mt-md-1"><?= Yii::t('app', 'Joined') ?>: <br class="d-none d-md-block"><?= Yii::$app->formatter->asDate($post->createdBy->created_at) ?></p>
-                        <p class="small text-muted mb-0 mt-0 mt-md-1"><?= Yii::t('app', 'Created at') ?>: <br class="d-none d-md-block"><?= $post->getCreatedAtString() ?></p>
+                        <p class="small text-secondary mb-0 mt-0 mt-md-1"><?= Yii::t('app', 'Joined') ?>: <br class="d-none d-md-block"><?= Yii::$app->formatter->asDate($post->createdBy->created_at) ?></p>
+                        <p class="small text-secondary mb-0 mt-0 mt-md-1"><?= Yii::t('app', 'Created at') ?>: <br class="d-none d-md-block"><?= $post->getCreatedAtString() ?></p>
                     </div>
                 </div>
             </div>

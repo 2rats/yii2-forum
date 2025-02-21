@@ -14,7 +14,7 @@ class MembersListWidget extends ListView
     public $itemView = '@rats/forum/widgets/views/_member';
     public $options = ['class' => 'member-list'];
     public $emptyTextOptions = [
-        'class' => 'text-center text-muted',
+        'class' => 'text-center text-secondary',
     ];
     public $pager = [
         'class' => \yii\bootstrap5\LinkPager::class,
@@ -23,9 +23,6 @@ class MembersListWidget extends ListView
         ],
         'listOptions' => [
             'class' => 'pagination mx-auto mt-3 mt-md-0 pt-3',
-        ],
-        'linkOptions' => [
-            'class' => 'page-link text-dark',
         ],
     ];
 
@@ -57,12 +54,14 @@ class MembersListWidget extends ListView
                 $query->andWhere(['id' => $staffUserIds]);
             }
 
-            $this->dataProvider = new ActiveDataProvider([
-                'query' => $query,
-                'pagination' => [
-                    'pageSize' => 15,
-                ],
-            ]);
+            $this->dataProvider = new ActiveDataProvider(
+                [
+                    'query' => $query,
+                    'pagination' => [
+                        'pageSize' => 15,
+                    ],
+                ]
+            );
         }
 
         parent::init();

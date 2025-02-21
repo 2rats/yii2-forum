@@ -23,7 +23,7 @@ class ForumListWidget extends ListView
     public $itemView = '@rats/forum/widgets/views/_forum';
     public $options = ['class' => 'forum-list'];
     public $emptyTextOptions = [
-        'class' => 'text-center text-muted',
+        'class' => 'text-center text-secondary',
     ];
 
     public $pager = [
@@ -33,9 +33,6 @@ class ForumListWidget extends ListView
         ],
         'listOptions' => [
             'class' => 'pagination mx-auto mt-3 mt-md-0 pt-3',
-        ],
-        'linkOptions' => [
-            'class' => 'page-link text-bg-primary',
         ],
     ];
 

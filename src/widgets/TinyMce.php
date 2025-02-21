@@ -21,7 +21,8 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
             $this->clientOptions['relative_urls'] = false;
             $this->clientOptions['remove_script_host'] = false;
 
-            $this->clientOptions['images_upload_handler'] = new JsExpression('(blobInfo, progress) => new Promise((resolve, reject) => {
+            $this->clientOptions['images_upload_handler'] = new JsExpression(
+                '(blobInfo, progress) => new Promise((resolve, reject) => {
                     const xhr = new XMLHttpRequest();
                     xhr.withCredentials = false;
 
@@ -66,9 +67,11 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
                     formData.append("file", blobInfo.blob(), blobInfo.filename());
 
                     xhr.send(formData);
-                })');
+                })'
+            );
 
-            $this->clientOptions['file_picker_callback'] = new JsExpression("function(cb, value, meta) {
+            $this->clientOptions['file_picker_callback'] = new JsExpression(
+                "function(cb, value, meta) {
                     const input = document.createElement('input');
                     input.setAttribute('type', 'file');
                     input.setAttribute('accept', 'image/*');
@@ -89,7 +92,8 @@ class TinyMce extends \dosamigos\tinymce\TinyMce
                         });
                     });
                     input.click();
-                }");
+                }"
+            );
         }
 
         parent::__construct($config);

@@ -100,7 +100,7 @@ $this->title = $this->title ?? Yii::t('app', 'Forum');
 
     <footer class="mt-auto py-3 bg-secondary-subtle">
         <div class="container">
-            <div class="row text-muted">
+            <div class="row text-secondary">
                 <div class="col-md-6 text-center text-md-start">&copy; <a href="https://github.com/2rats/yii2-forum">2rats/yii2-forum</a> <?= date('Y') ?></div>
             </div>
         </div>
