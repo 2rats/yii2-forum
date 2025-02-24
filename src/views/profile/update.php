@@ -10,13 +10,21 @@ $this->title = Yii::t('app', 'Update profile');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Profile'), 'url' => ['view', 'id' => Yii::$app->user->identity->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
+
 <div class="profile-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="pe-lg-4">
+        <div class="card shadow-sm border text-bg-secondary">
+            <div class="card-body p-3">
+                <h1 class="h4 text-tertiary mb-3"><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
-        'profileFormModel' => $profileFormModel,
-        'imageUploadFormModel' => $imageUploadFormModel,
-    ]) ?>
 
+                <?= $this->render('_form', [
+                    'profileFormModel' => $profileFormModel,
+                    'imageUploadFormModel' => $imageUploadFormModel,
+                ]) ?>
+
+            </div>
+        </div>
+    </div>
 </div>
