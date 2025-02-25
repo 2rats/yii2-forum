@@ -29,7 +29,7 @@ use yii\bootstrap5\Html;
 
     <div class="d-flex justify-content-between">
         <?= Html::a(Yii::t('app', 'Remove profile picture'), ['remove-image', 'id' => $profileFormModel->_profile->id], ['class' => 'btn btn-danger btn-sm']) ?>
-        <?= Html::submitButton(Yii::t('app', 'Send'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Send'), ['class' => 'btn btn-primary m-2']) ?>
     </div>
 </div>
 

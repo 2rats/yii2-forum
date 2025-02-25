@@ -60,7 +60,7 @@ if (Yii::$app->user->identity->id == $user->id) {
                 <div class="d-flex justify-content-center text-center py-1 flex-wrap">
                     <?php if (Yii::$app->user->identity->id == $user->id) : ?>
                         <div class="w-100 w-md-auto ms-4 me-4 mb-4 my-md-auto ms-md-0 me-md-auto">
-                            <?= Html::a(Yii::t('app', 'Edit profile'), ['update', 'id' => $user->id], ['class' => 'btn btn-primary']) ?>
+                            <?= Html::a(Yii::t('app', 'Edit profile'), ['update', 'id' => $user->id], ['class' => 'btn btn-primary my-2']) ?>
                             <?= Html::a(Yii::t('app', 'My Thread Subscriptions'), ['/' . ForumModule::getInstance()->id . '/thread-subscription/user-subscriptions'], ['class' => 'btn btn-outline-primary']) ?>
                         </div>
                     <?php endif; ?>
