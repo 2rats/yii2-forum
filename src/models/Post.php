@@ -292,7 +292,7 @@ class Post extends ActiveRecord
         return $this->updated_at > $this->created_at;
     }
 
-    public function getUrl(array $params = []): string {
-        return \yii\helpers\Url::to(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $this->thread?->id, 'path' => $this->thread?->slug, 'post_id' => $this->id] + $params);
+    public function getUrl(array $params = [], bool $scheme = false): string {
+        return \yii\helpers\Url::to(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $this->thread?->id, 'path' => $this->thread?->slug, 'post_id' => $this->id] + $params, $scheme);
     }
 }

@@ -9,6 +9,7 @@
 use rats\forum\ForumModule;
 use rats\forum\models\form\PostForm;
 use rats\forum\models\User;
+use rats\forum\services\ThreadSubscriptionService;
 use yii\bootstrap5\LinkPager;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -241,6 +242,31 @@ $this->registerCss('
         'pagination' => $pages,
     ]); ?>
 </div>
+
+<?php if (!Yii::$app->user->isGuest): ?>
+    <?php
+    $threadSubscriptionService = new ThreadSubscriptionService();
+    $isSubscribed = !Yii::$app->user->isGuest && $threadSubscriptionService->hasUserSubscribed($thread->id, Yii::$app->user->id);
+    ?>
+
+    <div class="text-center">
+        <?php if ($isSubscribed): ?>
+            <?= Html::a('<i class="fa fa-bell-slash"></i> ' . Yii::t('app', 'Unsubscribe thread'), ['/' . ForumModule::getInstance()->id . '/thread-subscription/unsubscribe-authenticated', 'threadId' => $thread->id], [
+                'class' => 'btn btn-primary btn-sm',
+                'data' => [
+                    'method' => 'post',
+                ],
+            ]) ?>
+        <?php else: ?>
+            <?= Html::a('<i class="fa fa-bell"></i> ' . Yii::t('app', 'Subscribe thread'), ['/' . ForumModule::getInstance()->id . '/thread-subscription/subscribe', 'threadId' => $thread->id], [
+                'class' => 'btn btn-primary btn-sm',
+                'data' => [
+                    'method' => 'post',
+                ],
+            ]) ?>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>
 
 <div class="post-add mt-5">
     <?php if (!Yii::$app->user->isGuest): ?>

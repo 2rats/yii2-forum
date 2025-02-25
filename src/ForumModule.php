@@ -27,6 +27,9 @@ class ForumModule extends Module implements BootstrapInterface
     public $forumLayout = 'forum';
     public $adminLayout = 'admin';
     public $viewPath = '@rats/forum/views';
+    
+    public $senderName = 'Forum';
+    public $senderEmail = 'noreply@example.com';
 
     public const USERNAME_LENGTH = 191;
 
