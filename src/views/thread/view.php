@@ -10,6 +10,7 @@ use rats\forum\ForumModule;
 use rats\forum\models\form\PostForm;
 use rats\forum\models\User;
 use rats\forum\services\ThreadSubscriptionService;
+use rats\forum\widgets\VoteWidget;
 use yii\bootstrap5\LinkPager;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -210,6 +211,10 @@ $this->registerCss('
                     <div class="flex-grow-1">
                         <div class="content markdown-body mb-2 p-0" style="font-size: 15px; height: max-content"><?= $post->printContent() ?></div>
                     </div>
+                    <?= VoteWidget::widget([
+                        'post' => $post,
+                        'userId' => Yii::$app->user->id,
+                    ]) ?>
                     <?php if ($post->getCreatedBySignature()): ?>
                         <div class="p-2 pb-0 border-top small">
                             <small class="children-m-0">

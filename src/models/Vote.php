@@ -2,51 +2,109 @@
 
 namespace rats\forum\models;
 
-use rats\forum\models\query\VoteQuery;
+use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "forum_vote".
  *
- * @property int         $id
- * @property int         $fk_post
- * @property int|null    $fk_user
- * @property int         $value
+ * @property int $id
+ * @property int $fk_post
+ * @property int $fk_user
+ * @property int $value
  * @property string|null $created_at
  * @property string|null $updated_at
- * @property Post        $post
- * @property User        $user
+ *
+ * @property Post $post
+ * @property User $user
  */
 class Vote extends ActiveRecord
 {
-    public const VALUE_DOWNVOTE = 0;
-    public const VALUE_UPVOTE = 1;
+    const VALUE_LIKE = 0;
+    const VALUE_DISLIKE = 1;
 
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'forum_vote';
     }
 
-    public function rules()
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
     {
         return [
-            [['fk_post', 'value'], 'required'],
-            [['fk_post', 'fk_user', 'value'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
-            [['fk_post'], 'exist', 'skipOnError' => true, 'targetClass' => Post::class, 'targetAttribute' => ['fk_post' => 'id']],
-            [['fk_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['fk_user' => 'id']],
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => new Expression('NOW()')
+            ]
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['fk_post', 'fk_user'], 'unique', 'targetAttribute' => ['fk_post', 'fk_user']],
+            [['fk_post', 'fk_user', 'value'], 'required'],
+            [['fk_post', 'fk_user', 'value'], 'integer'],
+            [['value'], 'in', 'range' => [self::VALUE_LIKE, self::VALUE_DISLIKE]],
+            [['fk_post'], 'exist', 'skipOnError' => true, 'targetClass' => Post::class, 'targetAttribute' => ['fk_post' => 'id']],
+            [['fk_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['fk_user' => 'id']],
+            [['fk_post', 'fk_user'], 'unique', 'targetAttribute' => ['fk_post', 'fk_user'], 'message' => 'User has already voted on this post.'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function attributeLabels()
     {
         return [
-            'id' => \Yii::t('app', 'ID'),
-            'fk_post' => \Yii::t('app', 'Post'),
-            'fk_user' => \Yii::t('app', 'User'),
-            'value' => \Yii::t('app', 'Value'),
-            'created_at' => \Yii::t('app', 'Created at'),
-            'updated_at' => \Yii::t('app', 'Updated at'),
+            'id' => Yii::t('app', 'ID'),
+            'fk_post' => Yii::t('app', 'Post'),
+            'fk_user' => Yii::t('app', 'User'),
+            'value' => Yii::t('app', 'Vote Type'),
+            'created_at' => Yii::t('app', 'Created at'),
+            'updated_at' => Yii::t('app', 'Updated at'),
         ];
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($this->value == self::VALUE_LIKE) {
+            $this->post->updateCounters(['like_count' => 1]);
+        } else {
+            $this->post->updateCounters(['dislike_count' => 1]);
+        }
+
+        if ($changedAttributes['value'] === self::VALUE_LIKE) {
+            $this->post->updateCounters(['like_count' => -1]);
+        } elseif ($changedAttributes['value'] === self::VALUE_DISLIKE) {
+            $this->post->updateCounters(['dislike_count' => -1]);
+        }
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        if ($this->value == self::VALUE_LIKE) {
+            $this->post->updateCounters(['like_count' => -1]);
+        } else {
+            $this->post->updateCounters(['dislike_count' => -1]);
+        }
     }
 
     /**
@@ -67,14 +125,5 @@ class Vote extends ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'fk_user']);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return VoteQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new VoteQuery(get_called_class());
     }
 }

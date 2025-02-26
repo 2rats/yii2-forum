@@ -17,6 +17,8 @@ use yii\helpers\Markdown;
  * @property int|null    $fk_parent
  * @property string      $content
  * @property int         $status
+ * @property int         $like_count
+ * @property int         $dislike_count
  * @property int         $created_by
  * @property int         $updated_by
  * @property string|null $created_at
@@ -42,7 +44,7 @@ class Post extends ActiveRecord
     {
         return [
             [['fk_thread', 'content'], 'required'],
-            [['fk_thread', 'fk_parent', 'status', 'created_by', 'updated_by'], 'integer'],
+            [['fk_thread', 'fk_parent', 'status', 'created_by', 'updated_by', 'like_count', 'dislike_count'], 'integer'],
             [['content'], 'string'],
             ['content', 'filter', 'filter' => function ($value) {
                 $htmlToMarkdown = new \League\HTMLToMarkdown\HtmlConverter(['strip_tags' => true]);
@@ -81,6 +83,8 @@ class Post extends ActiveRecord
             'fk_parent' => \Yii::t('app', 'Parent'),
             'content' => \Yii::t('app', 'Post text'),
             'status' => \Yii::t('app', 'Status'),
+            'like_count' => \Yii::t('app', 'Like'),
+            'dislike_count' => \Yii::t('app', 'Dislike'),
             'created_by' => \Yii::t('app', 'Created by'),
             'updated_by' => \Yii::t('app', 'Updated by'),
             'created_at' => \Yii::t('app', 'Created at'),
@@ -217,7 +221,7 @@ class Post extends ActiveRecord
         if ($this->isDeleted())
             return htmlentities('<' . \Yii::t('app', 'deleted') . '>');
         if (!$trim) {
-            if($groupImages) {
+            if ($groupImages) {
                 $parsedContent = $markdownImageService->groupImages($parsedContent);
             }
             return Markdown::process(($parsedContent), 'gfm-comment');
@@ -292,7 +296,18 @@ class Post extends ActiveRecord
         return $this->updated_at > $this->created_at;
     }
 
-    public function getUrl(array $params = [], bool $scheme = false): string {
+    public function getUrl(array $params = [], bool $scheme = false): string
+    {
         return \yii\helpers\Url::to(['/' . ForumModule::getInstance()->id . '/thread/highlight', 'id' => $this->thread?->id, 'path' => $this->thread?->slug, 'post_id' => $this->id] + $params, $scheme);
+    }
+
+    public function getVoteAttribute(int $voteValue): string
+    {
+        if ($voteValue === Vote::VALUE_LIKE) {
+            return 'like_count';
+        } else if ($voteValue === Vote::VALUE_DISLIKE) {
+            return 'dislike_count';
+        }
+        throw new \Exception('Invalid vote value');
     }
 }

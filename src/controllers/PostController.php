@@ -21,6 +21,8 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 use rats\forum\models\form\ImageUploadForm;
+use rats\forum\services\VoteService;
+use rats\forum\widgets\VoteWidget;
 use yii\helpers\Json;
 use Yii;
 use yii\web\NotFoundHttpException;
@@ -42,7 +44,7 @@ class PostController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['create', 'upload-image'],
+                        'actions' => ['create', 'upload-image', 'vote'],
                         'allow' => true,
                         'roles' => ['forum-createPost'],
                         'matchCallback' => function () {
@@ -79,9 +81,9 @@ class PostController extends Controller
 
         $model = new PostForm([], $post);
         if ($model->load(\Yii::$app->request->post()) && $model->validate() && $model->save() && ($post = $model->getPost()) !== null) {
-            
 
-            if(\Yii::$app->request->isAjax) {
+
+            if (\Yii::$app->request->isAjax) {
                 \Yii::$app->response->setStatusCode(201);
                 $response = [
                     'success' => true,
@@ -98,11 +100,9 @@ class PostController extends Controller
             return ActiveForm::validate($model);
         }
 
-        return $this->render(
-            '/post/update', [
+        return $this->render('/post/update', [
             'model' => $model,
-            ]
-        );
+        ]);
     }
 
 
@@ -113,13 +113,13 @@ class PostController extends Controller
 
         if ($model->load(\Yii::$app->request->post(), "PostForm")) {
 
-            if(!\Yii::$app->request->isAjax) {
+            if (!\Yii::$app->request->isAjax) {
                 // Not ajax, save the record and redirect
                 if ($model->validate() && $model->save() && $model->getPost() !== null) {
                     $post = $model->getPost();
                     return $this->redirect($post->getUrl());
                 }
-            } else if(count($model->images) > 0 && $model->validate() && $model->save() && $model->getPost() !== null) {
+            } else if (count($model->images) > 0 && $model->validate() && $model->save() && $model->getPost() !== null) {
                 // With images, ajax, validate, save and return url JSON
                 $post = $model->getPost();
                 $response = [
@@ -130,7 +130,7 @@ class PostController extends Controller
             } else {
                 // With images invalid / without images valid or invalid, ajax, return validation errors 
                 \Yii::$app->response->format = Response::FORMAT_JSON;
-    
+
                 return ActiveForm::validate($model);
             }
         }
@@ -143,7 +143,7 @@ class PostController extends Controller
         $post = $this->findModel(\Yii::$app->request->get('id'));
         $thread = $post->thread;
         if ($post->delete()) {
-            if($thread->lastPost !== null) {
+            if ($thread->lastPost !== null) {
                 return $this->redirect($thread->lastPost->getUrl());
             }
             return $this->redirect($thread->getUrl());
@@ -154,21 +154,18 @@ class PostController extends Controller
     {
         $model = new ImageUploadForm(ImageUploadForm::DIR_PATH_POST);
 
-        if (Yii::$app->request->getIsPost() 
-            && $model->load(Yii::$app->request->post()) 
+        if (
+            Yii::$app->request->getIsPost()
+            && $model->load(Yii::$app->request->post())
             && ($file = $model->upload()) !== false
         ) {
-            return Json::encode(
-                [
+            return Json::encode([
                 'filename' => $file->getFileUrl(),
-                ]
-            );
+            ]);
         }
-        return $this->asJson(
-            [
+        return $this->asJson([
             'error' => $model->getFirstError('file'),
-            ]
-        );
+        ]);
     }
 
     /**
@@ -186,5 +183,28 @@ class PostController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    /**
+     * Vote on a post.
+     * 
+     * @return Response
+     */
+    public function actionVote($postId, $value)
+    {
+        $voteService = new VoteService();
+        $post = Post::find()->active()->andWhere(['id' => $postId])->one();
+
+        try {
+            $voteService->vote($post, Yii::$app->user->id, $value);
+            $post->refresh();
+        } catch (\Exception $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+        }
+
+        return VoteWidget::widget([
+            'post' => $post,
+            'userId' => Yii::$app->user->id,
+        ]);
     }
 }
