@@ -83,7 +83,9 @@ class ProfileForm extends Model
      */
     public function getPreviousImages(): array
     {
-        $userPreviousImages = File::findAll(['fk_user' => $this->_profile->id]);
+        $userPreviousImages = File::find()
+            ->where(['LIKE', 'filename', ImageUploadForm::DIR_PATH_PROFILE])
+            ->andWhere(['fk_user' => $this->_profile->id])->all();
         $defaultImages = File::findAll(['is_default_profile_image' => true]);
         return array_merge($userPreviousImages, $defaultImages);
     }
