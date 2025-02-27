@@ -28,6 +28,7 @@ class ForumModule extends Module implements BootstrapInterface
     public $adminLayout = 'admin';
     public $viewPath = '@rats/forum/views';
     
+    public $threadSubscriptionEmailView = '@rats/forum/views/mail/threadSubscriptionNotify';
     public $senderName = 'Forum';
     public $senderEmail = 'noreply@example.com';
 

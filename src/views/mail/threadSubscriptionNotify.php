@@ -3,7 +3,6 @@
 use rats\forum\models\Post;
 use rats\forum\models\Thread;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 /**
  * @var Thread $thread

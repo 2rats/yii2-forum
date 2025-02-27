@@ -187,7 +187,7 @@ class ThreadSubscriptionService
 
         $module = ForumModule::getInstance();
 
-        return Yii::$app->mailer->compose('@rats/forum/views/mail/threadSubscriptionNotify', [
+        return Yii::$app->mailer->compose($module->threadSubscriptionEmailView, [
             'thread' => $thread,
             'post' => $thread->lastPost,
         ])
