@@ -16,6 +16,7 @@ use Yii;
  * @property int|null $fk_user
  * @property string|null $created_at
  * @property string|null $updated_at
+ * @property bool $is_default_profile_image
  *
  * @property User $fkUser
  */
@@ -55,6 +56,7 @@ class File extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['is_default_profile_image'], 'boolean'],
             [['filename'], 'required'],
             [['fk_user'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
@@ -74,6 +76,7 @@ class File extends \yii\db\ActiveRecord
             'fk_user' => Yii::t('app', 'Fk User'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
+            'is_default_profile_image' => Yii::t('app', 'Default user image'),
         ];
     }
 

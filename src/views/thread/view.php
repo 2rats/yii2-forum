@@ -107,7 +107,7 @@ $this->registerCss('
         <div style="min-height: 20vh;" class="row bg-secondary rounded-1">
             <div class="py-2 col-12 col-md-2 border-md-end border-bottom border-md-bottom-0 gx-2">
                 <div class="row gx-2 text-start text-md-center">
-                    <?php if ($image = $post->createdBy->image): ?>
+                    <?php if ($image = $post->createdBy->getProfileImage()): ?>
                         <div class="col-auto col-md-12 my-auto">
                             <div
                                 style="height: 4rem; width: 4rem;"

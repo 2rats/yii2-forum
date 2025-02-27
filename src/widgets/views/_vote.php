@@ -13,11 +13,11 @@ use yii\widgets\ListView;
     <div
         style="height: 2.5rem; width: 2.5rem;"
         class="me-2">
-        <?php if ($model->user->image): ?>
+        <?php if ($image = $model->user->getProfileImage()): ?>
             <img
                 style="width: 100%; height: 100%; object-fit: cover; overflow-clip-margin: unset;"
                 class="w-100 h-100 rounded-circle"
-                src="<?= $model->user->image->getFileUrl() ?>"
+                src="<?= $image->getFileUrl() ?>"
                 alt="<?= Yii::t('app', 'Profile picture') ?>">
         <?php endif; ?>
     </div>

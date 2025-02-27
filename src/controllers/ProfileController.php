@@ -116,6 +116,7 @@ class ProfileController extends Controller
         return $this->render('update', [
             'profileFormModel' => $model,
             'imageUploadFormModel' => $uploadImage,
+            'previousImages' => $model->getPreviousImages(),
         ]);
     }
 }

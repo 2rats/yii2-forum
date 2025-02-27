@@ -114,6 +114,18 @@ class User extends ActiveRecord
         return $this->hasOne(File::class, ['id' => 'fk_image']);
     }
 
+    public function getProfileImage(): ?File
+    {
+        if ($this->image !== null) {
+            return $this->image;
+        }
+
+        $defaultImages = File::find()->where(['is_default_profile_image' => true])->orderBy('id ASC')->all();
+        if (count($defaultImages) > 0) {
+            return $defaultImages[$this->id % count($defaultImages)];
+        }
+        return null;
+    }
 
     /**
      * Gets user roles.

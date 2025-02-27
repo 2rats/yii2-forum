@@ -2,6 +2,7 @@
 
 namespace rats\forum\models\form;
 
+use rats\forum\models\File;
 use rats\forum\models\Post;
 use rats\forum\models\Thread;
 use rats\forum\models\User;
@@ -18,6 +19,8 @@ class ProfileForm extends Model
     public $username;
     public $signature;
 
+    public $fk_image;
+
     /**
      * @var User
      */
@@ -29,11 +32,12 @@ class ProfileForm extends Model
     public function rules()
     {
         return [
+            [['fk_image'], 'integer'],
             [['username', 'real_name'], 'string', 'max' => 191],
             [['signature'], 'string', 'max' => 512],
             [['username'], 'required'],
             [['real_name'], 'default'],
-            [['username'], 'unique', 'targetClass' => User::class, 'filter' => function($query) {
+            [['username'], 'unique', 'targetClass' => User::class, 'filter' => function ($query) {
                 $query->andWhere(['<>', 'id', Yii::$app->user->identity->id]);
             }],
         ];
@@ -46,6 +50,7 @@ class ProfileForm extends Model
             'username' => \Yii::t('app', 'Username'),
             'signature' => \Yii::t('app', 'Signature'),
             'image' => \Yii::t('app', 'Profile picture'),
+            'fk_image' => \Yii::t('app', 'Profile picture'),
         ];
     }
 
@@ -55,6 +60,7 @@ class ProfileForm extends Model
         $this->real_name = $this->_profile->real_name;
         $this->username = $this->_profile->username;
         $this->signature = $this->_profile->signature;
+        $this->fk_image = $this->_profile->fk_image;
     }
 
     public function save()
@@ -63,10 +69,22 @@ class ProfileForm extends Model
         $profile->username = $this->username;
         $profile->real_name = $this->real_name;
         $profile->signature = $this->signature;
+        $profile->fk_image = $this->fk_image;
+
         if ($profile->save()) {
             $this->_profile = $profile;
             return true;
         }
         return false;
+    }
+
+    /**
+     * @return File[]
+     */
+    public function getPreviousImages(): array
+    {
+        $userPreviousImages = File::findAll(['fk_user' => $this->_profile->id]);
+        $defaultImages = File::findAll(['is_default_profile_image' => true]);
+        return array_merge($userPreviousImages, $defaultImages);
     }
 }

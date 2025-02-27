@@ -38,9 +38,15 @@ if (Yii::$app->user->identity->id == $user->id) {
     <div class="row justify-content-center my-3 post-container">
         <div class="col-11">
             <div class="rounded-top d-flex flex-column flex-md-row profile-banner" style="height: unset; min-height: 200px; background-image: linear-gradient(0deg, rgba(0, 143, 171, 1) 0%, rgba(0, 143, 171,.7) 25%, rgba(0, 143, 171, .1) 95%, rgba(255,255,255,0) 100%);">
-                <?php if ($image = $user->image) : ?>
-                    <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
-                        <img src="<?= $image->getFileUrl() ?>" alt="<?= Yii::t('app', 'Profile picture') ?>" class="img-fluid img-thumbnail mt-4 mb-2">
+                <?php if ($image = $user->getProfileImage()) : ?>
+                    <div
+                        style="height: 6rem; width: 6rem;"
+                        class="mt-md-auto mx-auto me-md-0 my-3 mb-sm-3 ms-sm-3 ">
+                        <img
+                            style="width: 100%; height: 100%; object-fit: cover; overflow-clip-margin: unset;"
+                            class="w-100 h-100 rounded-circle"
+                            src="<?= $image->getFileUrl() ?>"
+                            alt="<?= Yii::t('app', 'Profile picture') ?>">
                     </div>
                 <?php endif; ?>
                 <div class="ms-4 mt-auto mt-md-auto mt-2 text-white">

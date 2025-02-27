@@ -5,6 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var rats\forum\models\form\ProfileForm $profileFormModel */
 /** @var rats\forum\models\form\ImageUploadForm $imageUploadFormModel */
+/** @var rats\forum\models\File[] $previousImages */
 
 $this->title = Yii::t('app', 'Update profile');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Profile'), 'url' => ['view', 'id' => Yii::$app->user->identity->id]];
@@ -22,6 +23,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
                 <?= $this->render('_form', [
                     'profileFormModel' => $profileFormModel,
                     'imageUploadFormModel' => $imageUploadFormModel,
+                    'previousImages' => $previousImages,
                 ]) ?>
 
             </div>
