@@ -24,7 +24,7 @@ class ThreadSubscriptionQuery extends \yii\db\ActiveQuery
                     $query->active();
                 },
             ], false)
-            ->andWhere('forum_thread_subscription.fk_last_post < forum_thread.fk_last_post')
+            ->andWhere('forum_thread_subscription.fk_last_post < forum_thread.fk_last_post OR forum_thread_subscription.fk_last_post IS NULL')
             ->andWhere('forum_thread_subscription.fk_user != forum_post.created_by');
     }
 }
