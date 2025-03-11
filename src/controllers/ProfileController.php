@@ -49,7 +49,7 @@ class ProfileController extends Controller
                         'actions' => ['update', 'remove-image'],
                         'allow' => true,
                         'matchCallback' => function () {
-                            return Yii::$app->user->identity?->id === Yii::$app->request->get('id', false);
+                            return Yii::$app->user->identity?->id == Yii::$app->request->get('id', false);
                         }
                     ],
                 ],
