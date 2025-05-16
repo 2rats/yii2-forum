@@ -49,7 +49,17 @@ class Post extends ActiveRecord
             ['content', 'filter', 'filter' => function ($value) {
                 $htmlToMarkdown = new \League\HTMLToMarkdown\HtmlConverter(['strip_tags' => true]);
                 $htmlToMarkdown->getEnvironment()->addConverter(new \League\HTMLToMarkdown\Converter\TableConverter());
-                return $htmlToMarkdown->convert($value);
+                $content = $htmlToMarkdown->convert($value);
+
+                // replace \_ escape in raw links in text
+                $content = preg_replace_callback(
+                    '/(?<=\s|^)(https?:\/\/[^\s)]+)/i',
+                    function ($matches) {
+                        return str_replace('\_', '_', $matches[0]);
+                    },
+                    $content
+                );
+                return $content;
             }],
             [['created_at', 'updated_at'], 'safe'],
             [['fk_parent'], 'exist', 'skipOnError' => false, 'targetClass' => Post::class, 'targetAttribute' => ['fk_parent' => 'id']],
@@ -179,12 +189,13 @@ class Post extends ActiveRecord
     /**
      * Replaces text parts with emojis
      * 
-     * @param string text
+     * @param  string text
      * @return string
      */
     public static function parseEmojis($text)
     {
-        return strtr($text, [
+        return strtr(
+            $text, [
             ' :)' => '🙂',
             ' ;)' => '😉',
             ' :D' => '😃',
@@ -205,7 +216,8 @@ class Post extends ActiveRecord
             ' :roll:' => '🙄',
             ' :evil:' => '👿',
             ' :twisted:' => '😈',
-        ]);
+            ]
+        );
     }
 
     /**
@@ -218,8 +230,9 @@ class Post extends ActiveRecord
         $markdownImageService = new MarkdownImageGroupService();
 
         $parsedContent = self::parseEmojis($this->content);
-        if ($this->isDeleted())
+        if ($this->isDeleted()) {
             return htmlentities('<' . \Yii::t('app', 'deleted') . '>');
+        }
         if (!$trim) {
             if ($groupImages) {
                 $parsedContent = $markdownImageService->groupImages($parsedContent);
@@ -268,6 +281,7 @@ class Post extends ActiveRecord
 
     /**
      * {@inheritdoc}
+     *
      * @return PostQuery the active query used by this AR class.
      */
     public static function find()
